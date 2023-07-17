@@ -9,13 +9,36 @@
   <div class="card-body">
     <form method="POST">
       {% csrf_token %}
-          <p>{{ form.username.label }} {{ form.username }} {{ form.username.help_text }}</p>
-          <p>{{ form.email.label }} {{ form.email }} {{ form.email.help_text }}</p>
-          <p>{{ form.gender.label }} {{ form.gender }} {{ form.gender.help_text }}</p>
-          <p>{{ form.birth_date.label }} {{ form.birth_date }} {{ form.birth_date.help_text }}</p>
-          <p>{{ form.growth.label }} {{ form.growth }} {{ form.growth.help_text }}</p>
-          <p>{{ form.weight.label }} {{ form.weight }} {{ form.weight.help_text }}</p>
-          <p>{{ form.activity.label }} {{ form.activity }} {{ form.activity.help_text }}</p>
+          <table>
+      <tr>
+        <th>{{ form.username.label_tag }}</th>
+        <td>{{ form.username }} {{ form.username.help_text }}</td>
+      </tr>
+      <tr>
+        <th>{{ form.email.label_tag }}</th>
+        <td>{{ form.email }} {{ form.email.help_text }}</td>
+      </tr>
+      <tr>
+        <th>{{ form.gender.label_tag }}</th>
+        <td>{{ form.gender }} {{ form.gender.help_text }}</td>
+      </tr>
+      <tr>
+        <th>{{ form.birth_date.label_tag }}</th>
+        <td>{{ form.birth_date }} {{ form.birth_date.help_text }}</td>
+      </tr>
+      <tr>
+        <th>{{ form.growth.label_tag }}</th>
+        <td>{{ form.growth }} {{ form.growth.help_text }}</td>
+      </tr>
+      <tr>
+        <th>{{ form.weight.label_tag }}</th>
+        <td>{{ form.weight }} {{ form.weight.help_text }}</td>
+      </tr>
+      <tr>
+        <th>{{ form.activity.label_tag }}</th>
+        <td>{{ form.activity }} {{ form.activity.help_text }}</td>
+      </tr>
+    </table>
 
           <ul>
             <li>Минимальный. Для малоподвижных людей, тренировок мало или они отсутствуют</li>
@@ -25,9 +48,31 @@
             <li>Экстремальный. Для предельно активных людей: тяжелая физическая работа и интенсивные тренировки/занятия спортом.</li>
           </ul>
 
-          <p>{{ form.avatar.label }} {{ form.avatar }} {{ form.avatar.help_text }}</p>
-          <p>{{ form.password1.label }} {{ form.password1 }} {{ form.password1.help_text }}</p>
-          <p>{{ form.password2.label }} {{ form.password2 }}</p>
+    <table>
+      <tr>
+        <th>{{ form.avatar.label_tag }}</th>
+        <td>{{ form.avatar }}</td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <th>{{ form.password1.label }}</th>
+        <td>{{ form.password1 }}<td>
+      </tr>
+    </table>
+        <ul>
+            <li>Пароль не должен быть слишком похож на другую вашу личную информацию.</li>
+            <li>Ваш пароль должен содержать как минимум 8 символов.</li>
+            <li>Пароль не должен быть слишком простым и распространенным.</li>
+            <li>Пароль не может состоять только из цифр.</li>
+        </ul>
+    <table>
+      <tr>
+        <th>{{ form.password2.label }}</th>
+        <td>{{ form.password2 }} {{ form.password2.help_text }}<td>
+      </tr>
+    </table>
+
       <input class="button" type="submit" value="Зарегистрироваться">
     </form>
   </div>
@@ -35,3 +80,8 @@
 </div>
 
 {% endblock %}
+
+Пароль не должен быть слишком похож на другую вашу личную информацию.
+Ваш пароль должен содержать как минимум 8 символов.
+Пароль не должен быть слишком простым и распространенным.
+Пароль не может состоять только из цифр.
