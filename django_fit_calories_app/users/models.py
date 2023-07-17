@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
     gender_list = [(man, 'Мужской'), (woman, 'Женский')]
     gender = models.CharField(max_length=10, choices=gender_list, default=man, verbose_name='Пол')
 
-    birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения', help_text='Введите в формате ДД-ММ-ГГГГ')
+    birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения', help_text='Введите в формате ДД.ММ.ГГГГ')
     growth = models.IntegerField(default=0, verbose_name='Рост', help_text='Введите в сантиметрах')
     weight = models.IntegerField(default=0, verbose_name='Вес', help_text='Введите в килограммах')
     avatar = models.ImageField(default='default.png', upload_to='avatars/', blank=True, verbose_name='Аватар')
