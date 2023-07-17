@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>Редактирование профиля</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="button">Сохранить</button>
+  </form>
+  <a href="{% url 'password_reset' %}"><input class="button" type="submit" value="Изменить пароль"></a>
+</div>
+
+{% endblock %}

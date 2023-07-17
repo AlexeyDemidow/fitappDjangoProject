@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Следим за фигурой{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="container">
+  Добро пожаловать, {{ user.username }}!
+  <p>Перейти в профиль?</p>
+  <a href="{% url 'profile' user.username %}"><input class="button" type="submit" value="Профиль"></a>
+<div/>
+
+{% else %}
+<div class="container">
+  <p>Вы не авторизированы. Нажмите "Войти" чтобы войти и "Регистрация" чтобы зарегистрироваться.</p>
+  <a href="{% url 'login' %}"><input class="button" type="submit" value="Войти"></a>
+  <a href="{% url 'signup'%}"><input class="button" type="submit" value="Регистрация"></a>
+</div>
+{% endif %}
+{% endblock %}
