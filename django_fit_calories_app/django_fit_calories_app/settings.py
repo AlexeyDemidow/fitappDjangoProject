@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'users',
+    'calories_calc',
+
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'

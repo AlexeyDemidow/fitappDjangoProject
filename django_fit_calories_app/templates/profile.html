@@ -15,7 +15,7 @@
     <p>Вес: {{ user.weight }} кг</p>
     <p>Уровень активности: {{ user.activity }}</p>
     <p>Норма потребления калорий в день: {{ user.calories_per_day }} Ккал</p>
-    <!-- Добавьте дополнительные поля, которые вы хотите отображать в профиле пользователя -->
+
 
     <a href="{% url 'edit_profile' user.username%}"><input class="button" type="submit" value="Редактировать профиль"></a>
   </div>
