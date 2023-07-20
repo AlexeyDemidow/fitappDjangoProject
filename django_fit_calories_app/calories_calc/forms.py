@@ -12,7 +12,7 @@ class FoodItemForm(ModelForm):
 
 
 class AddUserFoodItem(ModelForm):
-    #customer = forms.ModelChoiceField(queryset=CustomUser.objects.all(), widget=forms.HiddenInput())
+
     class Meta:
         model = UserFoodItem
         fields = ['customer', 'fooditem']
