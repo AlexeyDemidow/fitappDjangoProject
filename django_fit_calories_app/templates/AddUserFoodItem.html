@@ -5,7 +5,9 @@
 
             <form action="" method="POST">
                 {% csrf_token %}
-                {{form.as_p}}
+                <div style="display: none">{{form.customer.name}}{{form.customer}}</div>
+
+                {{form.fooditem.name}}{{form.fooditem}}
                 <input type="submit" class="btn btn-success" value="submit">
             </form>
 

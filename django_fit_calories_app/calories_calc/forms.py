@@ -12,10 +12,12 @@ class FoodItemForm(ModelForm):
 
 
 class AddUserFoodItem(ModelForm):
-
-    #customer = forms.ModelChoiceField(queryset=CustomUser.objects.all())
-
+    #customer = forms.ModelChoiceField(queryset=CustomUser.objects.all(), widget=forms.HiddenInput())
     class Meta:
         model = UserFoodItem
         fields = ['customer', 'fooditem']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
 
