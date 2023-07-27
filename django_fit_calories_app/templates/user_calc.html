@@ -4,28 +4,29 @@
 
 {% block content %}
 
-<h3>Total number of items consumed today: {{cnt}}</h3>
+<h3>Количество употребленных продуктов: {{cnt}}</h3>
 
 <div class="today">
-	<h2>Tracker</h2>
+	<h2>Трекер</h2>
 	<div class="flex-box-row">
-		<h3>Calorie Limit: {{user.calories_per_day}}</h3>
-		<h3>totalCalories consumed: {{totalCalories}}</h3>
-		<h3>Left: {{ CalorieLeft }}</h3>
+		<h3>Количество калорий: {{user.calories_per_day}}</h3>
+		<h3>Всего калорий употреблено: {{totalCalories}}</h3>
+		<h3>Осталось: {{ CalorieLeft }}</h3>
 	</div>
 
-    <div class="card card-body">
+    <!--<div class="card card-body">
         <table>
             <tr>
-                <th>fooditem</th>
-                <th>Calorie</th>
-                <th>Carbs</th>
-                <th>Fats</th>
-                <th>Protien</th>
+                <th>Название продукта</th>
+                <th>Калорийность</th>
+                <th>Углеводы</th>
+                <th>Жиры</th>
+                <th>Белки</th>
+				<th>Масса</th>
             </tr>
             {% for food in foodlist %}
             <tr>
-                <td>{{food.name}}</td>
+                <td> {{food.name}}</td>
                 <td> {{food.calorie}}</td>
                 <td> {{food.carbohydrate}}</td>
                 <td> {{food.fats}}</td>
@@ -33,58 +34,176 @@
 				<td> {{food.quantity}}</td>
 			</tr>
             {% endfor %}
-        </table>
+        </table>-->
 
 			{% if foodlist %}
-				<a href="{% url 'deleteFooditem' %}">Удалить последний продукт</a>
+				<a href="{% url 'deleteFooditem_all' %}">Очистить весь список</a>
 			{% endif %}
 
-	</div>
-
-	<form method="POST">
-		{%csrf_token%}
-		<a href="{% url 'addFooditem' %}">Добавить продукт</a>
-	</form>
 </div>
 
 <br>
-<div class="row">
-	<div class="col">
-		<div class="card card-body">
-			<form method="get">
-				{{myfilter.form}}
-		    <button class="btn btn-primary" type="submit">Search</button>
-		  </form>
-		</div>
-	</div>
-</div>
+
 <br>
 <hr>
-<h3>Available items:</h3>
+<!-------------------------------------->
+<div class="flex-box-row">
+            <h5 id="heading">Завтрак</h5>
+                <h7>Всего продуктов:{{bcnt}}</h7>
+                    <a class="btn btn-primary  btn-sm btn-block" href="{% url 'addFooditem_breakfast' %}">Добавить продукт</a>
+               <table class="table table-sm">
+                    <tr>
+						<th>Название продукта</th>
+						<th>Калорийность</th>
+						<th>Белки</th>
+						<th>Жиры</th>
+						<th>Углеводы</th>
+						<th>Масса</th>
+
+                    </tr>
+                   {% for items in breakfast %}
+                    <tr>
+                        <td>{{items.name}} </td>
+						<td>{{items.calorie}} </td>
+						<td>{{items.protein}} </td>
+						<td>{{items.fats}} </td>
+                        <td>{{items.carbohydrate}} </td>
+                        <td>{{items.quantity}} </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+			{% if breakfast %}
+				<a class="btn btn-primary  btn-sm btn-block btn-danger" href="{% url 'deleteFooditem_breakfast' %}">Убрать последний продукт</a>
+			{% endif %}
+        </div>
+    <br>
+<!-------------------------------------->
+<div class="flex-box-row">
+            <h5 id="heading">Обед</h5>
+            <h7>Всего продуктов:{{lcnt}}</h7>
+                <a class="btn btn-primary  btn-sm btn-block" href="{% url 'addFooditem_lunch' %}">Добавить продукт</a>
+             <table class="table table-sm">
+                    <tr>
+						<th>Название продукта</th>
+						<th>Калорийность</th>
+						<th>Белки</th>
+						<th>Жиры</th>
+						<th>Углеводы</th>
+						<th>Масса</th>
+
+                    </tr>
+                   {% for items in lunch %}
+
+                    <tr>
+                        <td>{{items.name}} </td>
+						<td>{{items.calorie}} </td>
+						<td>{{items.protein}} </td>
+						<td>{{items.fats}} </td>
+                        <td>{{items.carbohydrate}} </td>
+                        <td>{{items.quantity}} </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+			{% if lunch %}
+				<a class="btn btn-primary  btn-sm btn-block btn-danger" href="{% url 'deleteFooditem_lunch' %}">Убрать последний продукт</a>
+			{% endif %}
+        </div>
+        <br>
+<!-------------------------------------->
+        <div class="flex-box-row">
+            <h5 id="heading">Ужин</h5>
+            <h7>Всего продуктов:{{dcnt}}</h7>
+            <a class="btn btn-primary  btn-sm btn-block" href="{% url 'addFooditem_dinner' %}">Добавить продукт</a>
+                <table class="table table-sm">
+                    <tr>
+						<th>Название продукта</th>
+						<th>Калорийность</th>
+						<th>Белки</th>
+						<th>Жиры</th>
+						<th>Углеводы</th>
+						<th>Масса</th>
+
+                    </tr>
+                   {% for items in dinner %}
+                    <tr>
+                        <td>{{items.name}} </td>
+						<td>{{items.calorie}} </td>
+						<td>{{items.protein}} </td>
+						<td>{{items.fats}} </td>
+                        <td>{{items.carbohydrate}} </td>
+                        <td>{{items.quantity}} </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+			{% if dinner %}
+				<a class="btn btn-primary  btn-sm btn-block btn-danger" href="{% url 'deleteFooditem_dinner' %}">Убрать последний продукт</a>
+			{% endif %}
+        </div>
+    <br>
+<!-------------------------------------->
+<div class="flex-box-row">
+            <h5 id="heading">Перекусы</h5>
+            <h7>Всего продуктов:{{scnt}}</h7>
+            <a class="btn btn-primary  btn-sm btn-block" href="{% url 'addFooditem_snacks' %}">Добавить продукт</a>
+                <table class="table table-sm">
+                    <tr>
+						<th>Название продукта</th>
+						<th>Калорийность</th>
+						<th>Белки</th>
+						<th>Жиры</th>
+						<th>Углеводы</th>
+						<th>Масса</th>
+
+                    </tr>
+                   {% for items in snacks %}
+                    <tr>
+                        <td>{{items.name}} </td>
+						<td>{{items.calorie}} </td>
+						<td>{{items.protein}} </td>
+						<td>{{items.fats}} </td>
+                        <td>{{items.carbohydrate}} </td>
+                        <td>{{items.quantity}} </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+			{% if snacks %}
+				<a class="btn btn-primary  btn-sm btn-block btn-danger" href="{% url 'deleteFooditem_snacks' %}">Убрать последний продукт</a>
+			{% endif %}
+        </div>
+        <br>
+
+<!-------------------------------------->
+<!--<h3>Доступные продукты:</h3>
 <div class="row">
 	<div class="col-md">
 		<div class="card card-body">
 			<table class="table table-sm">
 				<tr>
-					<th>fooditem</th>
-					<th>Calorie</th>
-					<th>Carbs</th>
-					<th>Fats</th>
-					<th>Protien</th>
+						<th>Название продукта</th>
+						<th>Калорийность</th>
+						<th>Белки</th>
+						<th>Жиры</th>
+						<th>Углеводы</th>
+						<th>Масса</th>
 				</tr>
 				{% for food in fooditem %}
 				<tr>
-					<td>{{food.name}}</td>
-					<td> {{food.calorie}}</td>
-					<td> {{food.carbohydrate}}</td>
-                    <td> {{food.fats}}</td>
-                    <td> {{food.protein}}</td>
+                        <td>{{food.name}} </td>
+						<td>{{food.calorie}} </td>
+						<td>{{food.protein}} </td>
+						<td>{{food.fats}} </td>
+                        <td>{{food.carbohydrate}} </td>
+                        <td>{{food.quantity}} </td>
 					</tr>
 				{% endfor %}
 			</table>
-			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'createfooditem' %}">Add more options</a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'createfooditem' %}">Добавить продукт</a>
 		</div>
 	</div>
-</div>
+</div>-->
 
 {% endblock %}

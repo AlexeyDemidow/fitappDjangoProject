@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-
+<h3>Добавить к приему пищи</h3>
             <form action="" method="POST">
                 {% csrf_token %}
                 <div style="display: none">{{form.customer.name}}{{form.customer}}</div>
 
                 {{form.fooditem.name}}{{form.fooditem}}
+
+                <div style="display: none">{{form.category.name}}{{form.category}}</div>
                 <input type="submit" class="btn btn-success" value="submit">
             </form>
 

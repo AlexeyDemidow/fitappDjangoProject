@@ -14,12 +14,7 @@ class FoodAdmin(admin.ModelAdmin):
     list_display = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity']
     list_filter = ['name']
 
-class UserFoodAdmin(admin.ModelAdmin):
-    class Meta:
-        model = UserFoodItem
 
-    list_display = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity']
-    list_filter = ['name']
 
 
 admin.site.register(UserFoodItem)

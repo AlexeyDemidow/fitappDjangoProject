@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import CustomUser
 
+
 # Create your models here.
 '''class Customer(CustomUser):
     user = models.OneToOneField(CustomUser, null=True, on_delete=models.CASCADE)
@@ -37,7 +38,5 @@ class FoodItem(models.Model):
 class UserFoodItem(models.Model):
     customer = models.ManyToManyField(CustomUser)
     fooditem = models.ManyToManyField(FoodItem)
+    category = models.ManyToManyField(Category)
 
-class UserFoodItemAltern(models.Model):
-    #customer = models.(CustomUser, on_delete=models.CASCADE)
-    fooditem = models.ManyToManyField(FoodItem)
