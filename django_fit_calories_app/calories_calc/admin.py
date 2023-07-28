@@ -11,7 +11,7 @@ class FoodAdmin(admin.ModelAdmin):
     class Meta:
         model = FoodItem
 
-    list_display = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity']
+    list_display = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity', 'date']
     list_filter = ['name']
 
 

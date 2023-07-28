@@ -1,11 +1,9 @@
 from django.db import models
 from users.models import CustomUser
-
-
+from datetime import date
+from django.utils import timezone
 # Create your models here.
-'''class Customer(CustomUser):
-    user = models.OneToOneField(CustomUser, null=True, on_delete=models.CASCADE)
-    date_created = models.DateTimeField(auto_now_add=True, null=True)'''
+
 
 class Category(models.Model):
     options = (
@@ -22,21 +20,23 @@ class Category(models.Model):
 
 class FoodItem(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название')
-    category = models.ManyToManyField(Category)
+    category = models.ManyToManyField(Category, blank=True)
     carbohydrate = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Углеводы')
     fats = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Жиры')
     protein = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Белки')
     calorie = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=True, verbose_name='Калории')
     quantity = models.IntegerField(default=100, null=True, blank=True, verbose_name='Количество в граммах')
+    date = models.DateField(default=date.today, verbose_name='Дата')
 
     def __str__(self):
         return str(self.name)
 
-    # for user page-------------------------------------------------------------
+
 
 
 class UserFoodItem(models.Model):
     customer = models.ManyToManyField(CustomUser)
     fooditem = models.ManyToManyField(FoodItem)
     category = models.ManyToManyField(Category)
+    add_date = models.DateField(default=timezone.now, verbose_name='Дата')
 

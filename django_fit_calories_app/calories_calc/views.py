@@ -4,11 +4,9 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth.decorators import login_required
-from users.models import CustomUser
 from .models import FoodItem, UserFoodItem
 from .forms import FoodItemForm
-
-
+from datetime import date
 
 # Create your views here.
 
@@ -27,6 +25,8 @@ def createfooditem(request):
 def user_calc(request):
     user = request.user
     cust = user.id
+
+
 
     breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
     my_breakfast = breakfast.filter(customer=cust)
@@ -74,13 +74,19 @@ def user_calc(request):
             snacks_view_list.append(sn_food)
 
     fooditems = FoodItem.objects.filter()
+
     total = UserFoodItem.objects.all()
 
     myfooditems = total.filter(customer=cust)
+
+    today_date = date.today()
+
     cnt = myfooditems.count()
     querysetFood = []
+    add_date_list = []
     for food in myfooditems:
         querysetFood.append(food.fooditem.all())
+        add_date_list.append(food.add_date)
     finalFoodItems = []
     for items in querysetFood:
         for food_items in items:
@@ -89,12 +95,10 @@ def user_calc(request):
     dailyCalories = user.calories_per_day()
     for foods in finalFoodItems:
         totalCalories += foods.calorie
-    '''if datetime.strftime(datetime.now(), "%H:%M") == datetime.strptime('14:14', "%H:%M"):
-        finalFoodItems.clear()'''
     CalorieLeft = dailyCalories - totalCalories
 
     context = {'CalorieLeft': CalorieLeft, 'totalCalories': totalCalories, 'cnt': cnt, 'foodlist': finalFoodItems,
-               'fooditem': fooditems,
+               'fooditem': fooditems, 'today_date': today_date, 'add_date': add_date_list,
                'breakfast': breakfast_view_list,
                'bcnt': bcnt,
                'lcnt': lcnt,
@@ -206,6 +210,8 @@ def deleteFooditem_snacks(request):
     my_snacks_reverse = my_snacks[::-1]
     my_snacks_reverse[0].delete()
     return redirect('/calories_calc/user_calc/')
+
+
 
 
 

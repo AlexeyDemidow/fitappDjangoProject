@@ -8,14 +8,14 @@ from django import forms
 class FoodItemForm(ModelForm):
     class Meta:
         model = FoodItem
-        fields = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity', 'category']
+        fields = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity', 'category', 'date']
 
 
 class AddUserFoodItem_breakfast(ModelForm):
 
     class Meta:
         model = UserFoodItem
-        fields = ['customer', 'fooditem', 'category']
+        fields = ['customer', 'fooditem', 'category', 'add_date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -26,7 +26,7 @@ class AddUserFoodItem_lunch(ModelForm):
 
     class Meta:
         model = UserFoodItem
-        fields = ['customer', 'fooditem', 'category']
+        fields = ['customer', 'fooditem', 'category', 'add_date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -37,7 +37,7 @@ class AddUserFoodItem_dinner(ModelForm):
 
     class Meta:
         model = UserFoodItem
-        fields = ['customer', 'fooditem', 'category']
+        fields = ['customer', 'fooditem', 'category', 'add_date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -48,7 +48,7 @@ class AddUserFoodItem_snacks(ModelForm):
 
     class Meta:
         model = UserFoodItem
-        fields = ['customer', 'fooditem', 'category']
+        fields = ['customer', 'fooditem', 'category', 'add_date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
