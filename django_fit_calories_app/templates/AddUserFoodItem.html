@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h3>Дата: {{ main_date }}</h3>
 <h3>Добавить к приему пищи</h3>
             <form action="" method="POST">
                 {% csrf_token %}
@@ -8,7 +9,8 @@
 
                 {{form.fooditem.name}}{{form.fooditem}}
 
-                <input type="date" id="{{form.add_date}}" name="{{form.add_date.name}}">
+
+                {{form.add_date}}
 
                 <div style="display: none">{{form.category.name}}{{form.category}}</div>
                 <input type="submit" class="btn btn-success" value="submit">

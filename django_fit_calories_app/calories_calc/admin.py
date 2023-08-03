@@ -11,12 +11,11 @@ class FoodAdmin(admin.ModelAdmin):
     class Meta:
         model = FoodItem
 
-    list_display = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity', 'date']
+    list_display = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity']
     list_filter = ['name']
 
 
 
 
 admin.site.register(UserFoodItem)
-admin.site.register(Category)
 admin.site.register(FoodItem, FoodAdmin)

@@ -26,17 +26,17 @@ class FoodItem(models.Model):
     protein = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Белки')
     calorie = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=True, verbose_name='Калории')
     quantity = models.IntegerField(default=100, null=True, blank=True, verbose_name='Количество в граммах')
-    date = models.DateField(default=date.today, verbose_name='Дата')
+    date = models.DateField(default=timezone.now, verbose_name='Дата')
 
     def __str__(self):
         return str(self.name)
-
-
-
 
 class UserFoodItem(models.Model):
     customer = models.ManyToManyField(CustomUser)
     fooditem = models.ManyToManyField(FoodItem)
     category = models.ManyToManyField(Category)
     add_date = models.DateField(default=timezone.now, verbose_name='Дата')
+
+class ChooseDate(models.Model):
+    c_date = models.DateField(default=timezone.now, verbose_name='Дата')
 
