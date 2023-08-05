@@ -25,7 +25,7 @@ class FoodItem(models.Model):
     fats = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Жиры')
     protein = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Белки')
     calorie = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=True, verbose_name='Калории')
-    quantity = models.IntegerField(default=100, null=True, blank=True, verbose_name='Количество в граммах')
+    quantity = models.IntegerField(default=1, null=True, blank=True, verbose_name='Количество в граммах')
     date = models.DateField(default=timezone.now, verbose_name='Дата')
 
     def __str__(self):
@@ -36,6 +36,8 @@ class UserFoodItem(models.Model):
     fooditem = models.ManyToManyField(FoodItem)
     category = models.ManyToManyField(Category)
     add_date = models.DateField(default=timezone.now, verbose_name='Дата')
+    quantity = models.IntegerField(default=100, null=True, blank=True, verbose_name='Количество в граммах')
+
 
 class ChooseDate(models.Model):
     c_date = models.DateField(default=timezone.now, verbose_name='Дата')

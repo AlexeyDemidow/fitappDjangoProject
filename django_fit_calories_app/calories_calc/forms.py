@@ -15,7 +15,7 @@ class AddUserFoodItem_breakfast(ModelForm):
 
     class Meta:
         model = UserFoodItem
-        fields = ['customer', 'fooditem', 'category', 'add_date']
+        fields = ['customer', 'fooditem', 'category', 'add_date', 'quantity']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,7 +27,7 @@ class AddUserFoodItem_lunch(ModelForm):
 
     class Meta:
         model = UserFoodItem
-        fields = ['customer', 'fooditem', 'category', 'add_date']
+        fields = ['customer', 'fooditem', 'category', 'add_date', 'quantity']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,7 +38,7 @@ class AddUserFoodItem_dinner(ModelForm):
 
     class Meta:
         model = UserFoodItem
-        fields = ['customer', 'fooditem', 'category', 'add_date']
+        fields = ['customer', 'fooditem', 'category', 'add_date', 'quantity']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -49,13 +49,14 @@ class AddUserFoodItem_snacks(ModelForm):
 
     class Meta:
         model = UserFoodItem
-        fields = ['customer', 'fooditem', 'category', 'add_date']
+        fields = ['customer', 'fooditem', 'category', 'add_date', 'quantity']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
         self.fields['category'].initial = Category.objects.get(name='snacks')
         self.fields['add_date'].initial = datetime.now().date()
+
 class ChooseDateForm(ModelForm):
 
     class Meta:

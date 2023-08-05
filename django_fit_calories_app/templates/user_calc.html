@@ -16,13 +16,10 @@
                 <h3>Осталось: {{ CalorieLeft }}</h3>
 
                 <a href="{% url 'choose_date' %}">Выберите дату</a>
+
                 <h3>Дата: {{ main_date }}</h3>
 
             </div>
-                    {% if foodlist %}
-                        <a href="{% url 'deleteFooditem_all' %}">Очистить весь список</a>
-                    {% endif %}
-
         </div>
         <br>
 
@@ -57,7 +54,6 @@
                                             <td>{{items.carbohydrate}} </td>
                                             <td>{{items.quantity}} </td>
 
-
                                 {% endfor %}
 
 
@@ -75,11 +71,9 @@
         <!-------------------------------------->
         <div class="flex-box-row">
                     <h5 id="heading">Обед</h5>
-                        {% for date in add_date %}
-                            {% if main_date == date %}
+
                                 <h7>Всего продуктов:{{lcnt}}</h7>
-                            {% endif %}
-                        {% endfor %}
+
 
                         <a class="btn btn-primary  btn-sm btn-block" href="{% url 'addFooditem_lunch' %}">Добавить продукт</a>
                      <table class="table table-sm">

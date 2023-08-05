@@ -14,8 +14,6 @@ urlpatterns = [
     path('user_calc/addFooditem_snacks/', views.addFooditem_snacks, name='addFooditem_snacks'),
     path('user_calc/', views.user_calc, name='user_calc'),
     path('user_calc/choose_date/', views.choose_date, name='choose_date'),
-
-    path('user_calc/deleteFooditem_all', views.deleteFooditem_all, name='deleteFooditem_all'),
     path('user_calc/deleteFooditem_breakfast', views.deleteFooditem_breakfast, name='deleteFooditem_breakfast'),
     path('user_calc/deleteFooditem_lunch', views.deleteFooditem_lunch, name='deleteFooditem_lunch'),
     path('user_calc/deleteFooditem_dinner', views.deleteFooditem_dinner, name='deleteFooditem_dinner'),
