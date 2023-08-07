@@ -1,12 +1,9 @@
+# Register your models here.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-
-
-# Register your models here.
-
-
 from .forms import CustomUserCreationForm, CustomUserChangeFormAdmin
 from .models import CustomUser
+
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
@@ -24,12 +21,12 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': (
-            'username', 'email', 'gender', 'birth_date', 'growth', 'weight', 'avatar', 'activity',
-            'password1', 'password2')}
+            'fields': ('username', 'email', 'gender', 'birth_date', 'growth', 'weight', 'avatar', 'activity',
+                       'password1', 'password2')}
          ),
     )
     search_fields = ('username', 'email',)
     ordering = ('username',)
+
 
 admin.site.register(CustomUser, CustomUserAdmin)

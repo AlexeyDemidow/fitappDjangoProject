@@ -3,58 +3,55 @@
 {% block title %}Редактирование профиля{% endblock %}
 
 {% block content %}
-<div class="container">
-  <h1>Редактирование профиля</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table>
-      <tr>
-        <th>{{ form.username.label_tag }}</th>
-        <td>{{ form.username }} {{ form.username.help_text }}</td>
-      </tr>
-      <tr>
-        <th>{{ form.email.label_tag }}</th>
-        <td>{{ form.email }} {{ form.email.help_text }}</td>
-      </tr>
-      <tr>
-        <th>{{ form.gender.label_tag }}</th>
-        <td>{{ form.gender }} {{ form.gender.help_text }}</td>
-      </tr>
-      <tr>
-        <th>{{ form.birth_date.label_tag }}</th>
-        <td>{{ form.birth_date }} {{ form.birth_date.help_text }}</td>
-      </tr>
-      <tr>
-        <th>{{ form.growth.label_tag }}</th>
-        <td>{{ form.growth }} {{ form.growth.help_text }}</td>
-      </tr>
-      <tr>
-        <th>{{ form.weight.label_tag }}</th>
-        <td>{{ form.weight }} {{ form.weight.help_text }}</td>
-      </tr>
-      <tr>
-        <th>{{ form.activity.label_tag }}</th>
-        <td>{{ form.activity }} {{ form.activity.help_text }}</td>
-      </tr>
-    </table>
-
-          <ul>
-            <li>Минимальный. Для малоподвижных людей, тренировок мало или они отсутствуют</li>
-            <li>Слабый. Для людей с низкой активностью, легкие тренировки 1-3 раза в неделю или в виде эквивалента другой активности.</li>
-            <li>Умеренный. Для умеренно активных людей: физическая работа средней тяжести или регулярные тренировки 3-5 дней в неделю.</li>
-            <li>Тяжелый. Для очень активных людей: физическая работа полный день или интенсивные тренировки 6-7 раз в неделю.</li>
-            <li>Экстремальный. Для предельно активных людей: тяжелая физическая работа и интенсивные тренировки/занятия спортом.</li>
-          </ul>
-
-    <table>
-      <tr>
-        <th>{{ form.avatar.label_tag }}</th>
-        <td>{{ form.avatar }}</td>
-      </tr>
-    </table>
-    <button type="submit" class="button">Сохранить</button>
-  </form>
-  <a href="{% url 'password_reset' %}"><input class="button" type="submit" value="Изменить пароль"></a>
-</div>
-
+    <div class="container">
+        <h1>Редактирование профиля</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th>{{ form.username.label_tag }}</th>
+                    <td>{{ form.username }} {{ form.username.help_text }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.email.label_tag }}</th>
+                    <td>{{ form.email }} {{ form.email.help_text }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.gender.label_tag }}</th>
+                    <td>{{ form.gender }} {{ form.gender.help_text }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.birth_date.label_tag }}</th>
+                    <td>{{ form.birth_date }} {{ form.birth_date.help_text }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.growth.label_tag }}</th>
+                    <td>{{ form.growth }} {{ form.growth.help_text }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.weight.label_tag }}</th>
+                    <td>{{ form.weight }} {{ form.weight.help_text }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.activity.label_tag }}</th>
+                    <td>{{ form.activity }} {{ form.activity.help_text }}</td>
+                </tr>
+            </table>
+            <ul>
+                <li>Минимальный. Для малоподвижных людей, тренировок мало или они отсутствуют</li>
+                <li>Слабый. Для людей с низкой активностью, легкие тренировки 1-3 раза в неделю или в виде эквивалента другой активности.</li>
+                <li>Умеренный. Для умеренно активных людей: физическая работа средней тяжести или регулярные тренировки 3-5 дней в неделю.</li>
+                <li>Тяжелый. Для очень активных людей: физическая работа полный день или интенсивные тренировки 6-7 раз в неделю.</li>
+                <li>Экстремальный. Для предельно активных людей: тяжелая физическая работа и интенсивные тренировки/занятия спортом.</li>
+            </ul>
+            <table>
+                <tr>
+                    <th>{{ form.avatar.label_tag }}</th>
+                    <td>{{ form.avatar }}</td>
+                </tr>
+            </table>
+            <button type="submit" class="button">Сохранить</button>
+        </form>
+        <a href="{% url 'password_reset' %}"><input class="button" type="submit" value="Изменить пароль"></a>
+    </div>
 {% endblock %}

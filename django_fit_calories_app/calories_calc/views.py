@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth.decorators import login_required
@@ -28,17 +25,12 @@ def user_calc(request):
     cust = user.id
 
     fooditems = FoodItem.objects.filter()
-
     total = UserFoodItem.objects.all()
 
     quantity_list = []
     for i in total:
         food_quantity = i.quantity
         quantity_list.append(food_quantity)
-
-
-    print(quantity_list)
-
 
     ch_date = ChooseDate.objects.all()
     ch_dt_list = []
@@ -61,8 +53,6 @@ def user_calc(request):
         for br_food in items:
             breakfast_view_list.append(br_food)
 
-    print(breakfast_quantity_list)
-
     if len(breakfast_view_list) > 0:
         for i in range(len(breakfast_quantity_list)):
             breakfast_view_list[i].calorie *= Decimal(breakfast_quantity_list[i]) / 100
@@ -80,8 +70,6 @@ def user_calc(request):
             breakfast_view_list[i].quantity *= Decimal(breakfast_quantity_list[i]) / 100
             breakfast_view_list[i].quantity = breakfast_view_list[i].quantity.quantize(Decimal("1.00"))
 
-
-
     lunch = Category.objects.filter(name='lunch')[0].userfooditem_set.all()
     my_lunch = lunch.filter(customer=cust, add_date=main_date)
     lcnt = my_lunch.count()
@@ -94,8 +82,6 @@ def user_calc(request):
     for items in lunch_list:
         for lc_food in items:
             lunch_view_list.append(lc_food)
-
-    print(lunch_quantity_list)
 
     if len(lunch_view_list) > 0:
         for i in range(len(lunch_quantity_list)):
@@ -114,7 +100,6 @@ def user_calc(request):
             lunch_view_list[i].quantity *= Decimal(lunch_quantity_list[i]) / 100
             lunch_view_list[i].quantity = lunch_view_list[i].quantity.quantize(Decimal("1.00"))
 
-
     dinner = Category.objects.filter(name='dinner')[0].userfooditem_set.all()
     my_dinner = dinner.filter(customer=cust, add_date=main_date)
     dcnt = my_dinner.count()
@@ -127,8 +112,6 @@ def user_calc(request):
     for items in dinner_list:
         for dn_food in items:
             dinner_view_list.append(dn_food)
-
-    print(dinner_quantity_list)
 
     if len(dinner_view_list) > 0:
         for i in range(len(dinner_quantity_list)):
@@ -160,8 +143,6 @@ def user_calc(request):
         for sn_food in items:
             snacks_view_list.append(sn_food)
 
-    print(snacks_quantity_list)
-
     if len(snacks_view_list) > 0:
         for i in range(len(snacks_quantity_list)):
             snacks_view_list[i].calorie *= Decimal(snacks_quantity_list[i]) / 100
@@ -178,7 +159,6 @@ def user_calc(request):
 
             snacks_view_list[i].quantity *= Decimal(snacks_quantity_list[i]) / 100
             snacks_view_list[i].quantity = snacks_view_list[i].quantity.quantize(Decimal("1.00"))
-
 
     myfooditems = total.filter(customer=cust, add_date=main_date)
 
@@ -219,35 +199,30 @@ def user_calc(request):
 
 @login_required
 def addFooditem_breakfast(request):
-
+    user = request.user
     ch_date = ChooseDate.objects.all()
     ch_dt_list = []
     for dt in ch_date:
         ch_dt_list.clear()
         ch_dt_list.append(dt.c_date)
-
     main_date = ch_dt_list[0]
-
-    user = request.user
     if request.method == "POST":
         form = AddUserFoodItem_breakfast(request.POST, initial={'customer':  user})
         if form.is_valid():
             form.save()
             return redirect('/calories_calc/user_calc/')
     form = AddUserFoodItem_breakfast(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form}
+    context = {'form': form, 'main_date': main_date}
     return render(request, 'AddUserFoodItem.html', context)
 
 @login_required
 def addFooditem_lunch(request):
     user = request.user
-
     ch_date = ChooseDate.objects.all()
     ch_dt_list = []
     for dt in ch_date:
         ch_dt_list.clear()
         ch_dt_list.append(dt.c_date)
-
     main_date = ch_dt_list[0]
     if request.method == "POST":
         form = AddUserFoodItem_lunch(request.POST, initial={'customer':  user})
@@ -255,19 +230,17 @@ def addFooditem_lunch(request):
             form.save()
             return redirect('/calories_calc/user_calc/')
     form = AddUserFoodItem_lunch(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form}
+    context = {'form': form, 'main_date': main_date}
     return render(request, 'AddUserFoodItem.html', context)
 
 @login_required
 def addFooditem_dinner(request):
     user = request.user
-
     ch_date = ChooseDate.objects.all()
     ch_dt_list = []
     for dt in ch_date:
         ch_dt_list.clear()
         ch_dt_list.append(dt.c_date)
-
     main_date = ch_dt_list[0]
     if request.method == "POST":
         form = AddUserFoodItem_dinner(request.POST, initial={'customer':  user})
@@ -275,30 +248,26 @@ def addFooditem_dinner(request):
             form.save()
             return redirect('/calories_calc/user_calc/')
     form = AddUserFoodItem_dinner(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form}
+    context = {'form': form, 'main_date': main_date}
     return render(request, 'AddUserFoodItem.html', context)
 
 @login_required
 def addFooditem_snacks(request):
     user = request.user
-
     ch_date = ChooseDate.objects.all()
     ch_dt_list = []
     for dt in ch_date:
         ch_dt_list.clear()
         ch_dt_list.append(dt.c_date)
-
     main_date = ch_dt_list[0]
-
     if request.method == "POST":
         form = AddUserFoodItem_snacks(request.POST, initial={'customer':  user})
         if form.is_valid():
             form.save()
             return redirect('/calories_calc/user_calc/')
     form = AddUserFoodItem_snacks(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form}
+    context = {'form': form, 'main_date': main_date}
     return render(request, 'AddUserFoodItem.html', context)
-
 
 @login_required
 def deleteFooditem_breakfast(request):
@@ -306,7 +275,6 @@ def deleteFooditem_breakfast(request):
     cust = user.id
     breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
     my_breakfast = breakfast.filter(customer=cust)
-
     my_breakfast_reverse = my_breakfast[::-1]
     my_breakfast_reverse[0].delete()
     return redirect('/calories_calc/user_calc/')
@@ -317,7 +285,6 @@ def deleteFooditem_lunch(request):
     cust = user.id
     lunch = Category.objects.filter(name='lunch')[0].userfooditem_set.all()
     my_lunch = lunch.filter(customer=cust)
-
     my_lunch_reverse = my_lunch[::-1]
     my_lunch_reverse[0].delete()
     return redirect('/calories_calc/user_calc/')
@@ -328,7 +295,6 @@ def deleteFooditem_dinner(request):
     cust = user.id
     dinner = Category.objects.filter(name='dinner')[0].userfooditem_set.all()
     my_dinner = dinner.filter(customer=cust)
-
     my_dinner_reverse = my_dinner[::-1]
     my_dinner_reverse[0].delete()
     return redirect('/calories_calc/user_calc/')
@@ -339,7 +305,6 @@ def deleteFooditem_snacks(request):
     cust = user.id
     snacks = Category.objects.filter(name='snacks')[0].userfooditem_set.all()
     my_snacks = snacks.filter(customer=cust)
-
     my_snacks_reverse = my_snacks[::-1]
     my_snacks_reverse[0].delete()
     return redirect('/calories_calc/user_calc/')
@@ -353,7 +318,6 @@ def choose_date(request):
             form.save()
             return redirect('/calories_calc/user_calc/')
     form = ChooseDateForm()
-
     context = {
         'form': form, 'today_date': today_date,
     }

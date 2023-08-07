@@ -3,16 +3,15 @@
 {% block title %}Войти{% endblock %}
 
 {% block content %}
-<div class="container">
-  <h2>Введите свой логин и пароль чтобы авторизироваться</h2>
-  <form method="post">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-    </table>
-    <button type="submit">Войти</button>
-    <a href="{% url 'password_reset' %}">Забыли пароль?</a>
-  </form>
-
-<div/>
+    <div class="container">
+      <h2>Введите свой логин и пароль чтобы авторизироваться</h2>
+      <form method="post">
+          {% csrf_token %}
+          <table>
+              {{ form.as_table }}
+          </table>
+          <button type="submit">Войти</button>
+          <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+      </form>
+    <div/>
 {% endblock %}

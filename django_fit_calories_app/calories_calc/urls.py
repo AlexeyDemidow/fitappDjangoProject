@@ -1,12 +1,7 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 
-
-
-
 urlpatterns = [
-
-
     path('user_calc/createfooditem/', views.createfooditem, name='createfooditem'),
     path('user_calc/addFooditem_breakfast/', views.addFooditem_breakfast, name='addFooditem_breakfast'),
     path('user_calc/addFooditem_lunch/', views.addFooditem_lunch, name='addFooditem_lunch'),
@@ -19,5 +14,3 @@ urlpatterns = [
     path('user_calc/deleteFooditem_dinner', views.deleteFooditem_dinner, name='deleteFooditem_dinner'),
     path('user_calc/deleteFooditem_snacks', views.deleteFooditem_snacks, name='deleteFooditem_snacks'),
 ]
-
-

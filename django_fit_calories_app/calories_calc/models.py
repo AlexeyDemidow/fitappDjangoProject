@@ -1,6 +1,5 @@
 from django.db import models
 from users.models import CustomUser
-from datetime import date
 from django.utils import timezone
 # Create your models here.
 
@@ -31,6 +30,7 @@ class FoodItem(models.Model):
     def __str__(self):
         return str(self.name)
 
+
 class UserFoodItem(models.Model):
     customer = models.ManyToManyField(CustomUser)
     fooditem = models.ManyToManyField(FoodItem)
@@ -41,4 +41,3 @@ class UserFoodItem(models.Model):
 
 class ChooseDate(models.Model):
     c_date = models.DateField(default=timezone.now, verbose_name='Дата')
-
