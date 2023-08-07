@@ -24,7 +24,6 @@ def user_calc(request):
     user = request.user
     cust = user.id
 
-    fooditems = FoodItem.objects.filter()
     total = UserFoodItem.objects.all()
 
     quantity_list = []
@@ -175,8 +174,6 @@ def user_calc(request):
         for food_items in items:
             finalFoodItems.append(food_items)
 
-    add_date_list_set = list(set(add_date_list))
-
     totalCalories = 0
     dailyCalories = user.calories_per_day()
 
@@ -185,16 +182,12 @@ def user_calc(request):
     CalorieLeft = dailyCalories - totalCalories
 
     context = {'CalorieLeft': CalorieLeft, 'totalCalories': totalCalories, 'cnt': cnt, 'foodlist': finalFoodItems,
-               'fooditem': fooditems, 'today_date': today_date, 'add_date': add_date_list_set,
-               'add_date_list': add_date_list, 'main_date': main_date,
-               'breakfast': breakfast_view_list,
-               'bcnt': bcnt,
-               'lcnt': lcnt,
-               'scnt': scnt,
-               'dcnt': dcnt,
-               'lunch': lunch_view_list,
-               'dinner': dinner_view_list,
-               'snacks': snacks_view_list,}
+               'today_date': today_date, 'add_date_list': add_date_list, 'main_date': main_date,
+               'breakfast': breakfast_view_list, 'bcnt': bcnt,
+               'lunch': lunch_view_list, 'lcnt': lcnt,
+               'dinner': dinner_view_list, 'dcnt': dcnt,
+               'snacks': snacks_view_list, 'scnt': scnt,
+               }
     return render(request, 'user_calc.html', context)
 
 @login_required
@@ -311,6 +304,13 @@ def deleteFooditem_snacks(request):
 
 @login_required
 def choose_date(request):
+    ch_date = ChooseDate.objects.all()
+    ch_dt_list = []
+    for dt in ch_date:
+        ch_dt_list.clear()
+        ch_dt_list.append(dt.c_date)
+
+    main_date = ch_dt_list[0]
     today_date = date.today()
     if request.method == 'POST':
         form = ChooseDateForm(request.POST)
@@ -319,11 +319,8 @@ def choose_date(request):
             return redirect('/calories_calc/user_calc/')
     form = ChooseDateForm()
     context = {
-        'form': form, 'today_date': today_date,
+        'form': form, 'today_date': today_date, 'main_date': main_date
     }
-
     return render(request, 'choose_date.html', context)
-
-
 
 
