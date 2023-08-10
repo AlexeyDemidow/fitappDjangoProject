@@ -3,13 +3,32 @@
 {% block content %}
     <h3>Дата: {{ main_date }}</h3>
     <h3>Добавить к приему пищи</h3>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <div style="display: none">{{form.customer.name}}{{form.customer}}</div>
-        {{form.fooditem.name}}{{form.fooditem}}
-        {{form.quantity.name}}{{form.quantity}}
-        <div style="display: none">{{form.add_date}}</div>
-        <div style="display: none">{{form.category.name}}{{form.category}}</div>
-        <input type="submit" class="btn btn-success" value="Добавить">
-    </form>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <div style="display: none">{{form.customer.name}}{{form.customer}}</div>
+    <input type="text" id="search" placeholder="Поиск...">
+    Название продукта: {{form.fooditem}}
+    Количество в граммах: {{form.quantity}}
+    <div style="display: none">{{form.add_date}}</div>
+    <div style="display: none">{{form.category.name}}{{form.category}}</div>
+    <input type="submit" class="btn btn-success" value="Добавить">
+    <script>
+        const searchInput = document.getElementById('search');
+        const foodItemInput = document.getElementById('id_fooditem');
+
+        searchInput.addEventListener('input', () => {
+            const searchValue = searchInput.value.toLowerCase();
+            const foodItemOptions = foodItemInput.options;
+            for (let i = 0; i < foodItemOptions.length; i++) {
+                const optionValue = foodItemOptions[i].value.toLowerCase();
+                if (optionValue.includes(searchValue)) {
+                    foodItemOptions[i].style.display = '';
+                } else {
+                    foodItemOptions[i].style.display = 'none';
+                }
+            }
+        });
+    </script>
+</form>
 {% endblock %}

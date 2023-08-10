@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import FoodItem, UserFoodItem, ChooseDate
-from .forms import FoodItemForm
+from .forms import CSVupload
+from calories_calc.utils import import_products_from_csv
 from datetime import date
 from decimal import Decimal
 
+from django.http import JsonResponse
 # Create your views here.
 
 @login_required
@@ -211,6 +214,9 @@ def addFooditem_breakfast(request):
 @login_required
 def addFooditem_lunch(request):
     user = request.user
+    fooditems = FoodItem.objects.filter()
+    myfilter = fooditemFilter(request.GET, queryset=fooditems)
+    fooditems = myfilter.qs
     ch_date = ChooseDate.objects.all()
     ch_dt_list = []
     for dt in ch_date:
@@ -223,12 +229,15 @@ def addFooditem_lunch(request):
             form.save()
             return redirect('/calories_calc/user_calc/')
     form = AddUserFoodItem_lunch(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form, 'main_date': main_date}
+    context = {'form': form, 'main_date': main_date, 'myfilter': myfilter, 'fooditems': fooditems}
     return render(request, 'AddUserFoodItem.html', context)
 
 @login_required
 def addFooditem_dinner(request):
     user = request.user
+    fooditems = FoodItem.objects.filter()
+    myfilter = fooditemFilter(request.GET, queryset=fooditems)
+    fooditems = myfilter.qs
     ch_date = ChooseDate.objects.all()
     ch_dt_list = []
     for dt in ch_date:
@@ -241,12 +250,15 @@ def addFooditem_dinner(request):
             form.save()
             return redirect('/calories_calc/user_calc/')
     form = AddUserFoodItem_dinner(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form, 'main_date': main_date}
+    context = {'form': form, 'main_date': main_date, 'myfilter': myfilter, 'fooditems': fooditems}
     return render(request, 'AddUserFoodItem.html', context)
 
 @login_required
 def addFooditem_snacks(request):
     user = request.user
+    fooditems = FoodItem.objects.filter()
+    myfilter = fooditemFilter(request.GET, queryset=fooditems)
+    fooditems = myfilter.qs
     ch_date = ChooseDate.objects.all()
     ch_dt_list = []
     for dt in ch_date:
@@ -259,7 +271,7 @@ def addFooditem_snacks(request):
             form.save()
             return redirect('/calories_calc/user_calc/')
     form = AddUserFoodItem_snacks(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form, 'main_date': main_date}
+    context = {'form': form, 'main_date': main_date, 'myfilter': myfilter, 'fooditems': fooditems}
     return render(request, 'AddUserFoodItem.html', context)
 
 @login_required
@@ -323,4 +335,20 @@ def choose_date(request):
     }
     return render(request, 'choose_date.html', context)
 
+@staff_member_required
+def upload_csv(request):
+    if request.method == 'POST':
+        form = CSVupload(request.POST, request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES['csv_file']
+            imported_products = import_products_from_csv(csv_file)
+            request.session['imported_products'] = imported_products
+            return redirect('show_imported_products')
+    else:
+        form = CSVupload()
+    return render(request, 'upload_csv.html', {'form': form})
 
+@staff_member_required
+def show_imported_products(request):
+    imported_products = request.session.get('imported_products', [])
+    return render(request, 'imported_products.html', {'imported_products': imported_products})

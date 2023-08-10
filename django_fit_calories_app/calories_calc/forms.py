@@ -2,6 +2,9 @@ from django.forms import ModelForm
 from .models import *
 from users.models import CustomUser
 from datetime import datetime
+import django_filters
+from django import forms
+
 
 
 class FoodItemForm(ModelForm):
@@ -67,3 +70,11 @@ class ChooseDateForm(ModelForm):
     class Meta:
         model = ChooseDate
         fields = ['c_date']
+
+class fooditemFilter(django_filters.FilterSet):
+    class Meta:
+        model = FoodItem
+        fields = ['name']
+
+class CSVupload(forms.Form):
+    csv_file = forms.FileField()

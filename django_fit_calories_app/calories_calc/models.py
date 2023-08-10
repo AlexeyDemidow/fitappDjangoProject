@@ -20,11 +20,11 @@ class Category(models.Model):
 class FoodItem(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название')
     category = models.ManyToManyField(Category, blank=True)
-    carbohydrate = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Углеводы')
-    fats = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Жиры')
-    protein = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Белки')
-    calorie = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=True, verbose_name='Калории')
-    quantity = models.IntegerField(default=1, null=True, blank=True, verbose_name='Количество в граммах')
+    carbohydrate = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Углеводы')
+    fats = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Жиры')
+    protein = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Белки')
+    calorie = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, verbose_name='Калории')
+    quantity = models.IntegerField(default=100, null=True, blank=True, verbose_name='Количество в граммах')
     date = models.DateField(default=timezone.now, verbose_name='Дата')
 
     def __str__(self):
