@@ -30,20 +30,23 @@
                 <th>Углеводы</th>
                 <th>Масса</th>
             </tr>
-            {% for items in breakfast %}
+            {% for item_id in breakfast_view_dict.items %}
                 <tr>
-                    <td>{{items.name}} </td>
-                    <td>{{items.calorie}} </td>
-                    <td>{{items.protein}} </td>
-                    <td>{{items.fats}} </td>
-                    <td>{{items.carbohydrate}} </td>
-                    <td>{{items.quantity}} </td>
+                    <td>{{item_id.01.name}} </td>
+                    <td>{{item_id.1.calorie}} </td>
+                    <td>{{item_id.1.protein}} </td>
+                    <td>{{item_id.1.fats}} </td>
+                    <td>{{item_id.1.carbohydrate}} </td>
+                    <td>{{item_id.1.quantity}} </td>
+                    <td>
+                        <form action="{% url 'deleteFooditem' item_id.0 %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
-        {% if breakfast %}
-            <a class="btn btn-primary  btn-sm btn-block btn-danger" href="{% url 'deleteFooditem_breakfast' %}">Убрать последний продукт</a>
-        {% endif %}
     </div>
     <br>
     <!-------------------------------------->
@@ -60,20 +63,23 @@
                 <th>Углеводы</th>
                 <th>Масса</th>
             </tr>
-            {% for items in lunch %}
+            {% for item_id in lunch_view_dict.items %}
                 <tr>
-                    <td>{{items.name}} </td>
-                    <td>{{items.calorie}} </td>
-                    <td>{{items.protein}} </td>
-                    <td>{{items.fats}} </td>
-                    <td>{{items.carbohydrate}} </td>
-                    <td>{{items.quantity}} </td>
+                    <td>{{item_id.01.name}} </td>
+                    <td>{{item_id.1.calorie}} </td>
+                    <td>{{item_id.1.protein}} </td>
+                    <td>{{item_id.1.fats}} </td>
+                    <td>{{item_id.1.carbohydrate}} </td>
+                    <td>{{item_id.1.quantity}} </td>
+                    <td>
+                        <form action="{% url 'deleteFooditem' item_id.0 %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
-        {% if lunch %}
-            <a class="btn btn-primary  btn-sm btn-block btn-danger" href="{% url 'deleteFooditem_lunch' %}">Убрать последний продукт</a>
-        {% endif %}
     </div>
     <br>
     <!-------------------------------------->
@@ -90,20 +96,23 @@
                 <th>Углеводы</th>
                 <th>Масса</th>
             </tr>
-            {% for items in dinner %}
+            {% for item_id in dinner_view_dict.items %}
                 <tr>
-                    <td>{{items.name}} </td>
-                    <td>{{items.calorie}} </td>
-                    <td>{{items.protein}} </td>
-                    <td>{{items.fats}} </td>
-                    <td>{{items.carbohydrate}} </td>
-                    <td>{{items.quantity}} </td>
+                    <td>{{item_id.01.name}} </td>
+                    <td>{{item_id.1.calorie}} </td>
+                    <td>{{item_id.1.protein}} </td>
+                    <td>{{item_id.1.fats}} </td>
+                    <td>{{item_id.1.carbohydrate}} </td>
+                    <td>{{item_id.1.quantity}} </td>
+                    <td>
+                        <form action="{% url 'deleteFooditem' item_id.0 %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
-        {% if dinner %}
-            <a class="btn btn-primary  btn-sm btn-block btn-danger" href="{% url 'deleteFooditem_dinner' %}">Убрать последний продукт</a>
-        {% endif %}
     </div>
     <br>
     <!-------------------------------------->
@@ -120,20 +129,23 @@
                 <th>Углеводы</th>
                 <th>Масса</th>
             </tr>
-            {% for items in snacks %}
+            {% for item_id in snacks_view_dict.items %}
                 <tr>
-                    <td>{{items.name}} </td>
-                    <td>{{items.calorie}} </td>
-                    <td>{{items.protein}} </td>
-                    <td>{{items.fats}} </td>
-                    <td>{{items.carbohydrate}} </td>
-                    <td>{{items.quantity}} </td>
+                    <td>{{item_id.01.name}} </td>
+                    <td>{{item_id.1.calorie}} </td>
+                    <td>{{item_id.1.protein}} </td>
+                    <td>{{item_id.1.fats}} </td>
+                    <td>{{item_id.1.carbohydrate}} </td>
+                    <td>{{item_id.1.quantity}} </td>
+                    <td>
+                        <form action="{% url 'deleteFooditem' item_id.0 %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
-        {% if snacks %}
-            <a class="btn btn-primary  btn-sm btn-block btn-danger" href="{% url 'deleteFooditem_snacks' %}">Убрать последний продукт</a>
-        {% endif %}
     </div>
     <br>
 {% endblock %}
