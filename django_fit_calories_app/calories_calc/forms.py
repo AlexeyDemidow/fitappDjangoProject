@@ -6,7 +6,6 @@ import django_filters
 from django import forms
 
 
-
 class FoodItemForm(ModelForm):
     class Meta:
         model = FoodItem
@@ -70,11 +69,6 @@ class ChooseDateForm(ModelForm):
     class Meta:
         model = ChooseDate
         fields = ['c_date']
-
-class fooditemFilter(django_filters.FilterSet):
-    class Meta:
-        model = FoodItem
-        fields = ['name']
 
 class CSVupload(forms.Form):
     csv_file = forms.FileField()

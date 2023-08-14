@@ -8,7 +8,6 @@ from calories_calc.utils import import_products_from_csv
 from datetime import date
 from decimal import Decimal
 
-from django.http import JsonResponse
 # Create your views here.
 
 @login_required
@@ -148,8 +147,6 @@ def user_calc(request):
     for d_index in range(len(dinner_view_list)):
         dinner_view_dict[dinner_list_id[d_index]] = dinner_view_list[d_index]
 
-    print(dinner_view_dict)
-
     snacks = Category.objects.filter(name='snacks')[0].userfooditem_set.all()
     my_snacks = snacks.filter(customer=cust, add_date=main_date)
     scnt = my_snacks.count()
@@ -208,6 +205,41 @@ def user_calc(request):
         totalCalories += foods.calorie
     CalorieLeft = dailyCalories - totalCalories
 
+    if request.method == "POST":
+        form_br = AddUserFoodItem_breakfast(request.POST, initial={'customer':  user})
+        if form_br.is_valid():
+            form_br.save()
+            return redirect('/calories_calc/user_calc/')
+    form_br = AddUserFoodItem_breakfast(initial={'customer': user, 'add_date': main_date})
+
+    if request.method == "POST":
+        form_lu = AddUserFoodItem_lunch(request.POST, initial={'customer': user})
+        if form_lu.is_valid():
+            form_lu.save()
+            return redirect('/calories_calc/user_calc/')
+    form_lu = AddUserFoodItem_lunch(initial={'customer': user, 'add_date': main_date})
+
+    if request.method == "POST":
+        form_di = AddUserFoodItem_dinner(request.POST, initial={'customer':  user})
+        if form_di.is_valid():
+            form_di.save()
+            return redirect('/calories_calc/user_calc/')
+    form_di = AddUserFoodItem_dinner(initial={'customer': user, 'add_date': main_date})
+
+    if request.method == "POST":
+        form_sn = AddUserFoodItem_snacks(request.POST, initial={'customer':  user})
+        if form_sn.is_valid():
+            form_sn.save()
+            return redirect('/calories_calc/user_calc/')
+    form_sn = AddUserFoodItem_snacks(initial={'customer': user, 'add_date': main_date})
+
+    if request.method == 'POST':
+        form_ch = ChooseDateForm(request.POST)
+        if form_ch.is_valid():
+            form_ch.save()
+            return redirect('/calories_calc/user_calc/')
+    form_ch = ChooseDateForm()
+
     context = {'CalorieLeft': CalorieLeft, 'totalCalories': totalCalories, 'cnt': cnt, 'foodlist': finalFoodItems,
                'today_date': today_date, 'add_date_list': add_date_list, 'main_date': main_date,
                'breakfast': breakfast_view_list, 'breakfast_view_dict': breakfast_view_dict, 'bcnt': bcnt,
@@ -215,6 +247,7 @@ def user_calc(request):
                'dinner': dinner_view_list, 'dinner_view_dict': dinner_view_dict, 'dcnt': dcnt,
                'snacks': snacks_view_list, 'snacks_view_dict': snacks_view_dict, 'scnt': scnt,
                'my_breakfast': my_breakfast,
+               'form_br': form_br, 'form_lu': form_lu, 'form_di': form_di, 'form_sn': form_sn, 'form_ch': form_ch,
                }
     return render(request, 'user_calc.html', context)
 

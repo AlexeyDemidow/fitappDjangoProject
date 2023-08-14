@@ -6,3 +6,23 @@
 .round {
     border-radius: 50%;
     }
+
+#id_c_date {
+
+    }
+
+.table {
+    margin: 0 auto;
+    table-layout: fixed;
+}
+
+td {
+
+    text-align: center;
+    }
+
+tr {
+
+    text-align: center;
+    }
+

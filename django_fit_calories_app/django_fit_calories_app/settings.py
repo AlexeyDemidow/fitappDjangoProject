@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'users',
     'calories_calc',
 
+
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
