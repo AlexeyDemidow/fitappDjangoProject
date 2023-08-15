@@ -4,4 +4,5 @@ $(document).ready(function () {
         maxItems: 1,
         placeholder: 'Нажмите чтобы выбрать продукт ...',
     });
-});
+})
+

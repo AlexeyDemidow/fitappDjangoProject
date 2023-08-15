@@ -15,29 +15,4 @@
     </form>
 
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1"> Открыть модальное окно</button>
-<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Пример модального окна</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body">
-                <p>
-                <h3>Дата: {{ main_date }}</h3>
-                <h3>Добавить к приему пищи</h3>
-
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <div style="display: none">{{form.customer.name}}{{form.customer}}</div>
-                    Название продукта: {{form.fooditem}}
-                    Количество в граммах: {{form.quantity}}
-                    <div style="display: none">{{form.add_date}}</div>
-                    <div style="display: none">{{form.category.name}}{{form.category}}</div>
-                    <input type="submit" class="btn btn-success" value="Добавить">
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}

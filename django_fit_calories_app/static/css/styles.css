@@ -16,13 +16,27 @@
     table-layout: fixed;
 }
 
-td {
-
+.foodtable_td {
     text-align: center;
     }
 
-tr {
+.foodtable_td_delete {
 
+    }
+
+.foodtable_td_fin {
+
+    }
+
+.foodtable {
     text-align: center;
     }
 
+th {
+  border-bottom: 2px solid #6678b1;
+  padding: 10px 8px;
+
+.foodtable_fin {
+    text-align: center;
+    background: #ffffff;
+}
