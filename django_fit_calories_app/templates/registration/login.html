@@ -7,7 +7,7 @@
       <h2>Введите свой логин и пароль чтобы авторизироваться</h2>
       <form method="post">
           {% csrf_token %}
-          <table>
+          <table class="login_table">
               {{ form.as_table }}
           </table>
           <button type="submit">Войти</button>

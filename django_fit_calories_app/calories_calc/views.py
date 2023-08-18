@@ -237,28 +237,6 @@ def user_calc(request):
     carbohydrate_count_all = carbohydrate_count_br + carbohydrate_count_lu + carbohydrate_count_di + carbohydrate_count_sn
     quantity_count_all = quantity_count_br + quantity_count_lu + quantity_count_di + quantity_count_sn
 
-    myfooditems = total.filter(customer=cust, add_date=main_date)
-
-    today_date = date.today()
-
-    cnt = myfooditems.count()
-    querysetFood = []
-    add_date_list = []
-    for food in myfooditems:
-        querysetFood.append(food.fooditem.all())
-        add_date_list.append(food.add_date)
-    finalFoodItems = []
-    for items in querysetFood:
-        for food_items in items:
-            finalFoodItems.append(food_items)
-
-    totalCalories = 0
-    dailyCalories = user.calories_per_day()
-
-    for foods in finalFoodItems:
-        totalCalories += foods.calorie
-    CalorieLeft = dailyCalories - totalCalories
-
     if request.method == "POST":
         form_br = AddUserFoodItem_breakfast(request.POST, initial={'customer':  user})
         if form_br.is_valid():
@@ -294,8 +272,7 @@ def user_calc(request):
             return redirect('/calories_calc/user_calc/')
     form_ch = ChooseDateForm()
 
-    context = {'CalorieLeft': CalorieLeft, 'totalCalories': totalCalories, 'cnt': cnt, 'foodlist': finalFoodItems,
-               'today_date': today_date, 'add_date_list': add_date_list, 'main_date': main_date,
+    context = {'main_date': main_date,
 
                'breakfast': breakfast_view_list, 'breakfast_view_dict': breakfast_view_dict, 'bcnt': bcnt,
                'lunch': lunch_view_list, 'lunch_view_dict': lunch_view_dict, 'lcnt': lcnt,
@@ -304,7 +281,8 @@ def user_calc(request):
 
                'my_breakfast': my_breakfast,
 
-               'form_br': form_br, 'form_lu': form_lu, 'form_di': form_di, 'form_sn': form_sn, 'form_ch': form_ch,
+               'form_br': form_br, 'form_lu': form_lu, 'form_di': form_di, 'form_sn': form_sn,
+               'form_ch': form_ch,
 
                'calorie_count_sn': calorie_count_sn,
                'protein_count_sn': protein_count_sn,
@@ -428,27 +406,6 @@ def deleteFooditem(request, item_id):
     return redirect('/calories_calc/user_calc/')
 
 
-@login_required
-def choose_date(request):
-    ch_date = ChooseDate.objects.all()
-    ch_dt_list = []
-    for dt in ch_date:
-        ch_dt_list.clear()
-        ch_dt_list.append(dt.c_date)
-
-    main_date = ch_dt_list[0]
-    today_date = date.today()
-    if request.method == 'POST':
-        form = ChooseDateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/calories_calc/user_calc/')
-    form = ChooseDateForm()
-    context = {
-        'form': form, 'today_date': today_date, 'main_date': main_date
-    }
-    return render(request, 'choose_date.html', context)
-
 @staff_member_required
 def upload_csv(request):
     if request.method == 'POST':
@@ -466,3 +423,154 @@ def upload_csv(request):
 def show_imported_products(request):
     imported_products = request.session.get('imported_products', [])
     return render(request, 'imported_products.html', {'imported_products': imported_products})
+
+@login_required
+def charts(request):
+    user = request.user
+    cust = user.id
+
+    ch_date = ChooseDate.objects.all()
+    ch_dt_list = []
+    for dt in ch_date:
+        ch_dt_list.clear()
+        ch_dt_list.append(dt.c_date)
+    main_date = ch_dt_list[0]
+
+    breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
+    my_breakfast = breakfast.filter(customer=cust, add_date=main_date)
+    breakfast_list = []
+    for item in my_breakfast:
+        breakfast_list.append(item.fooditem.all())
+    breakfast_view_list = []
+    for items in breakfast_list:
+        for br_food in items:
+            breakfast_view_list.append(br_food)
+
+    calorie_count_br = 0
+    protein_count_br = 0
+    fats_count_br = 0
+    carbohydrate_count_br = 0
+    quantity_count_br = 0
+    for j in range(len(breakfast_view_list)):
+        calorie_count_br += breakfast_view_list[j].calorie
+        protein_count_br += breakfast_view_list[j].protein
+        fats_count_br += breakfast_view_list[j].fats
+        carbohydrate_count_br += breakfast_view_list[j].carbohydrate
+        quantity_count_br += breakfast_view_list[j].quantity
+
+    lunch = Category.objects.filter(name='lunch')[0].userfooditem_set.all()
+    my_lunch = lunch.filter(customer=cust, add_date=main_date)
+    lunch_list = []
+    for item in my_lunch:
+        lunch_list.append(item.fooditem.all())
+    lunch_view_list = []
+    for items in lunch_list:
+        for lc_food in items:
+            lunch_view_list.append(lc_food)
+
+    calorie_count_lu = 0
+    protein_count_lu = 0
+    fats_count_lu = 0
+    carbohydrate_count_lu = 0
+    quantity_count_lu = 0
+    for j in range(len(lunch_view_list)):
+        calorie_count_lu += lunch_view_list[j].calorie
+        protein_count_lu += lunch_view_list[j].protein
+        fats_count_lu += lunch_view_list[j].fats
+        carbohydrate_count_lu += lunch_view_list[j].carbohydrate
+        quantity_count_lu += lunch_view_list[j].quantity
+
+    dinner = Category.objects.filter(name='dinner')[0].userfooditem_set.all()
+    my_dinner = dinner.filter(customer=cust, add_date=main_date)
+    dinner_list = []
+    for item in my_dinner:
+        dinner_list.append(item.fooditem.all())
+    dinner_view_list = []
+    for items in dinner_list:
+        for dn_food in items:
+            dinner_view_list.append(dn_food)
+
+    calorie_count_di = 0
+    protein_count_di = 0
+    fats_count_di = 0
+    carbohydrate_count_di = 0
+    quantity_count_di = 0
+    for j in range(len(dinner_view_list)):
+        calorie_count_di += dinner_view_list[j].calorie
+        protein_count_di += dinner_view_list[j].protein
+        fats_count_di += dinner_view_list[j].fats
+        carbohydrate_count_di += dinner_view_list[j].carbohydrate
+        quantity_count_di += dinner_view_list[j].quantity
+
+    snacks = Category.objects.filter(name='snacks')[0].userfooditem_set.all()
+    my_snacks = snacks.filter(customer=cust, add_date=main_date)
+    snacks_list = []
+    for item in my_snacks:
+        snacks_list.append(item.fooditem.all())
+    snacks_view_list = []
+    for items in snacks_list:
+        for sn_food in items:
+            snacks_view_list.append(sn_food)
+
+    calorie_count_sn = 0
+    protein_count_sn = 0
+    fats_count_sn = 0
+    carbohydrate_count_sn = 0
+    quantity_count_sn = 0
+    for j in range(len(snacks_view_list)):
+        calorie_count_sn += snacks_view_list[j].calorie
+        protein_count_sn += snacks_view_list[j].protein
+        fats_count_sn += snacks_view_list[j].fats
+        carbohydrate_count_sn += snacks_view_list[j].carbohydrate
+        quantity_count_sn += snacks_view_list[j].quantity
+
+    labels = ['Завтрак', 'Обед', 'Ужин', 'Перекусы']
+    data_calories = [float(calorie_count_br), float(calorie_count_lu), float(calorie_count_di), float(calorie_count_sn)]
+    data_protein = [float(protein_count_br), float(protein_count_lu), float(protein_count_di), float(protein_count_sn)]
+    data_fats = [float(fats_count_br), float(fats_count_lu), float(fats_count_di), float(fats_count_sn)]
+    data_carbohydrate = [float(carbohydrate_count_br), float(carbohydrate_count_lu), float(carbohydrate_count_di), float(carbohydrate_count_sn)]
+
+    total = UserFoodItem.objects.all()
+    myfooditems = total.filter(customer=cust, add_date=main_date)
+    cnt = myfooditems.count()
+
+    totalCalories = 0
+    if user.calories > 0:
+        dailyCalories = user.calories
+    else:
+        dailyCalories = user.calories_per_day()
+    querysetFood = []
+
+    add_date_list = []
+    for food in myfooditems:
+        querysetFood.append(food.fooditem.all())
+        add_date_list.append(food.add_date)
+    finalFoodItems = []
+    for items in querysetFood:
+        for food_items in items:
+            finalFoodItems.append(food_items)
+
+    for foods in finalFoodItems:
+        totalCalories += foods.calorie
+    CalorieLeft = dailyCalories - totalCalories
+
+    if request.method == 'POST':
+        form_ch = ChooseDateForm(request.POST)
+        if form_ch.is_valid():
+            form_ch.save()
+            return redirect('charts')
+    form_ch = ChooseDateForm()
+
+    context = {
+        'labels': labels,
+        'data_calories': data_calories,
+        'data_protein': data_protein,
+        'data_fats': data_fats,
+        'data_carbohydrate': data_carbohydrate,
+        'main_date': main_date,
+        'form_ch': form_ch,
+        'cnt': cnt,
+        'CalorieLeft': CalorieLeft, 'totalCalories': totalCalories,
+    }
+
+    return render(request, 'home.html', context)

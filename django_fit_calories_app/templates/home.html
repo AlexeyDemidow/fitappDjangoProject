@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Следим за фигурой{% endblock %}
 
@@ -6,9 +7,154 @@
     {% if user.is_authenticated %}
         <div class="container">
             Добро пожаловать, {{ user.username }}!
-            <p>Перейти в профиль?</p>
-            <a href="{% url 'profile' user.username %}"><input class="button" type="submit" value="Профиль"></a>
+            <p>Ваша статистика за {{ main_date }}</p>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="date" id="{{ form_ch.c_date }}
+                <input type="submit" class="btn btn-success" value="Выбрать">
+            </form>
+            <h3>Количество употребленных продуктов: {{cnt}}</h3>
+            <div class="today">
+                <div class="flex-box-row">
+                    {% if user.calories > 0 %}
+                        <h3>Количество калорий: {{user.calories}}</h3>
+                    {% else %}
+                        <h3>Количество калорий: {{user.calories_per_day}}</h3>
+                    {% endif %}
+                    <h3>Всего калорий употреблено: {{totalCalories}}</h3>
+                    <h3>Осталось: {{ CalorieLeft }}</h3>
+                </div>
+            </div>
+    <br>
+
+
         <div/>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+        Потребление калорий, ккал
+        <canvas id="chart_calories"></canvas>
+    </div>
+    <div class="col-md-6">
+        Потребление белков, г
+        <canvas id="chart_protein"></canvas>
+    </div>
+  </div>
+    <div class="row">
+        <div class="col-md-6">
+            Потребление жиров, г
+            <canvas id="chart_fats"></canvas>
+        </div>
+        <div class="col-md-6">
+            Потребление углеводов, г
+            <canvas id="chart_carbohydrate"></canvas>
+        </div>
+    </div>
+</div>
+
+<!--        Потребление калорий, ккал-->
+<!--        <div id="container" style="width: 75%;">-->
+<!--            <canvas id="chart_calories"></canvas>-->
+<!--        </div>-->
+<!--        Потребление белков, г-->
+<!--        <div id="container" style="width: 75%;">-->
+<!--            <canvas id="chart_protein"></canvas>-->
+<!--        </div>-->
+<!--        Потребление жиров, г-->
+<!--        <div id="container" style="width: 75%;">-->
+<!--            <canvas id="chart_fats"></canvas>-->
+<!--        </div>-->
+<!--        Потребление углеводов, г-->
+<!--        <div id="container" style="width: 75%;">-->
+<!--            <canvas id="chart_carbohydrate"></canvas>-->
+<!--        </div>-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script>
+
+    var cal_config = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data_calories|safe }},
+          backgroundColor: [
+            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+          ],
+          label: 'Calories'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var prot_config = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data_protein|safe }},
+          backgroundColor: [
+            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+          ],
+          label: 'Protein'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var fat_config = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data_fats|safe }},
+          backgroundColor: [
+            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+          ],
+          label: 'Fats'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var carb_config = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data_carbohydrate|safe }},
+          backgroundColor: [
+            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+          ],
+          label: 'Carbohydrate'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    window.onload = function() {
+      var cal = document.getElementById('chart_calories').getContext('2d');
+      window.myPie = new Chart(cal, cal_config);
+
+      var prot = document.getElementById('chart_protein').getContext('2d');
+      window.myPie = new Chart(prot, prot_config);
+
+      var fat = document.getElementById('chart_fats').getContext('2d');
+      window.myPie = new Chart(fat, fat_config);
+
+      var carb = document.getElementById('chart_carbohydrate').getContext('2d');
+      window.myPie = new Chart(carb, carb_config);
+    };
+
+  </script>
     {% else %}
         <div class="container">
             <p>Вы не авторизированы. Нажмите "Войти" чтобы войти и "Регистрация" чтобы зарегистрироваться.</p>
@@ -16,4 +162,6 @@
             <a href="{% url 'signup'%}"><input class="button" type="submit" value="Регистрация"></a>
         </div>
     {% endif %}
+
+
 {% endblock %}

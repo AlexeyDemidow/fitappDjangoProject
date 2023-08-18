@@ -12,7 +12,11 @@
         <p>Рост: {{ user.growth }} см</p>
         <p>Вес: {{ user.weight }} кг</p>
         <p>Уровень активности: {{ user.activity }}</p>
-        <p>Норма потребления калорий в день: {{ user.calories_per_day }} Ккал</p>
+        {% if user.calories > 0 %}
+            <p>Норма потребления калорий в день: {{ user.calories }} Ккал</p>
+        {% else %}
+            <p>Норма потребления калорий в день: {{ user.calories_per_day }} Ккал</p>
+        {% endif %}
         <a href="{% url 'edit_profile' user.username%}"><input class="button" type="submit" value="Редактировать профиль"></a>
     </div>
 {% endblock %}

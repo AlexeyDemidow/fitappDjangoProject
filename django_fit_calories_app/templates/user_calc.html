@@ -5,27 +5,16 @@
 {% block content %}
     {% csrf_token %}
     <br>
-    <h3>Количество употребленных продуктов: {{cnt}}</h3>
-    <div class="today">
-        <div class="flex-box-row">
-            <h3>Количество калорий: {{user.calories_per_day}}</h3>
-            <h3>Всего калорий употреблено: {{totalCalories}}</h3>
-            <h3>Осталось: {{ CalorieLeft }}</h3>
+    <div class="flex-box-row">
+        <p>{{ main_date }}</p>
             <form action="" method="POST">
                 {% csrf_token %}
                 <input type="date" id="{{ form_ch.c_date }}
                 <input type="submit" class="btn btn-success" value="Выбрать">
             </form>
-            <h3>Дата: {{ main_date }}</h3>
-        </div>
-    </div>
-    <br>
-
-    <div class="flex-box-row">
+        <a href="createfooditem">Добавить свою еду</a>
         <h5 id="heading">Завтрак</h5>
         <h7>Всего продуктов:{{bcnt}}</h7>
-<!--        <a class="btn btn-primary  btn-sm btn-block" href="{% url 'addFooditem_breakfast' %}">Добавить продукт</a>-->
-
 <button type="button" class="btn btn-primary" name="add_to_breakfast" data-toggle="modal" data-target="#myModal_breakfast"><i class="fa fa-plus" aria-hidden="true"></i></button>
 <div class="modal fade" id="myModal_breakfast"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -53,13 +42,13 @@
 
         <table class="table table-sm">
             <tr class="foodtable">
-                <th>Название продукта</th>
-                <th>Калорийность</th>
-                <th>Белки</th>
-                <th>Жиры</th>
-                <th>Углеводы</th>
-                <th>Масса</th>
-                <th></th>
+                <th class="foodtable_th">Название продукта</th>
+                <th class="foodtable_th">Калорийность</th>
+                <th class="foodtable_th">Белки</th>
+                <th class="foodtable_th">Жиры</th>
+                <th class="foodtable_th">Углеводы</th>
+                <th class="foodtable_th">Масса</th>
+                <th class="foodtable_th"></th>
             </tr>
             {% for item_id in breakfast_view_dict.items %}
                 <tr class="foodtable">
@@ -119,13 +108,13 @@
         </div>
         <table class="table table-sm">
             <tr class="foodtable">
-                <th>Название продукта</th>
-                <th>Калорийность</th>
-                <th>Белки</th>
-                <th>Жиры</th>
-                <th>Углеводы</th>
-                <th>Масса</th>
-                <th></th>
+                <th class="foodtable_th">Название продукта</th>
+                <th class="foodtable_th">Калорийность</th>
+                <th class="foodtable_th">Белки</th>
+                <th class="foodtable_th">Жиры</th>
+                <th class="foodtable_th">Углеводы</th>
+                <th class="foodtable_th">Масса</th>
+                <th class="foodtable_th"></th>
             </tr>
             {% for item_id in lunch_view_dict.items %}
                 <tr class="foodtable">
@@ -185,13 +174,13 @@
         </div>
         <table class="table table-sm">
             <tr class="foodtable">
-                <th>Название продукта</th>
-                <th>Калорийность</th>
-                <th>Белки</th>
-                <th>Жиры</th>
-                <th>Углеводы</th>
-                <th>Масса</th>
-                <th></th>
+                <th class="foodtable_th">Название продукта</th>
+                <th class="foodtable_th">Калорийность</th>
+                <th class="foodtable_th">Белки</th>
+                <th class="foodtable_th">Жиры</th>
+                <th class="foodtable_th">Углеводы</th>
+                <th class="foodtable_th">Масса</th>
+                <th class="foodtable_th"></th>
             </tr>
             {% for item_id in dinner_view_dict.items %}
                 <tr class="foodtable">
@@ -252,13 +241,13 @@
         </div>
         <table class="table">
             <tr class="foodtable">
-                <th>Название продукта</th>
-                <th>Калорийность</th>
-                <th>Белки</th>
-                <th>Жиры</th>
-                <th>Углеводы</th>
-                <th>Масса</th>
-                <th></th>
+                <th class="foodtable_th">Название продукта</th>
+                <th class="foodtable_th">Калорийность</th>
+                <th class="foodtable_th">Белки</th>
+                <th class="foodtable_th">Жиры</th>
+                <th class="foodtable_th">Углеводы</th>
+                <th class="foodtable_th">Масса</th>
+                <th class="foodtable_th"></th>
             </tr>
             {% for item_id in snacks_view_dict.items %}
                 <tr class="foodtable">
@@ -285,12 +274,12 @@
                 <td class="foodtable_td">{{ quantity_count_sn }}</td>
             </tr>
             <tr class="foodtable_fin">
-                <td class="foodtable_td">Итого за день</td>
-                <td class="foodtable_td">{{ calorie_count_all }}</td>
-                <td class="foodtable_td">{{ protein_count_all }}</td>
-                <td class="foodtable_td">{{ fats_count_all }}</td>
-                <td class="foodtable_td">{{ carbohydrate_count_all }}</td>
-                <td class="foodtable_td">{{ quantity_count_all }}</td>
+                <td class="foodtable_td_fin">Итого за день</td>
+                <td class="foodtable_td_fin">{{ calorie_count_all }}</td>
+                <td class="foodtable_td_fin">{{ protein_count_all }}</td>
+                <td class="foodtable_td_fin">{{ fats_count_all }}</td>
+                <td class="foodtable_td_fin">{{ carbohydrate_count_all }}</td>
+                <td class="foodtable_td_fin">{{ quantity_count_all }}</td>
             </tr>
         </table>
     </div>

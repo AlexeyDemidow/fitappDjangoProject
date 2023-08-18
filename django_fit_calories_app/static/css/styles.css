@@ -18,6 +18,7 @@
 
 .foodtable_td {
     text-align: center;
+    background: #57b0ff;
     }
 
 .foodtable_td_delete {
@@ -25,18 +26,24 @@
     }
 
 .foodtable_td_fin {
-
+    text-align: center;
+    background: #3bb08f;
+    text-transform: uppercase;
     }
 
 .foodtable {
     text-align: center;
     }
 
-th {
+.foodtable_th {
   border-bottom: 2px solid #6678b1;
   padding: 10px 8px;
+}
 
 .foodtable_fin {
     text-align: center;
-    background: #ffffff;
+    background: #57b0ff;
 }
+
+
+

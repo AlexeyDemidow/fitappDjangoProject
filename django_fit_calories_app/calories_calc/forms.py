@@ -9,7 +9,7 @@ from django import forms
 class FoodItemForm(ModelForm):
     class Meta:
         model = FoodItem
-        fields = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity', 'category']
+        fields = ['name', 'calorie', 'protein', 'fats', 'carbohydrate', 'quantity']
 
 
 class AddUserFoodItem_breakfast(ModelForm):

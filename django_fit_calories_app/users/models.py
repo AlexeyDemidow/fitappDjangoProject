@@ -14,7 +14,7 @@ class CustomUser(AbstractUser):
     birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения',
                                   help_text='Введите в формате ДД.ММ.ГГГГ')
     growth = models.IntegerField(default=0, verbose_name='Рост', help_text='Введите в сантиметрах')
-    weight = models.IntegerField(default=0, verbose_name='Вес', help_text='Введите в килограммах')
+    weight = models.FloatField(default=0, verbose_name='Вес', help_text='Введите в килограммах')
     avatar = models.ImageField(default='default.png', upload_to='avatars/', blank=True, verbose_name='Аватар')
     low = 'Минимальный'
     weak = 'Слабый'
@@ -25,6 +25,8 @@ class CustomUser(AbstractUser):
                      (extreme, 'Экстремальный')]
     activity = models.CharField(max_length=100, choices=activity_list, default=low, verbose_name='Уровень активности',
                                 help_text='Выберите ваш уровень активности.')
+    calories = models.IntegerField(default=0, verbose_name='Количество калорий в день', help_text='Введите 0 чтобы рассчитать автоматически')
+
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
