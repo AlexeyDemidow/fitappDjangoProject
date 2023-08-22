@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import os
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+
     'users',
     'calories_calc',
 
@@ -57,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django_auto_logout.middleware.auto_logout',
 ]
 
 ROOT_URLCONF = 'django_fit_calories_app.urls'
@@ -72,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django_auto_logout.context_processors.auto_logout_client',
 
             ],
         },
@@ -137,8 +142,16 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTO_LOGOUT = {
+    'IDLE_TIME': timedelta(minutes=5),
+    'REDIRECT_TO_LOGIN_IMMEDIATELY': True,
+}
+
+LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'charts'
 LOGOUT_REDIRECT_URL = 'home'
+
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Убрать после подключения емейл адреса
 

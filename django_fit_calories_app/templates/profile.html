@@ -11,6 +11,7 @@
         <p>Дата рождения: {{ user.birth_date }}</p>
         <p>Рост: {{ user.growth }} см</p>
         <p>Вес: {{ user.weight }} кг</p>
+        <p>Коэффициент массы тела: {{ user.body_mass_ratio.0 }} - {{ user.body_mass_ratio.1 }}</p>
         <p>Уровень активности: {{ user.activity }}</p>
         {% if user.calories > 0 %}
             <p>Норма потребления калорий в день: {{ user.calories }} Ккал</p>

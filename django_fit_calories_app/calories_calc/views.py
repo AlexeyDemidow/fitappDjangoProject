@@ -21,7 +21,7 @@ def createfooditem(request):
     context = {'form': form}
     return render(request, 'createfooditem.html', context)
 
-
+@login_required
 def user_calc(request):
     user = request.user
     cust = user.id
@@ -37,7 +37,9 @@ def user_calc(request):
     for dt in ch_date:
         ch_dt_list.clear()
         ch_dt_list.append(dt.c_date)
+
     main_date = ch_dt_list[0]
+    today_date = date.today()
 
     breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
     my_breakfast = breakfast.filter(customer=cust, add_date=main_date)
@@ -272,7 +274,7 @@ def user_calc(request):
             return redirect('/calories_calc/user_calc/')
     form_ch = ChooseDateForm()
 
-    context = {'main_date': main_date,
+    context = {'main_date': main_date, 'today_date': today_date,
 
                'breakfast': breakfast_view_list, 'breakfast_view_dict': breakfast_view_dict, 'bcnt': bcnt,
                'lunch': lunch_view_list, 'lunch_view_dict': lunch_view_dict, 'lcnt': lcnt,
@@ -524,11 +526,14 @@ def charts(request):
         carbohydrate_count_sn += snacks_view_list[j].carbohydrate
         quantity_count_sn += snacks_view_list[j].quantity
 
-    labels = ['Завтрак', 'Обед', 'Ужин', 'Перекусы']
-    data_calories = [float(calorie_count_br), float(calorie_count_lu), float(calorie_count_di), float(calorie_count_sn)]
-    data_protein = [float(protein_count_br), float(protein_count_lu), float(protein_count_di), float(protein_count_sn)]
-    data_fats = [float(fats_count_br), float(fats_count_lu), float(fats_count_di), float(fats_count_sn)]
-    data_carbohydrate = [float(carbohydrate_count_br), float(carbohydrate_count_lu), float(carbohydrate_count_di), float(carbohydrate_count_sn)]
+    food_nutrients_labels = ['Белки', 'Жиры', 'Углеводы']
+    data_breakfast = [float(protein_count_br), float(fats_count_br), float(carbohydrate_count_br)]
+    data_lunch = [float(protein_count_lu), float(fats_count_lu), float(carbohydrate_count_lu)]
+    data_dinner = [float(protein_count_di), float(fats_count_di), float(carbohydrate_count_di)]
+    data_snacks = [float(protein_count_sn), float(fats_count_sn), float(carbohydrate_count_sn)]
+
+    food_category_labels = ['Завтрак', 'Обед', 'Ужин', 'Перекусы']
+    food_category_data = [float(calorie_count_br), float(calorie_count_lu), float(calorie_count_di), float(calorie_count_sn)]
 
     total = UserFoodItem.objects.all()
     myfooditems = total.filter(customer=cust, add_date=main_date)
@@ -562,11 +567,12 @@ def charts(request):
     form_ch = ChooseDateForm()
 
     context = {
-        'labels': labels,
-        'data_calories': data_calories,
-        'data_protein': data_protein,
-        'data_fats': data_fats,
-        'data_carbohydrate': data_carbohydrate,
+        'food_nutrients_labels': food_nutrients_labels, 'food_category_labels': food_category_labels,
+        'food_category_data': food_category_data,
+        'data_breakfast': data_breakfast,
+        'data_lunch': data_lunch,
+        'data_dinner': data_dinner,
+        'data_snacks': data_snacks,
         'main_date': main_date,
         'form_ch': form_ch,
         'cnt': cnt,

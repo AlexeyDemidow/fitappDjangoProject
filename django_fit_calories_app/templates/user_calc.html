@@ -6,7 +6,7 @@
     {% csrf_token %}
     <br>
     <div class="flex-box-row">
-        <p>{{ main_date }}</p>
+            {{ main_date }}
             <form action="" method="POST">
                 {% csrf_token %}
                 <input type="date" id="{{ form_ch.c_date }}

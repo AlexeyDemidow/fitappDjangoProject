@@ -16,11 +16,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
-
 {% load static %}
     <link rel="stylesheet" href="{% static '/css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/charts.js' %}"></script>
 
 
 </head>
@@ -70,6 +70,8 @@
             </div>
         </nav>
     {% endblock %}
+
+    {{ redirect_to_login_immediately }}
 
     {% block content %}{% endblock %}
 

@@ -40,6 +40,7 @@ class CustomUser(AbstractUser):
         today = datetime.now().date()
         age = today.year - user.birth_date.year - ((today.month, today.day) < (user.birth_date.month,
                                                                                user.birth_date.day))
+
         if user.gender == 'Мужской':
             if user.activity == 'Минимальный':
                 result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) + 5) * 1.2
@@ -73,3 +74,23 @@ class CustomUser(AbstractUser):
             if user.activity == 'Экстремальный':
                 result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) - 161) * 1.9
                 return round(result)
+
+    def body_mass_ratio(user):
+        result = int(user.weight) / (int(user.growth) / 100) ** 2
+        text_result = None
+        if result <= 16:
+            text_result = 'Выраженный дефицит массы тела'
+        if 16 < result <= 18.5:
+            text_result = 'Недостаточная (дефицит) масса тела'
+        if 18.5 < result <= 25:
+            text_result = 'Норма'
+        if 25 < result <= 30:
+            text_result = 'Избыточная масса тела (предожирение)'
+        if 30 < result <= 35:
+            text_result = 'Ожирение первой степени'
+        if 35 < result <= 40:
+            text_result = 'Ожирение второй степени'
+        if 40 < result <= 99:
+            text_result = 'Ожирение третьей степени'
+        return round(result, 2), text_result
+

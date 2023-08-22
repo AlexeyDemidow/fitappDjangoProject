@@ -25,136 +25,140 @@
                     <h3>Осталось: {{ CalorieLeft }}</h3>
                 </div>
             </div>
-    <br>
-
-
         <div/>
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-        Потребление калорий, ккал
-        <canvas id="chart_calories"></canvas>
-    </div>
-    <div class="col-md-6">
-        Потребление белков, г
-        <canvas id="chart_protein"></canvas>
-    </div>
-  </div>
-    <div class="row">
-        <div class="col-md-6">
-            Потребление жиров, г
-            <canvas id="chart_fats"></canvas>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+                Завтрак
+                <canvas id="chart_breakfast"></canvas>
+            </div>
+            <div class="col-md-6">
+                Обед
+                <canvas id="chart_dinner"></canvas>
+            </div>
+          </div>
+            <div class="row">
+                <div class="col-md-6">
+                    Ужин
+                    <canvas id="chart_lunch"></canvas>
+                </div>
+                <div class="col-md-6">
+                    Перекусы
+                    <canvas id="chart_snacks"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                    Калории
+                    <canvas id="chart_calories"></canvas>
+            </div>
         </div>
-        <div class="col-md-6">
-            Потребление углеводов, г
-            <canvas id="chart_carbohydrate"></canvas>
-        </div>
-    </div>
-</div>
 
-<!--        Потребление калорий, ккал-->
-<!--        <div id="container" style="width: 75%;">-->
-<!--            <canvas id="chart_calories"></canvas>-->
-<!--        </div>-->
-<!--        Потребление белков, г-->
-<!--        <div id="container" style="width: 75%;">-->
-<!--            <canvas id="chart_protein"></canvas>-->
-<!--        </div>-->
-<!--        Потребление жиров, г-->
-<!--        <div id="container" style="width: 75%;">-->
-<!--            <canvas id="chart_fats"></canvas>-->
-<!--        </div>-->
-<!--        Потребление углеводов, г-->
-<!--        <div id="container" style="width: 75%;">-->
-<!--            <canvas id="chart_carbohydrate"></canvas>-->
-<!--        </div>-->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-  <script>
+        <script>
+            var br_config = {
+              type: 'pie',
+              data: {
+                datasets: [{
+                  data: {{ data_breakfast|safe }},
+                  backgroundColor: [
+                    '#FF0000', '#FFFF00', '#32CD32'
+                  ],
+                  label: 'Breakfast'
+                }],
+                labels: {{ food_nutrients_labels|safe }}
+              },
+              options: {
+                responsive: true
+              }
+            };
 
-    var cal_config = {
-      type: 'pie',
-      data: {
-        datasets: [{
-          data: {{ data_calories|safe }},
-          backgroundColor: [
-            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
-          ],
-          label: 'Calories'
-        }],
-        labels: {{ labels|safe }}
-      },
-      options: {
-        responsive: true
-      }
-    };
+            var lu_config = {
+              type: 'pie',
+              data: {
+                datasets: [{
+                  data: {{ data_lunch|safe }},
+                  backgroundColor: [
+                    '#FF0000', '#FFFF00', '#32CD32'
+                  ],
+                  label: 'Lunch'
+                }],
+                labels: {{ food_nutrients_labels|safe }}
+              },
+              options: {
+                responsive: true
+              }
+            };
 
-    var prot_config = {
-      type: 'pie',
-      data: {
-        datasets: [{
-          data: {{ data_protein|safe }},
-          backgroundColor: [
-            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
-          ],
-          label: 'Protein'
-        }],
-        labels: {{ labels|safe }}
-      },
-      options: {
-        responsive: true
-      }
-    };
+            var di_config = {
+              type: 'pie',
+              data: {
+                datasets: [{
+                  data: {{ data_dinner|safe }},
+                  backgroundColor: [
+                    '#FF0000', '#FFFF00', '#32CD32'
+                  ],
+                  label: 'Dinner'
+                }],
+                labels: {{ food_nutrients_labels|safe }}
+              },
+              options: {
+                responsive: true
+              }
+            };
 
-    var fat_config = {
-      type: 'pie',
-      data: {
-        datasets: [{
-          data: {{ data_fats|safe }},
-          backgroundColor: [
-            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
-          ],
-          label: 'Fats'
-        }],
-        labels: {{ labels|safe }}
-      },
-      options: {
-        responsive: true
-      }
-    };
+            var sn_config = {
+              type: 'pie',
+              data: {
+                datasets: [{
+                  data: {{ data_snacks|safe }},
+                  backgroundColor: [
+                    '#FF0000', '#FFFF00', '#32CD32'
+                  ],
+                  label: 'Snacks'
+                }],
+                labels: {{ food_nutrients_labels|safe }}
+              },
+              options: {
+                responsive: true
+              }
+            };
 
-    var carb_config = {
-      type: 'pie',
-      data: {
-        datasets: [{
-          data: {{ data_carbohydrate|safe }},
-          backgroundColor: [
-            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
-          ],
-          label: 'Carbohydrate'
-        }],
-        labels: {{ labels|safe }}
-      },
-      options: {
-        responsive: true
-      }
-    };
+            var cal_config = {
+              type: 'bar',
+              data: {
+                datasets: [{
+                  data: {{ food_category_data|safe }},
+                  backgroundColor: [
+                    '#0000FF', '#1E90FF', '#00BFFF', '#00FFFF'
+                  ],
+                  label: 'Завтрак'
+                }],
+                labels: {{ food_category_labels|safe }}
+              },
+              options: {
+                responsive: true,
+                legend: {
+                    display: false
+                }
+              }
+            };
 
-    window.onload = function() {
-      var cal = document.getElementById('chart_calories').getContext('2d');
-      window.myPie = new Chart(cal, cal_config);
+            window.onload = function() {
+              var br = document.getElementById('chart_breakfast').getContext('2d');
+              window.myPie = new Chart(br, br_config);
 
-      var prot = document.getElementById('chart_protein').getContext('2d');
-      window.myPie = new Chart(prot, prot_config);
+              var lu = document.getElementById('chart_lunch').getContext('2d');
+              window.myPie = new Chart(lu, lu_config);
 
-      var fat = document.getElementById('chart_fats').getContext('2d');
-      window.myPie = new Chart(fat, fat_config);
+              var di = document.getElementById('chart_dinner').getContext('2d');
+              window.myPie = new Chart(di, di_config);
 
-      var carb = document.getElementById('chart_carbohydrate').getContext('2d');
-      window.myPie = new Chart(carb, carb_config);
-    };
+              var sn = document.getElementById('chart_snacks').getContext('2d');
+              window.myPie = new Chart(sn, sn_config);
 
-  </script>
+              var cal = document.getElementById('chart_calories').getContext('2d');
+              window.myPie = new Chart(cal, cal_config);
+            };
+        </script>
     {% else %}
         <div class="container">
             <p>Вы не авторизированы. Нажмите "Войти" чтобы войти и "Регистрация" чтобы зарегистрироваться.</p>
@@ -162,6 +166,4 @@
             <a href="{% url 'signup'%}"><input class="button" type="submit" value="Регистрация"></a>
         </div>
     {% endif %}
-
-
 {% endblock %}

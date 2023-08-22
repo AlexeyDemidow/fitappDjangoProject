@@ -4,6 +4,7 @@ from .views import profile
 from .views import edit_profile
 from django.contrib.auth import views
 
+
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
     path('login/', views.LoginView.as_view(), name='login'),
