@@ -19,5 +19,6 @@
             <p>Норма потребления калорий в день: {{ user.calories_per_day }} Ккал</p>
         {% endif %}
         <a href="{% url 'edit_profile' user.username%}"><input class="button" type="submit" value="Редактировать профиль"></a>
+        <a href="{% url 'weighing' user.username%}"><input class="button" type="submit" value="Взвешивание"></a>
     </div>
 {% endblock %}

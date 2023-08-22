@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
 from PIL import Image
+from django.utils import timezone
 
 # Create your models here.
 
@@ -94,3 +95,7 @@ class CustomUser(AbstractUser):
             text_result = 'Ожирение третьей степени'
         return round(result, 2), text_result
 
+class Weighing(models.Model):
+    weighing_date = models.DateField(default=timezone.now, verbose_name='Дата взвешивания')
+    weight_value = models.FloatField(default=0, verbose_name='Вес', help_text='Введите в килограммах')
+    user = models.ManyToManyField(CustomUser)
