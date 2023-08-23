@@ -41,3 +41,9 @@ class UserFoodItem(models.Model):
 
 class ChooseDate(models.Model):
     c_date = models.DateField(default=timezone.now, verbose_name='Дата')
+
+
+class WaterTracker(models.Model):
+    customer = models.ManyToManyField(CustomUser)
+    glass = models.IntegerField(default=1, null=True, blank=True, verbose_name='1 стакан = 250г воды')
+    drink_date = models.DateField(default=timezone.now, verbose_name='Дата')

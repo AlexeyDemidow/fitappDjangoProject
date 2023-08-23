@@ -41,6 +41,18 @@ def user_calc(request):
     main_date = ch_dt_list[0]
     today_date = date.today()
 
+    if request.method == 'POST':
+        form_drink = WaterTrackerForm(request.POST, initial={'customer': user})
+        if form_drink.is_valid():
+            form_drink.save()
+            return redirect('user_calc')
+    form_drink = WaterTrackerForm(initial={'customer': user, 'drink_date': main_date})
+
+    w = WaterTracker.objects.filter(customer=user, drink_date=main_date)
+    water_count = 0
+    for ww in w:
+        water_count += ww.glass
+
     breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
     my_breakfast = breakfast.filter(customer=cust, add_date=main_date)
     bcnt = my_breakfast.count()
@@ -284,7 +296,7 @@ def user_calc(request):
                'my_breakfast': my_breakfast,
 
                'form_br': form_br, 'form_lu': form_lu, 'form_di': form_di, 'form_sn': form_sn,
-               'form_ch': form_ch,
+               'form_ch': form_ch, 'form_drink': form_drink, 'water_count': water_count,
 
                'calorie_count_sn': calorie_count_sn,
                'protein_count_sn': protein_count_sn,
@@ -318,87 +330,6 @@ def user_calc(request):
 
     }
     return render(request, 'user_calc.html', context)
-
-@login_required
-def addFooditem_breakfast(request):
-    user = request.user
-    ch_date = ChooseDate.objects.all()
-    ch_dt_list = []
-    for dt in ch_date:
-        ch_dt_list.clear()
-        ch_dt_list.append(dt.c_date)
-    main_date = ch_dt_list[0]
-    if request.method == "POST":
-        form = AddUserFoodItem_breakfast(request.POST, initial={'customer':  user})
-        if form.is_valid():
-            form.save()
-            return redirect('/calories_calc/user_calc/')
-    form = AddUserFoodItem_breakfast(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form, 'main_date': main_date}
-    return render(request, 'AddUserFoodItem.html', context)
-
-@login_required
-def addFooditem_lunch(request):
-    user = request.user
-    fooditems = FoodItem.objects.filter()
-    myfilter = fooditemFilter(request.GET, queryset=fooditems)
-    fooditems = myfilter.qs
-    ch_date = ChooseDate.objects.all()
-    ch_dt_list = []
-    for dt in ch_date:
-        ch_dt_list.clear()
-        ch_dt_list.append(dt.c_date)
-    main_date = ch_dt_list[0]
-    if request.method == "POST":
-        form = AddUserFoodItem_lunch(request.POST, initial={'customer':  user})
-        if form.is_valid():
-            form.save()
-            return redirect('/calories_calc/user_calc/')
-    form = AddUserFoodItem_lunch(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form, 'main_date': main_date, 'myfilter': myfilter, 'fooditems': fooditems}
-    return render(request, 'AddUserFoodItem.html', context)
-
-@login_required
-def addFooditem_dinner(request):
-    user = request.user
-    fooditems = FoodItem.objects.filter()
-    myfilter = fooditemFilter(request.GET, queryset=fooditems)
-    fooditems = myfilter.qs
-    ch_date = ChooseDate.objects.all()
-    ch_dt_list = []
-    for dt in ch_date:
-        ch_dt_list.clear()
-        ch_dt_list.append(dt.c_date)
-    main_date = ch_dt_list[0]
-    if request.method == "POST":
-        form = AddUserFoodItem_dinner(request.POST, initial={'customer':  user})
-        if form.is_valid():
-            form.save()
-            return redirect('/calories_calc/user_calc/')
-    form = AddUserFoodItem_dinner(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form, 'main_date': main_date, 'myfilter': myfilter, 'fooditems': fooditems}
-    return render(request, 'AddUserFoodItem.html', context)
-
-@login_required
-def addFooditem_snacks(request):
-    user = request.user
-    fooditems = FoodItem.objects.filter()
-    myfilter = fooditemFilter(request.GET, queryset=fooditems)
-    fooditems = myfilter.qs
-    ch_date = ChooseDate.objects.all()
-    ch_dt_list = []
-    for dt in ch_date:
-        ch_dt_list.clear()
-        ch_dt_list.append(dt.c_date)
-    main_date = ch_dt_list[0]
-    if request.method == "POST":
-        form = AddUserFoodItem_snacks(request.POST, initial={'customer':  user})
-        if form.is_valid():
-            form.save()
-            return redirect('/calories_calc/user_calc/')
-    form = AddUserFoodItem_snacks(initial={'customer':  user, 'add_date': main_date})
-    context = {'form': form, 'main_date': main_date, 'myfilter': myfilter, 'fooditems': fooditems}
-    return render(request, 'AddUserFoodItem.html', context)
 
 @login_required
 def deleteFooditem(request, item_id):
@@ -566,6 +497,11 @@ def charts(request):
             return redirect('charts')
     form_ch = ChooseDateForm()
 
+    w = WaterTracker.objects.filter(customer=user, drink_date=main_date)
+    water_count = 0
+    for ww in w:
+        water_count += ww.glass
+
     context = {
         'food_nutrients_labels': food_nutrients_labels, 'food_category_labels': food_category_labels,
         'food_category_data': food_category_data,
@@ -577,6 +513,19 @@ def charts(request):
         'form_ch': form_ch,
         'cnt': cnt,
         'CalorieLeft': CalorieLeft, 'totalCalories': totalCalories,
+        'water_count': water_count,
     }
 
     return render(request, 'home.html', context)
+
+# def drink_counter(request):
+#     user = request.user
+#
+#     if request.method == 'POST':
+#         form_drink = WaterTrackerForm(request.POST, initial={'customer': user})
+#         if form_drink.is_valid():
+#             form_drink.save()
+#             return redirect('charts')
+#     form_drink = WaterTrackerForm(initial={'customer': user})
+#     context = {'form_drink': form_drink,}
+#     return render(request, 'drink.html', context)

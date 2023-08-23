@@ -14,4 +14,5 @@ class FoodAdmin(admin.ModelAdmin):
 
 
 admin.site.register(UserFoodItem)
+admin.site.register(WaterTracker)
 admin.site.register(FoodItem, FoodAdmin)

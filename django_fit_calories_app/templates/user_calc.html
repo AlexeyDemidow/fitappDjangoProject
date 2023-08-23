@@ -13,6 +13,34 @@
                 <input type="submit" class="btn btn-success" value="Выбрать">
             </form>
         <a href="createfooditem">Добавить свою еду</a>
+Сегодня выпито воды: {{water_count}} стаканов.
+<button type="button" class="btn btn-primary" name="add_water" data-toggle="modal" data-target="#myModal_water">Трекер воды</button>
+<div class="modal fade" id="myModal_water"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Добавить воды</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div style="display: none">{{form_drink.customer}}</div>
+                    <div style="display: none">{{form_drink.drink_date}}</div>
+                    <div class="number">
+                        <button class="number-minus" type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.onchange();">-</button>
+                        <input type="number" min="0" value="{{form_drink.glass}}
+                        <button class="number-plus" type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.onchange();">+</button>
+                    </div>
+                    <input type="submit" class="btn btn-success" value="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
         <h5 id="heading">Завтрак</h5>
         <h7>Всего продуктов:{{bcnt}}</h7>
 <button type="button" class="btn btn-primary" name="add_to_breakfast" data-toggle="modal" data-target="#myModal_breakfast"><i class="fa fa-plus" aria-hidden="true"></i></button>

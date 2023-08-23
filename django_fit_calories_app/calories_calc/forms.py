@@ -70,5 +70,18 @@ class ChooseDateForm(ModelForm):
         model = ChooseDate
         fields = ['c_date']
 
+
+class WaterTrackerForm(ModelForm):
+
+    class Meta:
+        model = WaterTracker
+        fields = ['glass', 'drink_date', 'customer']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
+        self.fields['drink_date'].initial = datetime.now().date()
+
+
 class CSVupload(forms.Form):
     csv_file = forms.FileField()
