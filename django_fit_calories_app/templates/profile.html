@@ -19,6 +19,61 @@
             <p>Норма потребления калорий в день: {{ user.calories_per_day }} Ккал</p>
         {% endif %}
         <a href="{% url 'edit_profile' user.username%}"><input class="button" type="submit" value="Редактировать профиль"></a>
-        <a href="{% url 'weighing' user.username%}"><input class="button" type="submit" value="Взвешивание"></a>
+        <button type="button" class="btn btn-primary" name="weighing" data-toggle="modal" data-target="#myModal_weighing">Взвешивание</button>
+        <div class="modal fade" id="myModal_weighing"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel">Записать вес</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div style="display: none">{{form.user.name}}{{form.user}}</div>
+                            <div style="display: none">{{form.weighing_date.name}}{{form.weighing_date}}</div>
+                            Введите вес
+                            {{form.weight_value}}
+                            <input type="submit" class="btn btn-success" value="Ввести вес">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+                <canvas id="chart_weight"></canvas>
+            </div>
+          </div>
+    </div>
+    <script>
+        var weight_config = {
+              type: 'line',
+              data: {
+                datasets: [{
+                  data: {{ data_weight|safe }},
+                  backgroundColor: [
+                    '#0000FF', '#1E90FF', '#00BFFF', '#00FFFF'
+                  ],
+                  label: 'Вес, кг'
+                }],
+                labels: {{ date_labels|safe }}
+              },
+              options: {
+                responsive: true,
+                legend: {
+                    display: false
+                }
+              }
+            };
+
+            window.onload = function() {
+              var weight = document.getElementById('chart_weight').getContext('2d');
+              window.myPie = new Chart(weight, weight_config);
+            };
+        </script>
 {% endblock %}

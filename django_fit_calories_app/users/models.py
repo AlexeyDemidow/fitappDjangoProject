@@ -29,6 +29,7 @@ class CustomUser(AbstractUser):
     calories = models.IntegerField(default=0, verbose_name='Количество калорий в день', help_text='Введите 0 чтобы рассчитать автоматически')
 
 
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         img = Image.open(self.avatar.path)

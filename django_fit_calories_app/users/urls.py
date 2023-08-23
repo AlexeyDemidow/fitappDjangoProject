@@ -2,7 +2,7 @@ from django.urls import path
 from .views import SignUpView
 from .views import profile
 from .views import edit_profile
-from .views import weighing
+
 
 from django.contrib.auth import views
 
@@ -17,5 +17,5 @@ urlpatterns = [
     path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('<str:username>/', profile, name='profile'),
     path('<str:username>/edit_profile', edit_profile, name='edit_profile'),
-    path('<str:username>/weighing/', weighing, name='weighing')
+
 ]
