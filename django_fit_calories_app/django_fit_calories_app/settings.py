@@ -30,9 +30,9 @@ SECRET_KEY = 'django-insecure-v+#_j987xr_tqm6)nh1@abo2wdnwy1om(n78xkcx9^ew)44-v2
 DEBUG = True
 # DEBUG = False
 
-ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
-
+# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -151,8 +151,23 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'charts'
 LOGOUT_REDIRECT_URL = 'home'
 
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Убрать после подключения емейл адреса
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = "django_fitapp@mail.ru"
+EMAIL_HOST_PASSWORD = "K219cdmDjNFafPY7wytB"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+EMAIL_account_PASSWORD = "UYpUT)ppza33"
 
 
+# send_mail('Subject here', 'Here is the message.', 'django_fitapp@mail.ru', ['usernzt@gmail.com'], fail_silently=False,)

@@ -3,19 +3,35 @@ from django.contrib.auth.models import AbstractUser
 from datetime import datetime
 from PIL import Image
 from django.utils import timezone
+from django.core.validators import RegexValidator
 
 # Create your models here.
 
 
 class CustomUser(AbstractUser):
+
+    username_validator = RegexValidator(r'^[a-zA-Z]+$', message='Псевдоним может состоять только из латинских символов')
+    username = models.CharField(
+        'Имя пользователя',
+        max_length=150,
+        unique=True,
+        help_text='Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.',
+        validators=[username_validator],
+        error_messages={
+            'unique': 'Пользователь с таким именем уже существует.',
+        },
+    )
+
     man = 'Мужской'
     woman = 'Женский'
     gender_list = [(man, 'Мужской'), (woman, 'Женский')]
     gender = models.CharField(max_length=10, choices=gender_list, default=man, verbose_name='Пол')
     birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения',
                                   help_text='Введите в формате ДД.ММ.ГГГГ')
+
     growth = models.IntegerField(default=0, verbose_name='Рост', help_text='Введите в сантиметрах')
     weight = models.FloatField(default=0, verbose_name='Вес', help_text='Введите в килограммах')
+
     avatar = models.ImageField(default='default.png', upload_to='avatars/', blank=True, verbose_name='Аватар')
     low = 'Минимальный'
     weak = 'Слабый'
@@ -29,7 +45,6 @@ class CustomUser(AbstractUser):
     calories = models.IntegerField(default=0, verbose_name='Количество калорий в день', help_text='Введите 0 чтобы рассчитать автоматически')
 
 
-
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         img = Image.open(self.avatar.path)
@@ -37,6 +52,8 @@ class CustomUser(AbstractUser):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.avatar.path)
+
+
 
     def calories_per_day(user):
         today = datetime.now().date()
@@ -95,6 +112,8 @@ class CustomUser(AbstractUser):
         if 40 < result <= 99:
             text_result = 'Ожирение третьей степени'
         return round(result, 2), text_result
+
+
 
 class Weighing(models.Model):
     weighing_date = models.DateField(default=timezone.now, verbose_name='Дата взвешивания')
