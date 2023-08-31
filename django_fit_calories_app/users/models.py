@@ -10,7 +10,7 @@ from django.core.validators import RegexValidator
 
 class CustomUser(AbstractUser):
 
-    username_validator = RegexValidator(r'^[a-zA-Z]+$', message='Псевдоним может состоять только из латинских символов')
+    username_validator = RegexValidator(r'^[a-zA-Z0-9]+$', message='Псевдоним может состоять только из латинских символов и цифр')
     username = models.CharField(
         'Имя пользователя',
         max_length=150,

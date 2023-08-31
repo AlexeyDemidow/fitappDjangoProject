@@ -248,6 +248,7 @@ def user_calc(request):
     carbohydrate_count_all = carbohydrate_count_br + carbohydrate_count_lu + carbohydrate_count_di + carbohydrate_count_sn
     quantity_count_all = quantity_count_br + quantity_count_lu + quantity_count_di + quantity_count_sn
 
+
     if request.method == "POST":
         form_br = AddUserFoodItem_breakfast(request.POST, initial={'customer':  user})
         if form_br.is_valid():
@@ -328,6 +329,8 @@ def user_calc(request):
     }
     return render(request, 'user_calc.html', context)
 
+
+
 @login_required
 def deleteFooditem(request, item_id):
     item = get_object_or_404(UserFoodItem, id=item_id)
@@ -369,12 +372,32 @@ def charts(request):
     breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
     my_breakfast = breakfast.filter(customer=cust, add_date=main_date)
     breakfast_list = []
+    breakfast_quantity_list = []
     for item in my_breakfast:
         breakfast_list.append(item.fooditem.all())
+        breakfast_quantity_list.append(item.quantity)
     breakfast_view_list = []
     for items in breakfast_list:
         for br_food in items:
             breakfast_view_list.append(br_food)
+
+    if len(breakfast_view_list) > 0:
+        for i in range(len(breakfast_quantity_list)):
+            breakfast_view_list[i].calorie *= Decimal(breakfast_quantity_list[i]) / 100
+            breakfast_view_list[i].calorie = breakfast_view_list[i].calorie.quantize(Decimal("1.00"))
+
+            breakfast_view_list[i].protein *= Decimal(breakfast_quantity_list[i]) / 100
+            breakfast_view_list[i].protein = breakfast_view_list[i].protein.quantize(Decimal("1.00"))
+
+            breakfast_view_list[i].fats *= Decimal(breakfast_quantity_list[i]) / 100
+            breakfast_view_list[i].fats = breakfast_view_list[i].fats.quantize(Decimal("1.00"))
+
+            breakfast_view_list[i].carbohydrate *= Decimal(breakfast_quantity_list[i]) / 100
+            breakfast_view_list[i].carbohydrate = breakfast_view_list[i].carbohydrate.quantize(Decimal("1.00"))
+
+            breakfast_view_list[i].quantity *= Decimal(breakfast_quantity_list[i]) / 100
+            breakfast_view_list[i].quantity = breakfast_view_list[i].quantity.quantize(Decimal("1.00"))
+
 
     calorie_count_br = 0
     protein_count_br = 0
@@ -391,12 +414,33 @@ def charts(request):
     lunch = Category.objects.filter(name='lunch')[0].userfooditem_set.all()
     my_lunch = lunch.filter(customer=cust, add_date=main_date)
     lunch_list = []
+    lunch_quantity_list = []
+    lunch_list_id = []
     for item in my_lunch:
         lunch_list.append(item.fooditem.all())
+        lunch_quantity_list.append(item.quantity)
     lunch_view_list = []
     for items in lunch_list:
         for lc_food in items:
             lunch_view_list.append(lc_food)
+
+    if len(lunch_view_list) > 0:
+        for i in range(len(lunch_quantity_list)):
+            lunch_view_list[i].calorie *= Decimal(lunch_quantity_list[i]) / 100
+            lunch_view_list[i].calorie = lunch_view_list[i].calorie.quantize(Decimal("1.00"))
+
+            lunch_view_list[i].protein *= Decimal(lunch_quantity_list[i]) / 100
+            lunch_view_list[i].protein = lunch_view_list[i].protein.quantize(Decimal("1.00"))
+
+            lunch_view_list[i].fats *= Decimal(lunch_quantity_list[i]) / 100
+            lunch_view_list[i].fats = lunch_view_list[i].fats.quantize(Decimal("1.00"))
+
+            lunch_view_list[i].carbohydrate *= Decimal(lunch_quantity_list[i]) / 100
+            lunch_view_list[i].carbohydrate = lunch_view_list[i].carbohydrate.quantize(Decimal("1.00"))
+
+            lunch_view_list[i].quantity *= Decimal(lunch_quantity_list[i]) / 100
+            lunch_view_list[i].quantity = lunch_view_list[i].quantity.quantize(Decimal("1.00"))
+
 
     calorie_count_lu = 0
     protein_count_lu = 0
@@ -413,12 +457,33 @@ def charts(request):
     dinner = Category.objects.filter(name='dinner')[0].userfooditem_set.all()
     my_dinner = dinner.filter(customer=cust, add_date=main_date)
     dinner_list = []
+    dinner_list_id = []
+    dinner_quantity_list = []
     for item in my_dinner:
         dinner_list.append(item.fooditem.all())
+        dinner_quantity_list.append(item.quantity)
     dinner_view_list = []
     for items in dinner_list:
         for dn_food in items:
             dinner_view_list.append(dn_food)
+
+    if len(dinner_view_list) > 0:
+        for i in range(len(dinner_quantity_list)):
+            dinner_view_list[i].calorie *= Decimal(dinner_quantity_list[i]) / 100
+            dinner_view_list[i].calorie = dinner_view_list[i].calorie.quantize(Decimal("1.00"))
+
+            dinner_view_list[i].protein *= Decimal(dinner_quantity_list[i]) / 100
+            dinner_view_list[i].protein = dinner_view_list[i].protein.quantize(Decimal("1.00"))
+
+            dinner_view_list[i].fats *= Decimal(dinner_quantity_list[i]) / 100
+            dinner_view_list[i].fats = dinner_view_list[i].fats.quantize(Decimal("1.00"))
+
+            dinner_view_list[i].carbohydrate *= Decimal(dinner_quantity_list[i]) / 100
+            dinner_view_list[i].carbohydrate = dinner_view_list[i].carbohydrate.quantize(Decimal("1.00"))
+
+            dinner_view_list[i].quantity *= Decimal(dinner_quantity_list[i]) / 100
+            dinner_view_list[i].quantity = dinner_view_list[i].quantity.quantize(Decimal("1.00"))
+
 
     calorie_count_di = 0
     protein_count_di = 0
@@ -435,12 +500,33 @@ def charts(request):
     snacks = Category.objects.filter(name='snacks')[0].userfooditem_set.all()
     my_snacks = snacks.filter(customer=cust, add_date=main_date)
     snacks_list = []
+    snacks_list_id = []
+    snacks_quantity_list = []
     for item in my_snacks:
         snacks_list.append(item.fooditem.all())
+        snacks_quantity_list.append(item.quantity)
     snacks_view_list = []
     for items in snacks_list:
         for sn_food in items:
             snacks_view_list.append(sn_food)
+
+    if len(snacks_view_list) > 0:
+        for i in range(len(snacks_quantity_list)):
+            snacks_view_list[i].calorie *= Decimal(snacks_quantity_list[i]) / 100
+            snacks_view_list[i].calorie = snacks_view_list[i].calorie.quantize(Decimal("1.00"))
+
+            snacks_view_list[i].protein *= Decimal(snacks_quantity_list[i]) / 100
+            snacks_view_list[i].protein = snacks_view_list[i].protein.quantize(Decimal("1.00"))
+
+            snacks_view_list[i].fats *= Decimal(snacks_quantity_list[i]) / 100
+            snacks_view_list[i].fats = snacks_view_list[i].fats.quantize(Decimal("1.00"))
+
+            snacks_view_list[i].carbohydrate *= Decimal(snacks_quantity_list[i]) / 100
+            snacks_view_list[i].carbohydrate = snacks_view_list[i].carbohydrate.quantize(Decimal("1.00"))
+
+            snacks_view_list[i].quantity *= Decimal(snacks_quantity_list[i]) / 100
+            snacks_view_list[i].quantity = snacks_view_list[i].quantity.quantize(Decimal("1.00"))
+
 
     calorie_count_sn = 0
     protein_count_sn = 0
@@ -463,15 +549,17 @@ def charts(request):
     food_category_labels = ['Завтрак', 'Обед', 'Ужин', 'Перекусы']
     food_category_data = [float(calorie_count_br), float(calorie_count_lu), float(calorie_count_di), float(calorie_count_sn)]
 
+    calorie_count_all = calorie_count_br + calorie_count_lu + calorie_count_di + calorie_count_sn
+
+    if user.calories > 0:
+        CalorieLeft = user.calories - calorie_count_all
+    else:
+        CalorieLeft = user.calories_per_day() - calorie_count_all
+
     total = UserFoodItem.objects.all()
     myfooditems = total.filter(customer=cust, add_date=main_date)
     cnt = myfooditems.count()
 
-    totalCalories = 0
-    if user.calories > 0:
-        dailyCalories = user.calories
-    else:
-        dailyCalories = user.calories_per_day()
     querysetFood = []
 
     add_date_list = []
@@ -482,10 +570,6 @@ def charts(request):
     for items in querysetFood:
         for food_items in items:
             finalFoodItems.append(food_items)
-
-    for foods in finalFoodItems:
-        totalCalories += foods.calorie
-    CalorieLeft = dailyCalories - totalCalories
 
     if request.method == 'POST':
         form_ch = ChooseDateForm(request.POST)
@@ -509,8 +593,9 @@ def charts(request):
         'main_date': main_date,
         'form_ch': form_ch,
         'cnt': cnt,
-        'CalorieLeft': CalorieLeft, 'totalCalories': totalCalories,
         'water_count': water_count,
+        'calorie_count_all': calorie_count_all,
+        'CalorieLeft': CalorieLeft,
     }
 
     return render(request, 'home.html', context)
