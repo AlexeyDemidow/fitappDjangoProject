@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Следим за фигурой{% endblock %}
+{% block title %}FITAPP{% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
+
 <br>
-<div class="container">
-    <h2>Ваша статистика за {{ main_date }}</h2>
+<div class="container" style="text-align: center">
+    <h2 >Ваша статистика за {{ main_date }}</h2>
     <form action="" method="POST">
         {% csrf_token %}
         Выбрать дату
@@ -27,19 +28,19 @@
             {% else %}
                 <h5>Количество калорий: {{user.calories_per_day}}</h5>
             {% endif %}
-            <h5>Всего калорий употреблено:{{totalCalories}}</h5>
+            <h5>Всего калорий употреблено: {{totalCalories}}</h5>
             <h5>Осталось калорий: {{ CalorieLeft }}</h5>
             <h5>Выпито за сегодня стаканов воды: {{ water_count }}</h5>
             <h5>(1 стакан = 250 мл)</h5>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" style="text-align: center">
             Калораж на прием пищи
             <canvas id="chart_calories"></canvas>
         </div>
     </div>
 </div>
 <br>
-    <div class="container">
+    <div class="container" style="text-align: center">
       <div class="row">
         <div class="col-md-6">
             Содержание нутриентов в завтраке
@@ -172,6 +173,7 @@
         </script>
             <!------------------------------------------------------------------->
     {% else %}
+
         <div class="container_home">
             <h1>FITAPP - это веб-приложение для подсчета калорий, трекер веса и трекер воды.</h1>
 

@@ -32,12 +32,8 @@ def profile(request, username):
             date_labels[-1] = i.weighing_date.strftime("%d-%m-%Y")
             data_weight[-1] = i.weight_value
 
-    print(date_labels)
-    print(data_weight)
-    print(CustomUser.objects.filter(weight=user.weight))
     if len(data_weight) > 0:
         user.weight = data_weight[-1]
-    print(user.weight)
 
     if request.method == "POST":
         form = WeighingForm(request.POST, initial={'user': user})
