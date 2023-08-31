@@ -10,16 +10,6 @@ from decimal import Decimal
 
 # Create your views here.
 
-@login_required
-def createfooditem(request):
-    form = FoodItemForm()
-    if request.method == 'POST':
-        form = FoodItemForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/calories_calc/user_calc/')
-    context = {'form': form}
-    return render(request, 'createfooditem.html', context)
 
 @login_required
 def user_calc(request):
@@ -33,7 +23,7 @@ def user_calc(request):
         quantity_list.append(food_quantity)
 
     ch_date = ChooseDate.objects.all()
-    ch_dt_list = []
+    ch_dt_list = [date.today()]
     for dt in ch_date:
         ch_dt_list.clear()
         ch_dt_list.append(dt.c_date)
@@ -52,6 +42,13 @@ def user_calc(request):
     water_count = 0
     for ww in w:
         water_count += ww.glass
+
+    if request.method == 'POST':
+        createfooditemform = FoodItemForm(request.POST)
+        if createfooditemform.is_valid():
+            createfooditemform.save()
+            return redirect('/calories_calc/user_calc/')
+    createfooditemform = FoodItemForm(request.POST)
 
     breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
     my_breakfast = breakfast.filter(customer=cust, add_date=main_date)
@@ -293,7 +290,7 @@ def user_calc(request):
                'dinner': dinner_view_list, 'dinner_view_dict': dinner_view_dict, 'dcnt': dcnt,
                'snacks': snacks_view_list, 'snacks_view_dict': snacks_view_dict, 'scnt': scnt,
 
-               'my_breakfast': my_breakfast,
+               'my_breakfast': my_breakfast, 'createfooditemform': createfooditemform,
 
                'form_br': form_br, 'form_lu': form_lu, 'form_di': form_di, 'form_sn': form_sn,
                'form_ch': form_ch, 'form_drink': form_drink, 'water_count': water_count,

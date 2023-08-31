@@ -2,7 +2,6 @@ from django.forms import ModelForm
 from .models import *
 from users.models import CustomUser
 from datetime import datetime
-import django_filters
 from django import forms
 
 

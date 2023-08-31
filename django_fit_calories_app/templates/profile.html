@@ -3,53 +3,59 @@
 {% block title %}Профиль{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>{{ user.username }}</h1>
-        <p><img src="{{ user.avatar.url }}" alt="Аватар" class="round"></p>
-        <p>Адрес электронной почты: {{ user.email }}</p>
-        <p>Пол: {{ user.gender }}</p>
-        <p>Дата рождения: {{ user.birth_date }}</p>
-        <p>Рост: {{ user.growth }} см</p>
-        <p>Вес: {{ user.weight }} кг</p>
-        <p>Коэффициент массы тела: {{ user.body_mass_ratio.0 }} - {{ user.body_mass_ratio.1 }}</p>
-        <p>Уровень активности: {{ user.activity }}</p>
-        {% if user.calories > 0 %}
-            <p>Норма потребления калорий в день: {{ user.calories }} Ккал</p>
-        {% else %}
-            <p>Норма потребления калорий в день: {{ user.calories_per_day }} Ккал</p>
-        {% endif %}
-        <a href="{% url 'edit_profile' user.username%}"><input class="button" type="submit" value="Редактировать профиль"></a>
-        <button type="button" class="btn btn-primary" name="weighing" data-toggle="modal" data-target="#myModal_weighing">Взвешивание</button>
-        <div class="modal fade" id="myModal_weighing"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel">Записать вес</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            <div style="display: none">{{form.user.name}}{{form.user}}</div>
-                            <div style="display: none">{{form.weighing_date.name}}{{form.weighing_date}}</div>
-                            Введите вес
-                            {{form.weight_value}}
-                            <input type="submit" class="btn btn-success" value="Ввести вес">
-                        </form>
+    <div class="profile-page">
+        <div class="form">
+            <h1>{{ user.username }}</h1>
+            <p><img src="{{ user.avatar.url }}" alt="Аватар" class="round"></p>
+            <p>Адрес электронной почты: {{ user.email }}</p>
+            <p>Пол: {{ user.gender }}</p>
+            <p>Дата рождения: {{ user.birth_date }}</p>
+            <p>Рост: {{ user.growth }} см</p>
+            <p>Вес: {{ user.weight }} кг</p>
+            <p>Коэффициент массы тела: {{ user.body_mass_ratio.0 }} - {{ user.body_mass_ratio.1 }}</p>
+            <p>Уровень активности: {{ user.activity }}</p>
+            {% if user.calories > 0 %}
+                <p>Норма потребления калорий в день: {{ user.calories }} Ккал</p>
+            {% else %}
+                <p>Норма потребления калорий в день: {{ user.calories_per_day }} Ккал</p>
+            {% endif %}
+            <a href="{% url 'edit_profile' user.username%}"><input class="button" type="submit" value="Редактировать профиль" style="background: #8d96a1;"></a>
+        </div>
+    </div>
+    <div class="profile-page">
+        <div class="form">
+            <canvas id="chart_weight"></canvas>
+            <button type="button" class="btn btn-primary" name="weighing" data-toggle="modal" data-target="#myModal_weighing">Взвешивание</button>
+        </div>
+    </div>
+            <div class="modal fade" id="myModal_weighing"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">Введите вес</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form" style="box-shadow: None">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    <div style="display: none">{{form.user.name}}{{form.user}}</div>
+                                    <div style="display: none">{{form.weighing_date.name}}{{form.weighing_date}}</div>
+
+                                     <input type="number" value="" placeholder="Вес в килограммах" id={{form.weight_value}}
+                                    <button type="submit">Ввести вес</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
-    <div class="container">
-          <div class="row">
-            <div class="col-md-6">
-                <canvas id="chart_weight"></canvas>
-            </div>
-          </div>
-    </div>
+
     <script>
         var weight_config = {
               type: 'line',

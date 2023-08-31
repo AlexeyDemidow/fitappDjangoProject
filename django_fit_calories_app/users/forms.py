@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Weighing
+from .models import *
 from django.forms import ModelForm
 from datetime import datetime
 
@@ -16,7 +16,9 @@ class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'gender', 'birth_date', 'growth', 'weight', 'activity', 'avatar', 'calories',)
+        fields = ['email', 'gender', 'birth_date', 'growth', 'activity', 'avatar', 'calories']
+
+
 
 
 class CustomUserChangeFormAdmin(UserChangeForm):

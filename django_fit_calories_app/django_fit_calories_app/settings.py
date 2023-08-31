@@ -28,8 +28,10 @@ SECRET_KEY = 'django-insecure-v+#_j987xr_tqm6)nh1@abo2wdnwy1om(n78xkcx9^ew)44-v2
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
 
 
 # Application definition
@@ -42,10 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
     'users',
     'calories_calc',
-
 
 ]
 

@@ -34,7 +34,7 @@ def profile(request, username):
 
     print(date_labels)
     print(data_weight)
-
+    print(CustomUser.objects.filter(weight=user.weight))
     if len(data_weight) > 0:
         user.weight = data_weight[-1]
     print(user.weight)
@@ -49,7 +49,6 @@ def profile(request, username):
 
     context = {
         'user': user,
-        'user.weight': user.weight,
         'form': form,
         'date_labels': date_labels,
         'data_weight': data_weight,

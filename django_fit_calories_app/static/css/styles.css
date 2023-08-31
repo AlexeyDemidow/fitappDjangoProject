@@ -14,11 +14,13 @@
 .table {
     margin: 0 auto;
     table-layout: fixed;
+    min-width: 800px;
+    #d6d6d6
 }
 
 .foodtable_td {
     text-align: center;
-    background: #57b0ff;
+    vertical-align: middle;
     }
 
 .foodtable_td_delete {
@@ -27,7 +29,7 @@
 
 .foodtable_td_fin {
     text-align: center;
-    background: #3bb08f;
+    background: #83a584;
     text-transform: uppercase;
     }
 
@@ -35,14 +37,20 @@
     text-align: center;
     }
 
+.foodtable_end {
+    text-align: center;
+    background: #9aa199;
+    }
+
 .foodtable_th {
   border-bottom: 2px solid #6678b1;
   padding: 10px 8px;
+  background: #cccccc;
 }
 
 .foodtable_fin {
     text-align: center;
-    background: #57b0ff;
+    background: #646b63;
 }
 
 .number {
@@ -95,4 +103,212 @@
 	font-size: 16px;
 	font-weight: 600;
 }
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.login-page {
+  width: 600px;
+  min-width: 50%;
+  max-width: 100%;
+  padding: 8% 5% 5%;
+  margin: auto;
+}
+.register-page {
+  width: 600px;
+  min-width: 50%;
+  max-width: 100%;
+  padding: 2% 5% 5%;
+  margin: auto;
+}
+
+.edit-page {
+  width: 600px;
+  min-width: 50%;
+  max-width: 100%;
+  padding: 2% 5% 5%;
+  margin: auto;
+}
+
+.profile-page {
+  width: 600px;
+  min-width: 50%;
+  max-width: 100%;
+  padding: 2% 5% 5%;
+  margin: auto;
+}
+
+.password-reset-page {
+  width: 600px;
+  min-width: 50%;
+  max-width: 100%;
+  padding: 2% 5% 5%;
+  margin: auto;
+}
+
+.add-page {
+  width: 600px;
+  min-width: 50%;
+  max-width: 100%;
+  padding: 2% 5% 5%;
+  margin: auto;
+}
+
+.container {
+    width: 1200px;
+    max-width: 100%;
+    min-width: 25%;
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    margin: 0 auto auto;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  min-width: 360px;
+  margin: 0 auto auto;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4c5866;
+  width: 200px;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+
+
+}
+
+.button_pm {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #5d655f;
+  width: 45px;
+  border: 0;
+  padding: 12px;
+  color: #FFFFFF;
+  font-size: 15px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+
+}
+
+.button_m {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #bababa;
+  width: 45px;
+  border: 0;
+  padding: 12px;
+  color: #FFFFFF;
+  font-size: 15px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+
+}
+
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4c5866;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form button:hover,.form button:active,.form button:focus {
+  background: #5b646e;
+}
+.form .message {
+  margin: 15px 0 0;
+  color: #4c5866;
+  font-size: 12px;
+}
+
+.form .message a {
+  color: #4c5866;
+  text-decoration: none;
+
+}
+
+.container_home {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+  text-align: center;
+}
+
+body {
+  background: #f5f5f5; /* fallback for old browsers */
+  background: #f5f5f5;
+  background: #f5f5f5;
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.activity_list {
+  color: #000000;
+  font-size: 12px;
+  text-align: justify;
+}
+
+.profile_message {
+  color: #000000;
+  font-size: 12px;
+
+}
+
+.home_message {
+  color: #000000;
+  font-size: 12px;
+
+}
+
+.container_charts {
+    text-align: center;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.stats_table_td {
+    text-align: center;
+}
+
 

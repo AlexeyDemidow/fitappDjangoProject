@@ -5,58 +5,64 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <div class="container">
-            Добро пожаловать, {{ user.username }}!
-            <p>Ваша статистика за {{ main_date }}</p>
-            <form action="" method="POST">
-                {% csrf_token %}
-                <input type="date" id="{{ form_ch.c_date }}
-                <input type="submit" class="btn btn-success" value="Выбрать">
-            </form>
-            <h3>Количество употребленных продуктов: {{cnt}}</h3>
-            <div class="today">
-                <div class="flex-box-row">
-                    {% if user.calories > 0 %}
-                        <h3>Количество калорий: {{user.calories}}</h3>
-                    {% else %}
-                        <h3>Количество калорий: {{user.calories_per_day}}</h3>
-                    {% endif %}
-                    <h3>Всего калорий употреблено: {{totalCalories}}</h3>
-                    <h3>Осталось: {{ CalorieLeft }}</h3>
-                </div>
-<!------------------------------------------------------------------->
-Трекер воды
-Выпито за сегодня {{ water_count }} стаканов. (1 стакан = 250 мл)
+<br>
+<div class="container">
+    <h2>Ваша статистика за {{ main_date }}</h2>
+    <form action="" method="POST">
+        {% csrf_token %}
+        Выбрать дату
+        <input type="date" id="{{ form_ch.c_date }}
+        <input type="submit" class="button" value="Выбрать">
+    </form>
+</div>
+<br>
+<div class="container">
 
-<!------------------------------------------------------------------->
-            </div>
-        <div/>
-        <div class="container">
-          <div class="row">
+    <div class="row">
+        <div class="col-md-6" style="text-align: left">
+            <br>
+            <h5>Количество употребленных продуктов: {{cnt}}</h5>
+            {% if user.calories > 0 %}
+                <h5>Количество калорий: {{user.calories}}</h5>
+            {% else %}
+                <h5>Количество калорий: {{user.calories_per_day}}</h5>
+            {% endif %}
+            <h5>Всего калорий употреблено:{{totalCalories}}</h5>
+            <h5>Осталось калорий: {{ CalorieLeft }}</h5>
+            <h5>Выпито за сегодня стаканов воды: {{ water_count }}</h5>
+            <h5>(1 стакан = 250 мл)</h5>
+        </div>
+        <div class="col-md-6">
+            Калораж на прием пищи
+            <canvas id="chart_calories"></canvas>
+        </div>
+    </div>
+</div>
+<br>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+            Содержание нутриентов в завтраке
+            <canvas id="chart_breakfast"></canvas>
+        </div>
+        <div class="col-md-6">
+            Содержание нутриентов в обеде
+            <canvas id="chart_dinner"></canvas>
+        </div>
+      </div>
+        <div class="row">
             <div class="col-md-6">
-                Завтрак
-                <canvas id="chart_breakfast"></canvas>
+                Содержание нутриентов в ужине
+                <canvas id="chart_lunch"></canvas>
             </div>
             <div class="col-md-6">
-                Обед
-                <canvas id="chart_dinner"></canvas>
-            </div>
-          </div>
-            <div class="row">
-                <div class="col-md-6">
-                    Ужин
-                    <canvas id="chart_lunch"></canvas>
-                </div>
-                <div class="col-md-6">
-                    Перекусы
-                    <canvas id="chart_snacks"></canvas>
-                </div>
-            </div>
-            <div class="col-md-6">
-                    Калории
-                    <canvas id="chart_calories"></canvas>
+                Содержание нутриентов в перекусах
+                <canvas id="chart_snacks"></canvas>
             </div>
         </div>
+
+    </div>
+<br>
 
         <script>
             var br_config = {
@@ -65,7 +71,7 @@
                 datasets: [{
                   data: {{ data_breakfast|safe }},
                   backgroundColor: [
-                    '#FF0000', '#FFFF00', '#32CD32'
+                    '#3d2e2e', '#514d4d', '#6b6666'
                   ],
                   label: 'Breakfast'
                 }],
@@ -82,7 +88,7 @@
                 datasets: [{
                   data: {{ data_lunch|safe }},
                   backgroundColor: [
-                    '#FF0000', '#FFFF00', '#32CD32'
+                    '#3d2e2e', '#514d4d', '#6b6666'
                   ],
                   label: 'Lunch'
                 }],
@@ -99,7 +105,7 @@
                 datasets: [{
                   data: {{ data_dinner|safe }},
                   backgroundColor: [
-                    '#FF0000', '#FFFF00', '#32CD32'
+                    '#3d2e2e', '#514d4d', '#6b6666'
                   ],
                   label: 'Dinner'
                 }],
@@ -116,7 +122,7 @@
                 datasets: [{
                   data: {{ data_snacks|safe }},
                   backgroundColor: [
-                    '#FF0000', '#FFFF00', '#32CD32'
+                    '#3d2e2e', '#514d4d', '#6b6666'
                   ],
                   label: 'Snacks'
                 }],
@@ -133,9 +139,9 @@
                 datasets: [{
                   data: {{ food_category_data|safe }},
                   backgroundColor: [
-                    '#0000FF', '#1E90FF', '#00BFFF', '#00FFFF'
+                    '#bababa', '#a1a1a1', '#878787', '#878787'
                   ],
-                  label: 'Завтрак'
+                  label: 'Калории'
                 }],
                 labels: {{ food_category_labels|safe }}
               },
@@ -163,15 +169,24 @@
               var cal = document.getElementById('chart_calories').getContext('2d');
               window.myPie = new Chart(cal, cal_config);
             };
-<!------------------------------------------------------------------->
-
-<!------------------------------------------------------------------->
         </script>
+            <!------------------------------------------------------------------->
     {% else %}
-        <div class="container">
-            <p>Вы не авторизированы. Нажмите "Войти" чтобы войти и "Регистрация" чтобы зарегистрироваться.</p>
-            <a href="{% url 'login' %}"><input class="button" type="submit" value="Войти"></a>
-            <a href="{% url 'signup'%}"><input class="button" type="submit" value="Регистрация"></a>
+        <div class="container_home">
+            <h1>FITAPP - это веб-приложение для подсчета калорий, трекер веса и трекер воды.</h1>
+
+            <div class="login-page">
+                <div class="form">
+                    <p class="home_message">Вы не авторизированы. Нажмите "Войти" чтобы войти и "Регистрация" чтобы зарегистрироваться.</p>
+                    <form action="{% url 'login' %}">
+                       <button type="submit">Войти</button>
+                    </form>
+                    <br>
+                    <form action="{% url 'signup'%}">
+                       <button type="submit">Регистрация</button>
+                    </form>
+                </div>
         </div>
+
     {% endif %}
 {% endblock %}
