@@ -8,12 +8,13 @@
     <div class="edit-page">
         <h2>Редактирование профиля</h2>
         <div class="form">
-            <form class="edit-form" method="post">
+            <form class="edit-form" enctype="multipart/form-data" method="post">
             {% csrf_token %}
                 <input type="text" placeholder="Имя" id={{ form.username }}
                 <input type="email" placeholder="Адрес электронной почты" id={{ form.email }}
                 <sup class="profile_message">{{ form.gender.label_tag }}</sup>{{ form.gender }}
-                <sup class="profile_message">{{ form.birth_date.label_tag }}</sup><input type="date" value="{{user.birth_date}}" placeholder="Дата рождения" id={{ form.birth_date }}
+                <sup class="profile_message">{{ form.birth_date.label_tag }}</sup>
+                 <input type="date" placeholder="Дата рождения" data-date="" data-date-format="DD MMMM YYYY" value="{{ birth_date }}" id={{ form.birth_date }}
                 <sup class="profile_message">{{ form.growth.label_tag }}</sup><input type="number" value="{{ user.growth }}" placeholder="Рост" id={{ form.growth }}
                 <sup class="profile_message">{{ form.calories.label_tag }}, 0 - чтобы рассчитать автоматически</sup><input type="number" value="{{ user.calories }}" placeholder="Норма калорий, 0 - чтобы рассчитать автоматически" id={{ form.calories }}
                 <sup class="profile_message">{{ form.activity.label_tag }}</sup>
@@ -25,7 +26,9 @@
                     <li>Тяжелый. Для очень активных людей: физическая работа полный день или интенсивные тренировки 6-7 раз в неделю.</li>
                     <li>Экстремальный. Для предельно активных людей: тяжелая физическая работа и интенсивные тренировки/занятия спортом.</li>
                 </ul>
-                <sup class="profile_message">{{ form.avatar.label_tag }}</sup><br>
+                <sup class="profile_message">{{ form.avatar.label }}</sup><br>
+<!--                <input type="file" placeholder="Аватар" id={{ form.avatar }}-->
+                {{ form.avatar }}
                 {% if form.username.errors %}
                         {% for error in form.username.errors %}
                             <div class="alert alert-danger with-close alert-dismissible fade show">
@@ -38,4 +41,13 @@
             <a href="{% url 'password_reset' %}"><input class="button" type="submit" value="Изменить пароль" style="background: #8d96a1;"></a>
         </div>
     </div>
+<script>
+    $("input").on("change", function() {
+    this.setAttribute(
+        "data-date",
+        moment(this.value, "YYYY MMMM DD")
+        .format( this.getAttribute("data-date-format") )
+    )
+}).trigger("change")
+</script>
 {% endblock %}

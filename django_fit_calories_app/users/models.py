@@ -4,18 +4,19 @@ from datetime import datetime
 from PIL import Image
 from django.utils import timezone
 from django.core.validators import RegexValidator
+from django.forms.widgets import FileInput
 
 # Create your models here.
 
 
 class CustomUser(AbstractUser):
 
-    username_validator = RegexValidator(r'^[a-zA-Z0-9]+$', message='Псевдоним может состоять только из латинских символов и цифр')
+    username_validator = RegexValidator(r'^[a-zA-Z0-9_]+$', message='Псевдоним может состоять только из латинских символов, цифр и символа _')
     username = models.CharField(
         'Имя пользователя',
         max_length=150,
         unique=True,
-        help_text='Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.',
+        help_text='Обязательное поле. Не более 150 символов. Только буквы, цифры и символ _',
         validators=[username_validator],
         error_messages={
             'unique': 'Пользователь с таким именем уже существует.',
@@ -32,7 +33,7 @@ class CustomUser(AbstractUser):
     growth = models.IntegerField(default=0, verbose_name='Рост', help_text='Введите в сантиметрах')
     weight = models.FloatField(default=0, verbose_name='Вес', help_text='Введите в килограммах')
 
-    avatar = models.ImageField(default='default.png', upload_to='avatars/', blank=True, verbose_name='Аватар')
+    avatar = models.ImageField(default='default.png', upload_to='avatars/', verbose_name='Аватар',)
     low = 'Минимальный'
     weak = 'Слабый'
     mid = 'Умеренный'
@@ -47,11 +48,14 @@ class CustomUser(AbstractUser):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        if not self.avatar:
+            self.avatar = 'default.png'
         img = Image.open(self.avatar.path)
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.avatar.path)
+
 
 
 

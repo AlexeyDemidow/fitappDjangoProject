@@ -8,7 +8,7 @@
     <div class="register-page">
         <h3>Регистрация пользователя</h3>
         <div class="form">
-            <form class="register-form" method="post">
+            <form class="register-form" enctype="multipart/form-data" method="post">
             {% csrf_token %}
                 <input type="text" placeholder="Псевдоним" id={{ form.username }}
                 {% if form.username.errors  %}

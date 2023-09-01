@@ -59,9 +59,13 @@ def edit_profile(request, username):
         form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('profile', username=request.user.username)
+            return redirect('charts')
     else:
         form = CustomUserChangeForm(instance=user)
-    return render(request, 'edit_profile.html', {'form': form})
+    birth_date = str(user.birth_date)
+    context = {
+        'form': form, 'birth_date': birth_date,
+    }
+    return render(request, 'edit_profile.html', context)
 
 
