@@ -1,21 +1,20 @@
 {% extends "base.html" %}
 
+{% block title %}Импорт{% endblock %}
+
 {% block content %}
 <h1>Импортированные товары</h1>
-
 {% if imported_products %}
-
-<p>Товары добавлены!</p>
-<p>Количество добавленных товаров: {{ imported_products|length }}</p>
-<ul>
-    {% for product in imported_products %}
-    <li>{{ product.title }}</li>
-    {% endfor %}
-</ul>
+    <p>Товары добавлены!</p>
+    <p>Количество добавленных товаров: {{ imported_products|length }}</p>
+    <ul>
+        {% for product in imported_products %}
+        <li>{{ product.title }}</li>
+        {% endfor %}
+    </ul>
 {% else %}
-<p>Продукты еще не были добавлены.</p>
+    <p>Продукты еще не были добавлены.</p>
 {% endif %}
 <a href="{% url 'admin:index'  %}">Вернуться в админку</a>
-
 
 {% endblock %}

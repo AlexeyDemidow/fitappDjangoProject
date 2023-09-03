@@ -1,9 +1,9 @@
 from django.db import models
 from users.models import CustomUser
 from django.utils import timezone
-# Create your models here.
 
 
+# Модель категории в которую будет распределен продукт
 class Category(models.Model):
     options = (
         ('breakfast', 'breakfast'),
@@ -17,6 +17,7 @@ class Category(models.Model):
         return self.name
 
 
+# Модель еды
 class FoodItem(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название')
     category = models.ManyToManyField(Category, blank=True)
@@ -25,12 +26,13 @@ class FoodItem(models.Model):
     protein = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Белки')
     calorie = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, verbose_name='Калории')
     quantity = models.IntegerField(default=100, null=True, blank=True, verbose_name='Количество в граммах')
-    date = models.DateField(default=timezone.now, verbose_name='Дата')
 
     def __str__(self):
         return str(self.name)
 
 
+# Модель пользовательской еды, состоит из названия еды, к какому пользователю относится, к какой категории относится,
+# даты добавления и количества грамм
 class UserFoodItem(models.Model):
     customer = models.ManyToManyField(CustomUser)
     fooditem = models.ManyToManyField(FoodItem)
@@ -39,10 +41,12 @@ class UserFoodItem(models.Model):
     quantity = models.IntegerField(default=100, null=True, blank=True, verbose_name='Количество в граммах')
 
 
+# Модель выбора даты
 class ChooseDate(models.Model):
     c_date = models.DateField(default=timezone.now, verbose_name='Дата')
 
 
+# Модель трекера воды
 class WaterTracker(models.Model):
     customer = models.ManyToManyField(CustomUser)
     glass = models.IntegerField(default=1, null=True, blank=True, verbose_name='1 стакан = 250г воды')

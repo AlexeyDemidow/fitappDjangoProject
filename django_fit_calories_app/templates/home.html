@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}FITAPP{% endblock %}
+{% block title %}MYFITAPP{% endblock %}
 
 {% block content %}
+
     {% if user.is_authenticated %}
 
 <br>
@@ -18,7 +19,6 @@
 </div>
 <br>
 <div class="container">
-
     <div class="row">
         <div class="col-md-6" style="text-align: left">
             <br>
@@ -29,9 +29,10 @@
                 <h5>Количество калорий: {{user.calories_per_day}}</h5>
             {% endif %}
             <h5>Всего калорий употреблено: {{calorie_count_all}}</h5>
-            <h5>Осталось калорий: {{ CalorieLeft }}</h5>
+            <h5>Осталось калорий: {{ calorieleft }}</h5>
             <h5>Выпито за сегодня стаканов воды: {{ water_count }}</h5>
             <h5>(1 стакан = 250 мл)</h5>
+            <a href="{% url 'user_calc' %}"><input class="button" type="submit" value="Трекер калорий"></a>
         </div>
         <div class="col-md-6" style="text-align: center">
             Калораж на прием пищи
@@ -175,7 +176,7 @@
     {% else %}
 
         <div class="container_home">
-            <h1>FITAPP - это веб-приложение для подсчета калорий, трекер веса и трекер воды.</h1>
+            <h1>MYFITAPP - это веб-приложение для подсчета калорий, трекер веса и трекер воды.</h1>
 
             <div class="login-page">
                 <div class="form">

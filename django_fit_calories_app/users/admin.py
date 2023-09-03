@@ -5,11 +5,12 @@ from .forms import CustomUserCreationForm, CustomUserChangeFormAdmin
 from .models import CustomUser, Weighing
 
 
+# Модель пользователя в админ панели
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeFormAdmin
     model = CustomUser
-    list_display = ['username', 'email', 'gender', 'birth_date', 'growth', 'weight', 'avatar', 'activity',]
+    list_display = ['username', 'email', 'gender', 'birth_date', 'growth', 'weight', 'avatar', 'activity']
     list_filter = ['is_active', 'is_staff', 'gender']
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -29,5 +30,6 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('username',)
 
 
+# Разделы в админ панели
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Weighing)

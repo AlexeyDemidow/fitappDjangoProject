@@ -3,20 +3,27 @@
 {% block title %}Редактирование профиля{% endblock %}
 
 {% block content %}
-
-
     <div class="edit-page">
         <h2>Редактирование профиля</h2>
         <div class="form">
             <form class="edit-form" enctype="multipart/form-data" method="post">
             {% csrf_token %}
-                <input type="text" placeholder="Имя" id={{ form.username }}
+                <input type="text" placeholder="Псевдоним" id={{ form.username }}
+                <sup class="profile_message">Только латинские буквы, цифры и символ "_"</sup>
+                {% if form.username.errors  %}
+                    {% for error in form.username.errors %}
+                        <div class="alert alert-danger with-close alert-dismissible fade show">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <input type="email" placeholder="Адрес электронной почты" id={{ form.email }}
-                <sup class="profile_message">{{ form.gender.label_tag }}</sup>{{ form.gender }}
-                <sup class="profile_message">{{ form.birth_date.label_tag }}</sup><input type="date" placeholder="Дата рождения" value="{{ birth_date }}" id={{ form.birth_date }}
-                <sup class="profile_message">{{ form.growth.label_tag }}</sup><input type="number" value="{{ user.growth }}" placeholder="Рост" id={{ form.growth }}
-                <sup class="profile_message">{{ form.calories.label_tag }}, 0 - чтобы рассчитать автоматически</sup><input type="number" value="{{ user.calories }}" placeholder="Норма калорий, 0 - чтобы рассчитать автоматически" id={{ form.calories }}
-                <sup class="profile_message">{{ form.activity.label_tag }}</sup>
+                <sub class="profile_message">{{ form.gender.label_tag }}</sub>{{ form.gender }}
+                <sub class="profile_message">{{ form.birth_date.label_tag }}</sub><input type="date" placeholder="Дата рождения" value="{{ birth_date }}" id={{ form.birth_date }}
+                <sub class="profile_message">{{ form.growth.label_tag }}</sub><input type="number" value="{{ user.growth }}" placeholder="Рост, см" id={{ form.growth }}
+                <sub class="profile_message">{{ form.calories.label_tag }}</sub><input type="number" value="{{ user.calories }}" placeholder="Норма калорий, 0 - чтобы рассчитать автоматически" id={{ form.calories }}
+                <sup class="profile_message">Введите 0, чтобы рассчитать автоматически</sup><br>
+                <sub class="profile_message">{{ form.activity.label_tag }}</sub>
                 {{ form.activity }}
                 <ul class="activity_list">
                     <li>Минимальный. Для малоподвижных людей, тренировок мало или они отсутствуют</li>
@@ -26,7 +33,6 @@
                     <li>Экстремальный. Для предельно активных людей: тяжелая физическая работа и интенсивные тренировки/занятия спортом.</li>
                 </ul>
                 <sup class="profile_message">{{ form.avatar.label }}</sup><br>
-<!--                <input type="file" placeholder="Аватар" id={{ form.avatar }}-->
                 <div class="profile_message">{{ form.avatar }}</div>
                 {% if form.username.errors %}
                         {% for error in form.username.errors %}

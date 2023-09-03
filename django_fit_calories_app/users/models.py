@@ -3,23 +3,34 @@ from django.contrib.auth.models import AbstractUser
 from datetime import datetime
 from PIL import Image
 from django.utils import timezone
-from django.core.validators import RegexValidator
-from django.forms.widgets import FileInput
+from django.core.validators import RegexValidator, MinValueValidator, EmailValidator
+from django.db import IntegrityError
 
-# Create your models here.
-
-
+# Модель пользователя
 class CustomUser(AbstractUser):
 
-    username_validator = RegexValidator(r'^[a-zA-Z0-9_]+$', message='Псевдоним может состоять только из латинских символов, цифр и символа _')
+    username_validator = RegexValidator(
+        r'^[a-zA-Z0-9_]+$',
+        message='Псевдоним может состоять только из латинских символов, цифр и символа _'
+    )
+
     username = models.CharField(
-        'Имя пользователя',
+        'Псевдоним',
         max_length=150,
         unique=True,
         help_text='Обязательное поле. Не более 150 символов. Только буквы, цифры и символ _',
         validators=[username_validator],
         error_messages={
-            'unique': 'Пользователь с таким именем уже существует.',
+            'unique': 'Пользователь с таким псевдонимом уже существует.',
+        },
+    )
+
+    email = models.EmailField(
+        'Адрес электронной почты',
+        unique=True,
+        validators=[EmailValidator],
+        error_messages={
+            'unique': 'Этот адрес электронной почты занят.',
         },
     )
 
@@ -27,25 +38,61 @@ class CustomUser(AbstractUser):
     woman = 'Женский'
     gender_list = [(man, 'Мужской'), (woman, 'Женский')]
     gender = models.CharField(max_length=10, choices=gender_list, default=man, verbose_name='Пол')
-    birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения',
-                                  help_text='Введите в формате ДД.ММ.ГГГГ')
 
-    growth = models.IntegerField(default=0, verbose_name='Рост', help_text='Введите в сантиметрах')
-    weight = models.FloatField(default=0, verbose_name='Вес', help_text='Введите в килограммах')
+    birth_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name='Дата рождения',
+        help_text='Введите в формате ДД.ММ.ГГГГ',
+    )
+
+    growth_validator = MinValueValidator(0, message='Рост не может быть отрицательным')
+    growth = models.IntegerField(
+        default=0,
+        verbose_name='Рост',
+        help_text='Введите в сантиметрах',
+        validators=[growth_validator],
+    )
+
+    weight_validator = MinValueValidator(0, message='Вес не может быть отрицательным')
+    weight = models.FloatField(
+        default=0,
+        verbose_name='Вес',
+        help_text='Введите в килограммах',
+        validators=[weight_validator],
+    )
 
     avatar = models.ImageField(default='default.png', upload_to='avatars/', verbose_name='Аватар',)
+
     low = 'Минимальный'
     weak = 'Слабый'
     mid = 'Умеренный'
     high = 'Тяжелый'
     extreme = 'Экстремальный'
-    activity_list = [(low, 'Минимальный'), (weak, 'Слабый'), (mid, 'Умеренный'), (high, 'Тяжелый'),
-                     (extreme, 'Экстремальный')]
-    activity = models.CharField(max_length=100, choices=activity_list, default=low, verbose_name='Уровень активности',
-                                help_text='Выберите ваш уровень активности.')
-    calories = models.IntegerField(default=0, verbose_name='Количество калорий в день', help_text='Введите 0 чтобы рассчитать автоматически')
+    activity_list = [
+        (low, 'Минимальный'),
+        (weak, 'Слабый'),
+        (mid, 'Умеренный'),
+        (high, 'Тяжелый'),
+        (extreme, 'Экстремальный'),
+    ]
+    activity = models.CharField(
+        max_length=100,
+        choices=activity_list,
+        default=low,
+        verbose_name='Уровень активности',
+        help_text='Выберите ваш уровень активности.',
+    )
 
+    calories_validator = MinValueValidator(0, message='Калораж не может быть отрицательным')
+    calories = models.IntegerField(
+        default=0,
+        verbose_name='Количество калорий в день',
+        help_text='Введите 0 чтобы рассчитать автоматически',
+        validators=[calories_validator],
+    )
 
+    # Функция сохранения профиля
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if not self.avatar:
@@ -56,50 +103,43 @@ class CustomUser(AbstractUser):
             img.thumbnail(output_size)
             img.save(self.avatar.path)
 
-
-
-
-    def calories_per_day(user):
+    # Вычисление нормы калорий в день
+    def calories_per_day(self):
         today = datetime.now().date()
-        age = today.year - user.birth_date.year - ((today.month, today.day) < (user.birth_date.month,
-                                                                               user.birth_date.day))
+        age = today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month,
+                                                                               self.birth_date.day))
+        result_m = ((10 * int(self.weight)) + (6.25 * int(self.growth)) - (5 * int(age)) + 5)
+        result_w = ((10 * int(self.weight)) + (6.25 * int(self.growth)) - (5 * int(age)) - 161)
 
-        if user.gender == 'Мужской':
-            if user.activity == 'Минимальный':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) + 5) * 1.2
-                return round(result)
-            if user.activity == 'Слабый':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) + 5) * 1.375
-                return round(result)
-            if user.activity == 'Умеренный':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) + 5) * 1.55
-                return round(result)
-            if user.activity == 'Тяжелый':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) + 5) * 1.7
-                return round(result)
-            if user.activity == 'Экстремальный':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) + 5) * 1.9
-                return round(result)
+        if self.gender == 'Мужской':
+            if self.activity == self.low:
+                result_m *= 1.2
+            if self.activity == self.weak:
+                result_m *= 1.375
+            if self.activity == self.mid:
+                result_m *= 1.55
+            if self.activity == self.high:
+                result_m *= 1.7
+            if self.activity == self.extreme:
+                result_m *= 1.9
+            return round(result_m)
 
-        if user.gender == 'Женский':
-            if user.activity == 'Минимальный':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) - 161) * 1.2
-                return round(result)
-            if user.activity == 'Слабый':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) - 161) * 1.375
-                return round(result)
-            if user.activity == 'Умеренный':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) - 161) * 1.55
-                return round(result)
-            if user.activity == 'Тяжелый':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) - 161) * 1.7
-                return round(result)
-            if user.activity == 'Экстремальный':
-                result = ((10 * int(user.weight)) + (6.25 * int(user.growth)) - (5 * int(age)) - 161) * 1.9
-                return round(result)
+        if self.gender == 'Женский':
+            if self.activity == self.low:
+                result_w *= 1.2
+            if self.activity == self.weak:
+                result_w *= 1.375
+            if self.activity == self.mid:
+                result_w *= 1.55
+            if self.activity == self.high:
+                result_w *= 1.7
+            if self.activity == self.extreme:
+                result_w *= 1.9
+            return round(result_w)
 
-    def body_mass_ratio(user):
-        result = int(user.weight) / (int(user.growth) / 100) ** 2
+    # Вычисление коэффициента массы тела
+    def body_mass_ratio(self):
+        result = int(self.weight) / (int(self.growth) / 100) ** 2
         text_result = None
         if result <= 16:
             text_result = 'Выраженный дефицит массы тела'
@@ -118,7 +158,7 @@ class CustomUser(AbstractUser):
         return round(result, 2), text_result
 
 
-
+# Модель отвечающая за взвешивание пользователя
 class Weighing(models.Model):
     weighing_date = models.DateField(default=timezone.now, verbose_name='Дата взвешивания')
     weight_value = models.FloatField(default=0, verbose_name='Вес', help_text='Введите в килограммах')

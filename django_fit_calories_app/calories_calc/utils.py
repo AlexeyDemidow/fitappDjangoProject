@@ -1,9 +1,8 @@
 import csv
-import os
-from django.core.files.base import ContentFile
-from django.core.files import File
 from .models import FoodItem
 
+
+# Импорт еды из CSV-файла
 def import_products_from_csv(csv_file):
     reader = csv.DictReader(csv_file.read().decode('utf-8').splitlines(), delimiter=';')
     for row in reader:

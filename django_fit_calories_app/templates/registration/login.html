@@ -9,6 +9,11 @@
           {% csrf_token %}
           <input type="text" placeholder="Псевдоним" id={{ form.username }}
           <input type="password" placeholder="Пароль" id={{ form.password }}
+            {% if form.errors %}
+                <div class="alert alert-danger with-close alert-dismissible fade show">
+                    Имя пользователя или пароль введены неверно
+                </div>
+            {% endif %}
           <p class="message">Не зарегистрированы? <a href="{% url 'signup' %}">Создать аккаунт</a></p>
           <button type="submit">Войти</button>
           <p class="message"><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>

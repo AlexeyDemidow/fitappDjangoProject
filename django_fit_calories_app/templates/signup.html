@@ -7,10 +7,12 @@
 
     <div class="register-page">
         <h3>Регистрация пользователя</h3>
+        <p>Поля помеченные * обязательны для заполнения</p>
         <div class="form">
             <form class="register-form" enctype="multipart/form-data" method="post">
             {% csrf_token %}
-                <input type="text" placeholder="Псевдоним" id={{ form.username }}
+                <input type="text" placeholder="Псевдоним*" id={{ form.username }}
+                <sup class="profile_message">Только латинские буквы, цифры и символ "_"</sup>
                 {% if form.username.errors  %}
                     {% for error in form.username.errors %}
                         <div class="alert alert-danger with-close alert-dismissible fade show">
@@ -18,13 +20,43 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-                <input type="email" placeholder="Адрес электронной почты" id={{ form.email }}
-                <sup class="profile_message">{{ form.gender.label_tag }}</sup>{{ form.gender }}
-                <sup class="profile_message">{{ form.birth_date.label_tag }}</sup><input type="date" value="Дата рождения" placeholder="Дата рождения" id={{ form.birth_date }}
-                <input type="number" value="" placeholder="Рост" id={{ form.growth }}
-                <input type="number" value="" placeholder="Вес" id={{ form.weight }}
-                <input type="number" value="" placeholder="Норма калорий, 0 - чтобы рассчитать автоматически" id={{ form.calories }}
-                <sup class="profile_message">{{ form.activity.label_tag }}</sup>
+                <input type="email" placeholder="Адрес электронной почты*" id={{ form.email }}
+                {% if form.email.errors  %}
+                    {% for error in form.email.errors %}
+                        <div class="alert alert-danger with-close alert-dismissible fade show">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <sub class="profile_message">{{ form.gender.label }}*</sub>{{ form.gender }}
+                <sub class="profile_message">{{ form.birth_date.label }}*</sub><input type="date" value="Дата рождения" placeholder="Дата рождения" id={{ form.birth_date }}
+                 <br>
+                <input type="number" value="" placeholder="Рост, см*" id={{ form.growth }}
+                {% if form.growth.errors  %}
+                    {% for error in form.growth.errors %}
+                        <div class="alert alert-danger with-close alert-dismissible fade show">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <input type="number" value="" placeholder="Вес, кг*" id={{ form.weight }}
+                {% if form.weight.errors  %}
+                    {% for error in form.weight.errors %}
+                        <div class="alert alert-danger with-close alert-dismissible fade show">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <input type="number" value="" placeholder="Норма калорий*" id={{ form.calories }}
+                {% if form.calories.errors  %}
+                    {% for error in form.calories.errors %}
+                        <div class="alert alert-danger with-close alert-dismissible fade show">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <sup class="profile_message">Введите 0, чтобы рассчитать автоматически</sup><br>
+                <sub class="profile_message">{{ form.activity.label}}*</sub>
                 {{ form.activity }}
             <ul class="activity_list">
                 <li>Минимальный. Для малоподвижных людей, тренировок мало или они отсутствуют</li>
@@ -33,11 +65,10 @@
                 <li>Тяжелый. Для очень активных людей: физическая работа полный день или интенсивные тренировки 6-7 раз в неделю.</li>
                 <li>Экстремальный. Для предельно активных людей: тяжелая физическая работа и интенсивные тренировки/занятия спортом.</li>
             </ul>
-                <sup class="profile_message">{{ form.avatar.label_tag }}</sup>
+                <sup class="profile_message">{{ form.avatar.label }}</sup>
                 {{ form.avatar }}
-                <input type="password1" placeholder="Введите пароль" id={{ form.password1 }}
-                <input type="password2" placeholder="Повторите пароль" id={{ form.password2 }}
-
+                <input type="password" placeholder="Введите пароль*" id={{ form.password1 }}
+                <input type="password" placeholder="Повторите пароль*" id={{ form.password2 }}
             <ul class="activity_list">
                 <li>Пароль не должен быть слишком похож на другую вашу личную информацию.</li>
                 <li>Ваш пароль должен содержать как минимум 8 символов.</li>
@@ -51,7 +82,6 @@
                     </div>
                 {% endfor %}
             {% endif %}
-
             <button type="submit">Зарегистрироваться</button>
                 <p class="message">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
             </form>
