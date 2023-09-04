@@ -15,4 +15,5 @@ class FoodAdmin(admin.ModelAdmin):
 # Разделы в админ панели
 admin.site.register(UserFoodItem)
 admin.site.register(WaterTracker)
+admin.site.register(Category)
 admin.site.register(FoodItem, FoodAdmin)
