@@ -77,7 +77,12 @@ class ChooseDateForm(ModelForm):
 
     class Meta:
         model = ChooseDate
-        fields = ['c_date']
+        fields = ['c_date', 'customer']
+
+    # Заполнение полей по умолчанию
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
 
 
 # Форма трекера воды

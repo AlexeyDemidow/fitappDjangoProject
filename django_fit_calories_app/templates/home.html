@@ -4,54 +4,53 @@
 {% block title %}MYFITAPP{% endblock %}
 
 {% block content %}
-
     {% if user.is_authenticated %}
-
-<br>
-<div class="container" style="text-align: center">
-    <h2 >Ваша статистика за {{ main_date }}</h2>
-    <form action="" method="POST">
-        {% csrf_token %}
-        Выбрать дату
-        <input type="date" id="{{ form_ch.c_date }}
-        <input type="submit" class="button" value="Выбрать">
-    </form>
-</div>
-<br>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6" style="text-align: left">
-            <br>
-            <h5>Количество употребленных продуктов: {{cnt}}</h5>
-            {% if user.calories > 0 %}
-                <h5>Количество калорий: {{user.calories}}</h5>
-            {% else %}
-                <h5>Количество калорий: {{user.calories_per_day}}</h5>
-            {% endif %}
-            <h5>Всего калорий употреблено: {{calorie_count_all}}</h5>
-            <h5>Осталось калорий: {{ calorieleft }}</h5>
-            <h5>Выпито за сегодня стаканов воды: {{ water_count }}</h5>
-            <h5>(1 стакан = 250 мл)</h5>
-            <a href="{% url 'user_calc' %}"><input class="button" type="submit" value="Трекер калорий"></a>
-        </div>
-        <div class="col-md-6" style="text-align: center">
-            Калораж на прием пищи
-            <canvas id="chart_calories"></canvas>
+    <br>
+    <div class="container" style="text-align: center">
+        <h2 >Ваша статистика за {{ main_date }}</h2>
+        <form action="" method="POST">
+            {% csrf_token %}
+            Выбрать дату
+            <input type="date" id="{{ form_ch.c_date }}
+            <div style="display: none">{{ form_ch.customer }}</div>
+            <input type="submit" class="button" value="Выбрать">
+        </form>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" style="text-align: left">
+                <br>
+                <h5>Количество употребленных продуктов: {{cnt}}</h5>
+                {% if user.calories > 0 %}
+                    <h5>Количество калорий: {{user.calories}}</h5>
+                {% else %}
+                    <h5>Количество калорий: {{user.calories_per_day}}</h5>
+                {% endif %}
+                <h5>Всего калорий употреблено: {{calorie_count_all}}</h5>
+                <h5>Осталось калорий: {{ calorieleft }}</h5>
+                <h5>Выпито за сегодня стаканов воды: {{ water_count }}</h5>
+                <h5>(1 стакан = 250 мл)</h5>
+                <a href="{% url 'user_calc' %}"><input class="button" type="submit" value="Трекер калорий"></a>
+            </div>
+            <div class="col-md-6" style="text-align: center">
+                Калораж на прием пищи
+                <canvas id="chart_calories"></canvas>
+            </div>
         </div>
     </div>
-</div>
-<br>
+    <br>
     <div class="container" style="text-align: center">
-      <div class="row">
-        <div class="col-md-6">
-            Содержание нутриентов в завтраке
-            <canvas id="chart_breakfast"></canvas>
+        <div class="row">
+            <div class="col-md-6">
+                Содержание нутриентов в завтраке
+                <canvas id="chart_breakfast"></canvas>
+            </div>
+            <div class="col-md-6">
+                Содержание нутриентов в обеде
+                <canvas id="chart_dinner"></canvas>
+            </div>
         </div>
-        <div class="col-md-6">
-            Содержание нутриентов в обеде
-            <canvas id="chart_dinner"></canvas>
-        </div>
-      </div>
         <div class="row">
             <div class="col-md-6">
                 Содержание нутриентов в ужине
@@ -62,134 +61,130 @@
                 <canvas id="chart_snacks"></canvas>
             </div>
         </div>
-
     </div>
-<br>
+<!---------------------------Диаграммы---------------------------------------->
+    <script>
+        var br_config = {
+          type: 'pie',
+          data: {
+            datasets: [{
+              data: {{ data_breakfast|safe }},
+              backgroundColor: [
+                '#3d2e2e', '#514d4d', '#6b6666'
+              ],
+              label: 'Breakfast'
+            }],
+            labels: {{ food_nutrients_labels|safe }}
+          },
+          options: {
+            responsive: true
+          }
+        };
 
-        <script>
-            var br_config = {
-              type: 'pie',
-              data: {
-                datasets: [{
-                  data: {{ data_breakfast|safe }},
-                  backgroundColor: [
-                    '#3d2e2e', '#514d4d', '#6b6666'
-                  ],
-                  label: 'Breakfast'
-                }],
-                labels: {{ food_nutrients_labels|safe }}
-              },
-              options: {
-                responsive: true
-              }
-            };
+        var lu_config = {
+          type: 'pie',
+          data: {
+            datasets: [{
+              data: {{ data_lunch|safe }},
+              backgroundColor: [
+                '#3d2e2e', '#514d4d', '#6b6666'
+              ],
+              label: 'Lunch'
+            }],
+            labels: {{ food_nutrients_labels|safe }}
+          },
+          options: {
+            responsive: true
+          }
+        };
 
-            var lu_config = {
-              type: 'pie',
-              data: {
-                datasets: [{
-                  data: {{ data_lunch|safe }},
-                  backgroundColor: [
-                    '#3d2e2e', '#514d4d', '#6b6666'
-                  ],
-                  label: 'Lunch'
-                }],
-                labels: {{ food_nutrients_labels|safe }}
-              },
-              options: {
-                responsive: true
-              }
-            };
+        var di_config = {
+          type: 'pie',
+          data: {
+            datasets: [{
+              data: {{ data_dinner|safe }},
+              backgroundColor: [
+                '#3d2e2e', '#514d4d', '#6b6666'
+              ],
+              label: 'Dinner'
+            }],
+            labels: {{ food_nutrients_labels|safe }}
+          },
+          options: {
+            responsive: true
+          }
+        };
 
-            var di_config = {
-              type: 'pie',
-              data: {
-                datasets: [{
-                  data: {{ data_dinner|safe }},
-                  backgroundColor: [
-                    '#3d2e2e', '#514d4d', '#6b6666'
-                  ],
-                  label: 'Dinner'
-                }],
-                labels: {{ food_nutrients_labels|safe }}
-              },
-              options: {
-                responsive: true
-              }
-            };
+        var sn_config = {
+          type: 'pie',
+          data: {
+            datasets: [{
+              data: {{ data_snacks|safe }},
+              backgroundColor: [
+                '#3d2e2e', '#514d4d', '#6b6666'
+              ],
+              label: 'Snacks'
+            }],
+            labels: {{ food_nutrients_labels|safe }}
+          },
+          options: {
+            responsive: true
+          }
+        };
 
-            var sn_config = {
-              type: 'pie',
-              data: {
-                datasets: [{
-                  data: {{ data_snacks|safe }},
-                  backgroundColor: [
-                    '#3d2e2e', '#514d4d', '#6b6666'
-                  ],
-                  label: 'Snacks'
-                }],
-                labels: {{ food_nutrients_labels|safe }}
-              },
-              options: {
-                responsive: true
-              }
-            };
+        var cal_config = {
+          type: 'bar',
+          data: {
+            datasets: [{
+              data: {{ food_category_data|safe }},
+              backgroundColor: [
+                '#bababa', '#a1a1a1', '#878787', '#878787'
+              ],
+              label: 'Калории'
+            }],
+            labels: {{ food_category_labels|safe }}
+          },
+          options: {
+            responsive: true,
+            legend: {
+                display: false
+            }
+          }
+        };
 
-            var cal_config = {
-              type: 'bar',
-              data: {
-                datasets: [{
-                  data: {{ food_category_data|safe }},
-                  backgroundColor: [
-                    '#bababa', '#a1a1a1', '#878787', '#878787'
-                  ],
-                  label: 'Калории'
-                }],
-                labels: {{ food_category_labels|safe }}
-              },
-              options: {
-                responsive: true,
-                legend: {
-                    display: false
-                }
-              }
-            };
+        window.onload = function() {
+          var br = document.getElementById('chart_breakfast').getContext('2d');
+          window.myPie = new Chart(br, br_config);
 
-            window.onload = function() {
-              var br = document.getElementById('chart_breakfast').getContext('2d');
-              window.myPie = new Chart(br, br_config);
+          var lu = document.getElementById('chart_lunch').getContext('2d');
+          window.myPie = new Chart(lu, lu_config);
 
-              var lu = document.getElementById('chart_lunch').getContext('2d');
-              window.myPie = new Chart(lu, lu_config);
+          var di = document.getElementById('chart_dinner').getContext('2d');
+          window.myPie = new Chart(di, di_config);
 
-              var di = document.getElementById('chart_dinner').getContext('2d');
-              window.myPie = new Chart(di, di_config);
+          var sn = document.getElementById('chart_snacks').getContext('2d');
+          window.myPie = new Chart(sn, sn_config);
 
-              var sn = document.getElementById('chart_snacks').getContext('2d');
-              window.myPie = new Chart(sn, sn_config);
-
-              var cal = document.getElementById('chart_calories').getContext('2d');
-              window.myPie = new Chart(cal, cal_config);
-            };
-        </script>
-            <!------------------------------------------------------------------->
+          var cal = document.getElementById('chart_calories').getContext('2d');
+          window.myPie = new Chart(cal, cal_config);
+        };
+    </script>
+<!------------------------------------------------------------------->
     {% else %}
-
         <div class="container_home">
             <h1>MYFITAPP - это веб-приложение для подсчета калорий, трекер веса и трекер воды.</h1>
-
             <div class="login-page">
                 <div class="form">
                     <p class="home_message">Вы не авторизированы. Нажмите "Войти" чтобы войти и "Регистрация" чтобы зарегистрироваться.</p>
                     <form action="{% url 'login' %}">
-                       <button type="submit">Войти</button>
+                         <button type="submit">Войти</button>
                     </form>
                     <br>
                     <form action="{% url 'signup'%}">
-                       <button type="submit">Регистрация</button>
+                         <button type="submit">Регистрация</button>
                     </form>
                 </div>
+            </div>
         </div>
-
     {% endif %}
 {% endblock %}

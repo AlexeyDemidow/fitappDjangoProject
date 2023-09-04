@@ -5,111 +5,110 @@
 {% block content %}
     {% csrf_token %}
     <br>
-<div class="container">
-    <h3>{{ main_date }}</h3>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <input type="date" id="{{ form_ch.c_date }}
-        <input type="submit" class="button" value="Выбрать">
-    </form>
-</div>
+    <div class="container"><!-------Выбор даты------->
+        <h3>{{ main_date }}</h3>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="date" id="{{ form_ch.c_date }}
+            <div style="display: none">{{ form_ch.customer }}</div>
+            <input type="submit" class="button" value="Выбрать">
+        </form>
+    </div>
     <br>
-<div class="container" style="text-align: center">
-
-    <button class="button" name="add_water" data-toggle="modal" data-target="#myModal_water">Трекер воды</button>
-
-    <button class="button" name="add_food" data-toggle="modal" data-target="#myModal_addfood">Добавить свою еду</button>
-
-</div>
-<br>
-<div class="modal fade" id="myModal_water"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Добавить воды</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="text-align: center">
-                Сегодня выпито воды: {{water_count}} стаканов.
-                <br>
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <div style="display: none">{{form_drink.customer}}</div>
-                    <div style="display: none">{{form_drink.drink_date}}</div><br>
-                    <div class="number" style="text-align: center">
-                        <button class="number-minus" type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.onchange();">-</button>
-                        <input type="number" min="0" value="{{form_drink.glass}}
-                        <button class="number-plus" type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.onchange();">+</button>
-                    </div>
-                    <br>
-                    <br>
-                    <input type="submit" class="button" value="Добавить воды">
-                </form>
-            </div>
-        </div>
+    <div class="container" style="text-align: center"><!-------Трекер воды------->
+        <button class="button" name="add_water" data-toggle="modal" data-target="#myModal_water">Трекер воды</button>
+        <button class="button" name="add_food" data-toggle="modal" data-target="#myModal_addfood">Добавить свою еду</button>
     </div>
-</div>
-<div class="modal fade" id="myModal_addfood"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Добавить свою еду</сво></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form" style="box-shadow: None;">
-                    <form action="" method="POST">
-                        {% csrf_token %}
-                        <input type="text" placeholder="Название" id={{create_food_item_form.name}}
-                        <input type="number" value="" placeholder="Содержание калорий" id={{create_food_item_form.calorie}}
-                        <input type="number" value="" placeholder="Содержание белка" id={{create_food_item_form.protein}}
-                        <input type="number" value="" placeholder="Содержание жиров" id={{create_food_item_form.fats}}
-                        <input type="number" value="" placeholder="Содержание углеводов" id={{create_food_item_form.carbohydrate}}
-                        <input type="number" value="" placeholder="Вес" id={{create_food_item_form.quantity}}
-                        <button type="submit">Добавить</button>
-                    </form>
+    <br>
+    <div class="modal fade" id="myModal_water"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Добавить воды</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="myModal_breakfast"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Добавить к завтраку</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="text-align: center">
-                <div class="form" style="box-shadow: None;">
+                <div class="modal-body" style="text-align: center">
+                    Сегодня выпито воды: {{water_count}} стаканов.
+                    <br>
                     <form action="" method="POST">
                         {% csrf_token %}
-                        <div style="display: none">{{form_br.customer.name}}{{form_br.customer}}</div>
-                        {{form_br.fooditem}}
-                        <input type="number" value="100" placeholder="Количество в граммах" id={{form_br.quantity}}
+                        <div style="display: none">{{form_drink.customer}}</div>
+                        <div style="display: none">{{form_drink.drink_date}}</div><br>
+                        <div class="number" style="text-align: center">
+                            <button class="number-minus" type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.onchange();">-</button>
+                            <input type="number" min="0" value="{{form_drink.glass}}
+                            <button class="number-plus" type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.onchange();">+</button>
+                        </div>
                         <br>
-                        <div style="display: none">{{form_br.add_date}}</div>
-                        <div style="display: none">{{form_br.category.name}}{{form_br.category}}</div>
-                        <button type="submit">Добавить</button>
+                        <br>
+                        <input type="submit" class="button" value="Добавить воды">
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="container">
-    <h5 id="heading">Завтрак</h5>
-<h7>Всего продуктов:{{bcnt}}</h7>
-
-
-    <div class="table-responsive" style="transform: scale(1)">
-        <table class="table table-sm">
+    <!-------Добавление своей еды--------->
+    <div class="modal fade" id="myModal_addfood"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Добавить свою еду</сво></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form" style="box-shadow: None;">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <input type="text" placeholder="Название" id={{create_food_item_form.name}}
+                            <input type="number" value="" placeholder="Содержание калорий" id={{create_food_item_form.calorie}}
+                            <input type="number" value="" placeholder="Содержание белка" id={{create_food_item_form.protein}}
+                            <input type="number" value="" placeholder="Содержание жиров" id={{create_food_item_form.fats}}
+                            <input type="number" value="" placeholder="Содержание углеводов" id={{create_food_item_form.carbohydrate}}
+                            <input type="number" value="" placeholder="Вес" id={{create_food_item_form.quantity}}
+                            <button type="submit">Добавить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-------Добавить еду к завтраку------->
+    <div class="modal fade" id="myModal_breakfast"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Добавить к завтраку</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    <div class="form" style="box-shadow: None;">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div style="display: none">{{form_br.customer.name}}{{form_br.customer}}</div>
+                            {{form_br.fooditem}}
+                            <input type="number" value="100" placeholder="Количество в граммах" id={{form_br.quantity}}
+                            <br>
+                            <div style="display: none">{{form_br.add_date}}</div>
+                            <div style="display: none">{{form_br.category.name}}{{form_br.category}}</div>
+                            <button type="submit">Добавить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-------Таблица завтрака------->
+    <div class="container">
+        <h5 id="heading">Завтрак</h5>
+        <h7>Всего продуктов:{{bcnt}}</h7>
+        <div class="table-responsive" style="transform: scale(1)">
+            <table class="table table-sm">
                 <tr class="foodtable">
                     <th class="foodtable_th">Название продукта</th>
                     <th class="foodtable_th">Калорийность</th>
@@ -144,241 +143,244 @@
                     <td class="foodtable_td">{{ quantity_count_br }}</td>
                     <td class="foodtable_td"><button type="button" class="button_pm" name="add_to_breakfast" data-toggle="modal" data-target="#myModal_breakfast"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
                 </tr>
-        </table>
-    </div>
-</div>
-    <br>
-    <!-------------------------------------->
-<div class="modal fade" id="myModal_lunch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Добавить к обеду</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="text-align: center">
-                <div class="form" style="box-shadow: None;">
-                    <form action="" method="POST">
-                        {% csrf_token %}
-                        <div style="display: none">{{form_lu.customer.name}}{{form_lu.customer}}</div>
-                        {{form_lu.fooditem}}
-                        <input type="number" value="100" placeholder="Количество в граммах" id={{form_lu.quantity}}
-                        <div style="display: none">{{form_lu.add_date}}</div>
-                        <div style="display: none">{{form_lu.category.name}}{{form_lu.category}}</div>
-                        <button type="submit">Добавить</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="flex-box-row">
-        <h5 id="heading">Обед</h5>
-        <h7>Всего продуктов:{{lcnt}}</h7>
-
-        <div class="table-responsive" style="transform: scale(1)">
-            <table class="table table-sm">
-                <tr class="foodtable">
-                    <th class="foodtable_th">Название продукта</th>
-                    <th class="foodtable_th">Калорийность</th>
-                    <th class="foodtable_th">Белки</th>
-                    <th class="foodtable_th">Жиры</th>
-                    <th class="foodtable_th">Углеводы</th>
-                    <th class="foodtable_th">Масса</th>
-                    <th class="foodtable_th"></th>
-                </tr>
-                {% for item_id in lunch_view_dict.items %}
-                    <tr class="foodtable">
-                        <td class="foodtable_td">{{item_id.01.name}} </td>
-                        <td class="foodtable_td">{{item_id.1.calorie}} </td>
-                        <td class="foodtable_td">{{item_id.1.protein}} </td>
-                        <td class="foodtable_td">{{item_id.1.fats}} </td>
-                        <td class="foodtable_td">{{item_id.1.carbohydrate}} </td>
-                        <td class="foodtable_td">{{item_id.1.quantity}} </td>
-                        <td class="foodtable_td_delete">
-                            <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-                <tr class="foodtable_end">
-                    <td class="foodtable_td">Итого</td>
-                    <td class="foodtable_td">{{ calorie_count_lu }}</td>
-                    <td class="foodtable_td">{{ protein_count_lu }}</td>
-                    <td class="foodtable_td">{{ fats_count_lu }}</td>
-                    <td class="foodtable_td">{{ carbohydrate_count_lu }}</td>
-                    <td class="foodtable_td">{{ quantity_count_lu }}</td>
-                    <td class="foodtable_td"><button type="button" class="button_pm" name="add_to_lunch" data-toggle="modal" data-target="#myModal_lunch"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
-                </tr>
             </table>
         </div>
     </div>
-</div>
     <br>
-    <!-------------------------------------->
-        <div class="modal fade" id="myModal_dinner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel">Добавить к ужину</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="text-align: center">
-                        <div class="form" style="box-shadow: None;">
-                            <form action="" method="POST">
-                                {% csrf_token %}
-                                <div style="display: none">{{form_di.customer.name}}{{form_di.customer}}</div>
-                                {{form_di.fooditem}}
-                                <input type="number" value="100" placeholder="Количество в граммах" id={{form_di.quantity}}
-                                <div style="display: none">{{form_di.add_date}}</div>
-                                <div style="display: none">{{form_di.category.name}}{{form_di.category}}</div>
-                                <button type="submit">Добавить</button>
-                            </form>
-                        </div>
+    <!-----------------Добавить еду к обеду--------------------->
+    <div class="modal fade" id="myModal_lunch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Добавить к обеду</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    <div class="form" style="box-shadow: None;">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div style="display: none">{{form_lu.customer.name}}{{form_lu.customer}}</div>
+                            {{form_lu.fooditem}}
+                            <input type="number" value="100" placeholder="Количество в граммах" id={{form_lu.quantity}}
+                            <div style="display: none">{{form_lu.add_date}}</div>
+                            <div style="display: none">{{form_lu.category.name}}{{form_lu.category}}</div>
+                            <button type="submit">Добавить</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
-<div class="container">
-    <div class="flex-box-row">
-        <h5 id="heading">Ужин</h5>
-        <h7>Всего продуктов:{{dcnt}}</h7>
-
-        <div class="table-responsive" style="transform: scale(1)">
-            <table class="table table-sm">
-                <tr class="foodtable">
-                    <th class="foodtable_th">Название продукта</th>
-                    <th class="foodtable_th">Калорийность</th>
-                    <th class="foodtable_th">Белки</th>
-                    <th class="foodtable_th">Жиры</th>
-                    <th class="foodtable_th">Углеводы</th>
-                    <th class="foodtable_th">Масса</th>
-                    <th class="foodtable_th"></th>
-                </tr>
-                {% for item_id in dinner_view_dict.items %}
-                    <tr class="foodtable">
-                        <td class="foodtable_td">{{item_id.01.name}} </td>
-                        <td class="foodtable_td">{{item_id.1.calorie}} </td>
-                        <td class="foodtable_td">{{item_id.1.protein}} </td>
-                        <td class="foodtable_td">{{item_id.1.fats}} </td>
-                        <td class="foodtable_td">{{item_id.1.carbohydrate}} </td>
-                        <td class="foodtable_td">{{item_id.1.quantity}} </td>
-                        <td class="foodtable_td_delete">
-                            <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-                <tr class="foodtable_end">
-                    <td class="foodtable_td">Итого</td>
-                    <td class="foodtable_td">{{ calorie_count_di }}</td>
-                    <td class="foodtable_td">{{ protein_count_di }}</td>
-                    <td class="foodtable_td">{{ fats_count_di }}</td>
-                    <td class="foodtable_td">{{ carbohydrate_count_di }}</td>
-                    <td class="foodtable_td">{{ quantity_count_di }}</td>
-                    <td class="foodtable_td"><button type="button" class="button_pm" name="add_to_dinner" data-toggle="modal" data-target="#myModal_dinner"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
-                </tr>
-            </table>
         </div>
     </div>
-</div>
+    <!-----------------Таблица обеда--------------------->
+    <div class="container">
+        <div class="flex-box-row">
+            <h5 id="heading">Обед</h5>
+            <h7>Всего продуктов:{{lcnt}}</h7>
+            <div class="table-responsive" style="transform: scale(1)">
+                <table class="table table-sm">
+                    <tr class="foodtable">
+                        <th class="foodtable_th">Название продукта</th>
+                        <th class="foodtable_th">Калорийность</th>
+                        <th class="foodtable_th">Белки</th>
+                        <th class="foodtable_th">Жиры</th>
+                        <th class="foodtable_th">Углеводы</th>
+                        <th class="foodtable_th">Масса</th>
+                        <th class="foodtable_th"></th>
+                    </tr>
+                    {% for item_id in lunch_view_dict.items %}
+                        <tr class="foodtable">
+                            <td class="foodtable_td">{{item_id.01.name}} </td>
+                            <td class="foodtable_td">{{item_id.1.calorie}} </td>
+                            <td class="foodtable_td">{{item_id.1.protein}} </td>
+                            <td class="foodtable_td">{{item_id.1.fats}} </td>
+                            <td class="foodtable_td">{{item_id.1.carbohydrate}} </td>
+                            <td class="foodtable_td">{{item_id.1.quantity}} </td>
+                            <td class="foodtable_td_delete">
+                                <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr class="foodtable_end">
+                        <td class="foodtable_td">Итого</td>
+                        <td class="foodtable_td">{{ calorie_count_lu }}</td>
+                        <td class="foodtable_td">{{ protein_count_lu }}</td>
+                        <td class="foodtable_td">{{ fats_count_lu }}</td>
+                        <td class="foodtable_td">{{ carbohydrate_count_lu }}</td>
+                        <td class="foodtable_td">{{ quantity_count_lu }}</td>
+                        <td class="foodtable_td"><button type="button" class="button_pm" name="add_to_lunch" data-toggle="modal" data-target="#myModal_lunch"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
     <br>
-    <!-------------------------------------->
-        <div class="modal fade" id="myModal_snacks" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel">Добавить к перекусам</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="text-align: center">
-                        <div class="form" style="box-shadow: None;">
-                            <form action="" method="POST">
-                                {% csrf_token %}
-                                <div style="display: none">{{form_sn.customer.name}}{{form_sn.customer}}</div>
-                                {{form_sn.fooditem}}
-                                <input type="number" value="100" placeholder="Количество в граммах" id={{form_sn.quantity}}
-                                <div style="display: none">{{form_sn.add_date}}</div>
-                                <div style="display: none">{{form_sn.category.name}}{{form_sn.category}}</div>
-                                <button type="submit">Добавить</button>
-                            </form>
-                         </div>
+    <!-----------------Добавить еду к ужину--------------------->
+    <div class="modal fade" id="myModal_dinner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Добавить к ужину</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    <div class="form" style="box-shadow: None;">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div style="display: none">{{form_di.customer.name}}{{form_di.customer}}</div>
+                            {{form_di.fooditem}}
+                            <input type="number" value="100" placeholder="Количество в граммах" id={{form_di.quantity}}
+                            <div style="display: none">{{form_di.add_date}}</div>
+                            <div style="display: none">{{form_di.category.name}}{{form_di.category}}</div>
+                            <button type="submit">Добавить</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-<div class="container">
-    <div class="flex-box-row">
-        <h5 id="heading">Перекусы</h5>
-        <h7>Всего продуктов:{{scnt}}</h7>
+    </div>
+    <!-----------------Таблица ужина--------------------->
+    <div class="container">
+        <div class="flex-box-row">
+            <h5 id="heading">Ужин</h5>
+            <h7>Всего продуктов:{{dcnt}}</h7>
 
+            <div class="table-responsive" style="transform: scale(1)">
+                <table class="table table-sm">
+                    <tr class="foodtable">
+                        <th class="foodtable_th">Название продукта</th>
+                        <th class="foodtable_th">Калорийность</th>
+                        <th class="foodtable_th">Белки</th>
+                        <th class="foodtable_th">Жиры</th>
+                        <th class="foodtable_th">Углеводы</th>
+                        <th class="foodtable_th">Масса</th>
+                        <th class="foodtable_th"></th>
+                    </tr>
+                    {% for item_id in dinner_view_dict.items %}
+                        <tr class="foodtable">
+                            <td class="foodtable_td">{{item_id.01.name}} </td>
+                            <td class="foodtable_td">{{item_id.1.calorie}} </td>
+                            <td class="foodtable_td">{{item_id.1.protein}} </td>
+                            <td class="foodtable_td">{{item_id.1.fats}} </td>
+                            <td class="foodtable_td">{{item_id.1.carbohydrate}} </td>
+                            <td class="foodtable_td">{{item_id.1.quantity}} </td>
+                            <td class="foodtable_td_delete">
+                                <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr class="foodtable_end">
+                        <td class="foodtable_td">Итого</td>
+                        <td class="foodtable_td">{{ calorie_count_di }}</td>
+                        <td class="foodtable_td">{{ protein_count_di }}</td>
+                        <td class="foodtable_td">{{ fats_count_di }}</td>
+                        <td class="foodtable_td">{{ carbohydrate_count_di }}</td>
+                        <td class="foodtable_td">{{ quantity_count_di }}</td>
+                        <td class="foodtable_td"><button type="button" class="button_pm" name="add_to_dinner" data-toggle="modal" data-target="#myModal_dinner"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!------------------Добавить еду к перекусам-------------------->
+    <div class="modal fade" id="myModal_snacks" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Добавить к перекусам</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    <div class="form" style="box-shadow: None;">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div style="display: none">{{form_sn.customer.name}}{{form_sn.customer}}</div>
+                            {{form_sn.fooditem}}
+                            <input type="number" value="100" placeholder="Количество в граммах" id={{form_sn.quantity}}
+                            <div style="display: none">{{form_sn.add_date}}</div>
+                            <div style="display: none">{{form_sn.category.name}}{{form_sn.category}}</div>
+                            <button type="submit">Добавить</button>
+                        </form>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-----------------Таблица перекусов--------------------->
+    <div class="container">
+        <div class="flex-box-row">
+            <h5 id="heading">Перекусы</h5>
+            <h7>Всего продуктов:{{scnt}}</h7>
+
+            <div class="table-responsive" style="transform: scale(1)">
+                <table class="table">
+                    <tr class="foodtable">
+                        <th class="foodtable_th">Название продукта</th>
+                        <th class="foodtable_th">Калорийность</th>
+                        <th class="foodtable_th">Белки</th>
+                        <th class="foodtable_th">Жиры</th>
+                        <th class="foodtable_th">Углеводы</th>
+                        <th class="foodtable_th">Масса</th>
+                        <th class="foodtable_th"></th>
+                    </tr>
+                    {% for item_id in snacks_view_dict.items %}
+                        <tr class="foodtable">
+                            <td class="foodtable_td">{{item_id.01.name}} </td>
+                            <td class="foodtable_td">{{item_id.1.calorie}} </td>
+                            <td class="foodtable_td">{{item_id.1.protein}} </td>
+                            <td class="foodtable_td">{{item_id.1.fats}} </td>
+                            <td class="foodtable_td">{{item_id.1.carbohydrate}} </td>
+                            <td class="foodtable_td">{{item_id.1.quantity}} </td>
+                            <td class="foodtable_td_delete">
+                                <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr class="foodtable_end">
+                        <td class="foodtable_td">Итого</td>
+                        <td class="foodtable_td">{{ calorie_count_sn }}</td>
+                        <td class="foodtable_td">{{ protein_count_sn }}</td>
+                        <td class="foodtable_td">{{ fats_count_sn }}</td>
+                        <td class="foodtable_td">{{ carbohydrate_count_sn }}</td>
+                        <td class="foodtable_td">{{ quantity_count_sn }}</td>
+                        <td class="foodtable_td"><button type="button" class="button_pm" name="add_to_snacks" data-toggle="modal" data-target="#myModal_snacks"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                    </tr>
+                    <br>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-----------------Итоговая таблица--------------------->
+    <div class="container">
         <div class="table-responsive" style="transform: scale(1)">
             <table class="table">
-                <tr class="foodtable">
-                    <th class="foodtable_th">Название продукта</th>
-                    <th class="foodtable_th">Калорийность</th>
-                    <th class="foodtable_th">Белки</th>
-                    <th class="foodtable_th">Жиры</th>
-                    <th class="foodtable_th">Углеводы</th>
-                    <th class="foodtable_th">Масса</th>
-                    <th class="foodtable_th"></th>
+                <tr class="foodtable_fin">
+                    <td class="foodtable_td_fin">Итого за день</td>
+                    <td class="foodtable_td_fin">{{ calorie_count_all }}</td>
+                    <td class="foodtable_td_fin">{{ protein_count_all }}</td>
+                    <td class="foodtable_td_fin">{{ fats_count_all }}</td>
+                    <td class="foodtable_td_fin">{{ carbohydrate_count_all }}</td>
+                    <td class="foodtable_td_fin">{{ quantity_count_all }}</td>
+                    <td class="foodtable_td_fin"></td>
                 </tr>
-                {% for item_id in snacks_view_dict.items %}
-                    <tr class="foodtable">
-                        <td class="foodtable_td">{{item_id.01.name}} </td>
-                        <td class="foodtable_td">{{item_id.1.calorie}} </td>
-                        <td class="foodtable_td">{{item_id.1.protein}} </td>
-                        <td class="foodtable_td">{{item_id.1.fats}} </td>
-                        <td class="foodtable_td">{{item_id.1.carbohydrate}} </td>
-                        <td class="foodtable_td">{{item_id.1.quantity}} </td>
-                        <td class="foodtable_td_delete">
-                            <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-                <tr class="foodtable_end">
-                    <td class="foodtable_td">Итого</td>
-                    <td class="foodtable_td">{{ calorie_count_sn }}</td>
-                    <td class="foodtable_td">{{ protein_count_sn }}</td>
-                    <td class="foodtable_td">{{ fats_count_sn }}</td>
-                    <td class="foodtable_td">{{ carbohydrate_count_sn }}</td>
-                    <td class="foodtable_td">{{ quantity_count_sn }}</td>
-                    <td class="foodtable_td"><button type="button" class="button_pm" name="add_to_snacks" data-toggle="modal" data-target="#myModal_snacks"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
-                </tr>
-                <br>
             </table>
         </div>
     </div>
-</div>
-    <br>
-<div class="container">
-    <div class="table-responsive" style="transform: scale(1)">
-        <table class="table">
-            <tr class="foodtable_fin">
-                <td class="foodtable_td_fin">Итого за день</td>
-                <td class="foodtable_td_fin">{{ calorie_count_all }}</td>
-                <td class="foodtable_td_fin">{{ protein_count_all }}</td>
-                <td class="foodtable_td_fin">{{ fats_count_all }}</td>
-                <td class="foodtable_td_fin">{{ carbohydrate_count_all }}</td>
-                <td class="foodtable_td_fin">{{ quantity_count_all }}</td>
-                <td class="foodtable_td_fin"></td>
-            </tr>
-        </table>
-    </div>
-</div>
     <br>
 {% endblock %}

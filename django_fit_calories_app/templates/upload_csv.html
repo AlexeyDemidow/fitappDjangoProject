@@ -3,12 +3,10 @@
 {% block title %}Импорт{% endblock %}
 
 {% block content %}
-<h1>Загрузить CSV файл с товарами:</h1>
-
-<form method="post" enctype = 'multipart/form-data'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Импортировать продукты</button>
-</form>
-
+    <h1>Загрузить CSV файл с товарами:</h1>
+    <form method="post" enctype = 'multipart/form-data'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Импортировать продукты</button>
+    </form>
 {% endblock %}

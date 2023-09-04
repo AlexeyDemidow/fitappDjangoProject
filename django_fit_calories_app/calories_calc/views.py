@@ -5,16 +5,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .models import UserFoodItem, ChooseDate
 from .utils import import_products_from_csv
 from decimal import Decimal
+from datetime import date
 
-
-# Функция отображения даты
-def choose_date():
-    ch_date = ChooseDate.objects.all()
-    ch_dt_list = []
-    for dt in ch_date:
-        ch_dt_list.clear()
-        ch_dt_list.append(dt.c_date)
-    return ch_dt_list[0]
 
 # Подсчет количества нутриентов в зависимости от массы
 def eating(eat_list, quantity_list):
@@ -51,7 +43,12 @@ def user_calc(request):
     user = request.user
     cust = user.id
 
-    main_date = choose_date()
+    ch_date = ChooseDate.objects.filter(customer=cust)
+    ch_dt_list = [date.today()]
+    for dt in ch_date:
+        ch_dt_list.clear()
+        ch_dt_list.append(dt.c_date)
+    main_date = ch_dt_list[0]
 
     if request.method == 'POST':
         form_drink = WaterTrackerForm(request.POST, initial={'customer': user})
@@ -227,11 +224,11 @@ def user_calc(request):
     form_sn = AddUserFoodItemSnacks(initial={'customer': user, 'add_date': main_date})
 
     if request.method == 'POST':
-        form_ch = ChooseDateForm(request.POST)
+        form_ch = ChooseDateForm(request.POST, initial={'customer': user})
         if form_ch.is_valid():
             form_ch.save()
             return redirect('/calories_calc/user_calc/')
-    form_ch = ChooseDateForm()
+    form_ch = ChooseDateForm(initial={'customer': user})
 
     context = {
         'main_date': main_date, 'create_food_item_form': create_food_item_form,
@@ -314,7 +311,12 @@ def charts(request):
     user = request.user
     cust = user.id
 
-    main_date = choose_date()
+    ch_date = ChooseDate.objects.filter(customer=cust)
+    ch_dt_list = [date.today()]
+    for dt in ch_date:
+        ch_dt_list.clear()
+        ch_dt_list.append(dt.c_date)
+    main_date = ch_dt_list[0]
 
     breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
     my_breakfast = breakfast.filter(customer=cust, add_date=main_date)
@@ -424,11 +426,11 @@ def charts(request):
     cnt = myfooditems.count()
 
     if request.method == 'POST':
-        form_ch = ChooseDateForm(request.POST)
+        form_ch = ChooseDateForm(request.POST, initial={'customer': user})
         if form_ch.is_valid():
             form_ch.save()
             return redirect('charts')
-    form_ch = ChooseDateForm()
+    form_ch = ChooseDateForm(initial={'customer': user})
 
     water = WaterTracker.objects.filter(customer=user, drink_date=main_date)
     water_count = 0
