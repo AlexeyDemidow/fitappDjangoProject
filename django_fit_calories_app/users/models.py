@@ -36,7 +36,7 @@ class CustomUser(AbstractUser):
 
     man = 'Мужской'
     woman = 'Женский'
-    gender_list = [(man, 'Мужской'), (woman, 'Женский')]
+    gender_list = [(man, man), (woman, woman)]
     gender = models.CharField(max_length=10, choices=gender_list, default=man, verbose_name='Пол')
 
     birth_date = models.DateField(
@@ -70,11 +70,11 @@ class CustomUser(AbstractUser):
     high = 'Тяжелый'
     extreme = 'Экстремальный'
     activity_list = [
-        (low, 'Минимальный'),
-        (weak, 'Слабый'),
-        (mid, 'Умеренный'),
-        (high, 'Тяжелый'),
-        (extreme, 'Экстремальный'),
+        (low, low),
+        (weak, weak),
+        (mid, mid),
+        (high, high),
+        (extreme, extreme),
     ]
     activity = models.CharField(
         max_length=100,
