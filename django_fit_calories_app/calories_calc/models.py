@@ -46,6 +46,7 @@ class ChooseDate(models.Model):
     c_date = models.DateField(default=timezone.now, verbose_name='Дата')
     customer = models.ManyToManyField(CustomUser)
 
+
 # Модель трекера воды
 class WaterTracker(models.Model):
     customer = models.ManyToManyField(CustomUser)
