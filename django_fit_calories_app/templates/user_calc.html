@@ -30,16 +30,16 @@
                     </button>
                 </div>
                 <div class="modal-body" style="text-align: center">
-                    Сегодня выпито воды: {{water_count}} стаканов.
+                    Сегодня выпито воды: <span id="water_count">{{water_count}}</span> стаканов.
                     <br>
                     <form action="" method="POST">
                         {% csrf_token %}
                         <div style="display: none">{{form_drink.customer}}</div>
                         <div style="display: none">{{form_drink.drink_date}}</div><br>
                         <div class="number" style="text-align: center">
-                            <button class="number-minus" type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.onchange();">-</button>
-                            <input type="number" min="0" value="{{form_drink.glass}}
-                            <button class="number-plus" type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.onchange();">+</button>
+                            <button id="number-minus" class="number-minus" type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.onchange();">-</button>
+                            <input type="number" min="-1" onchange="updateGlass(this.value)" value="{{form_drink.glass}}
+                            <button id="number-plus" class="number-plus" type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.onchange();">+</button>
                         </div>
                         <br>
                         <br>
@@ -127,7 +127,7 @@
                         <td class="foodtable_td">{{item_id.1.carbohydrate}}</td>
                         <td class="foodtable_td">{{item_id.1.quantity}}</td>
                         <td class="foodtable_td_delete">
-                            <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
+                            <form action="{% url 'delete_food_item' item_id.0 %}" method="post">
                                 {% csrf_token %}
                                 <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
                             </form>
@@ -198,7 +198,7 @@
                             <td class="foodtable_td">{{item_id.1.carbohydrate}} </td>
                             <td class="foodtable_td">{{item_id.1.quantity}} </td>
                             <td class="foodtable_td_delete">
-                                <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
+                                <form action="{% url 'delete_food_item' item_id.0 %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </form>
@@ -271,7 +271,7 @@
                             <td class="foodtable_td">{{item_id.1.carbohydrate}} </td>
                             <td class="foodtable_td">{{item_id.1.quantity}} </td>
                             <td class="foodtable_td_delete">
-                                <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
+                                <form action="{% url 'delete_food_item' item_id.0 %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </form>
@@ -344,7 +344,7 @@
                             <td class="foodtable_td">{{item_id.1.carbohydrate}} </td>
                             <td class="foodtable_td">{{item_id.1.quantity}} </td>
                             <td class="foodtable_td_delete">
-                                <form action="{% url 'deletefooditem' item_id.0 %}" method="post">
+                                <form action="{% url 'delete_food_item' item_id.0 %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </form>

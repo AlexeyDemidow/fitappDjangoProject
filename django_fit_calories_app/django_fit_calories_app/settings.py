@@ -154,7 +154,7 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTO_LOGOUT = {
-    'IDLE_TIME': timedelta(minutes=5),
+    'IDLE_TIME': timedelta(minutes=60),
     'REDIRECT_TO_LOGIN_IMMEDIATELY': True,
 }
 
