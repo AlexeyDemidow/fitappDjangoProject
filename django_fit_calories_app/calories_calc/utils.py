@@ -19,7 +19,7 @@ def import_products_from_csv(csv_file):
 
 
 # Подсчет количества нутриентов в зависимости от массы
-def eating(eat_list, quantity_list):
+def ready_eating_list_func(eat_list, quantity_list):
     if len(eat_list) > 0:
         for i in range(len(quantity_list)):
             eat_list[i].calorie *= Decimal(quantity_list[i]) / 100
@@ -39,7 +39,7 @@ def eating(eat_list, quantity_list):
     return eat_list
 
 
-def eatinglist(eat_list):
+def eating_list_func(eat_list):
     eating_view_list = []
     for items in eat_list:
         for food in items:
@@ -76,9 +76,9 @@ def food_list_prepare(my_food):
     food_quantity_list = []
     for item in my_food:
         food_list.append(item.fooditem.all())
-        food_list_id.append(item.id)
         food_quantity_list.append(item.quantity)
-    return food_list, food_list_id, food_quantity_list
+        food_list_id.append(item.id)
+    return food_list, food_quantity_list, food_list_id
 
 
 def food_count(food_view_list):

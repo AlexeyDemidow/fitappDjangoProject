@@ -21,77 +21,34 @@ def user_calc(request):
     breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
     my_breakfast = breakfast.filter(customer=cust, add_date=main_date)
     bcnt = my_breakfast.count()
-
-    breakfast_list = food_list_prepare(my_breakfast)[0]
-    breakfast_list_id = food_list_prepare(my_breakfast)[1]
-    breakfast_quantity_list = food_list_prepare(my_breakfast)[2]
-
-    breakfast_view_list = eatinglist(breakfast_list)
-    breakfast_view_list = eating(breakfast_view_list, breakfast_quantity_list)
-
+    breakfast_list, breakfast_quantity_list, breakfast_list_id = food_list_prepare(my_breakfast)
+    breakfast_view_list = ready_eating_list_func(eating_list_func(breakfast_list), breakfast_quantity_list)
     breakfast_view_dict = food_view_dict(breakfast_view_list, breakfast_list_id)
-
-    calorie_count_br = food_count(breakfast_view_list)[0]
-    protein_count_br = food_count(breakfast_view_list)[1]
-    fats_count_br = food_count(breakfast_view_list)[2]
-    carbohydrate_count_br = food_count(breakfast_view_list)[3]
-    quantity_count_br = food_count(breakfast_view_list)[4]
+    calorie_count_br, protein_count_br, fats_count_br, carbohydrate_count_br, quantity_count_br = food_count(breakfast_view_list)
 
     lunch = Category.objects.filter(name='lunch')[0].userfooditem_set.all()
     my_lunch = lunch.filter(customer=cust, add_date=main_date)
     lcnt = my_lunch.count()
-
-    lunch_list = food_list_prepare(my_lunch)[0]
-    lunch_list_id = food_list_prepare(my_lunch)[1]
-    lunch_quantity_list = food_list_prepare(my_lunch)[2]
-
-    lunch_view_list = eatinglist(lunch_list)
-    lunch_view_list = eating(lunch_view_list, lunch_quantity_list)
-
+    lunch_list, lunch_quantity_list, lunch_list_id = food_list_prepare(my_lunch)
+    lunch_view_list = ready_eating_list_func(eating_list_func(lunch_list), lunch_quantity_list)
     lunch_view_dict = food_view_dict(lunch_view_list, lunch_list_id)
-
-    calorie_count_lu = food_count(lunch_view_list)[0]
-    protein_count_lu = food_count(lunch_view_list)[1]
-    fats_count_lu = food_count(lunch_view_list)[2]
-    carbohydrate_count_lu = food_count(lunch_view_list)[3]
-    quantity_count_lu = food_count(lunch_view_list)[4]
+    calorie_count_lu, protein_count_lu, fats_count_lu, carbohydrate_count_lu, quantity_count_lu = food_count(lunch_view_list)
 
     dinner = Category.objects.filter(name='dinner')[0].userfooditem_set.all()
     my_dinner = dinner.filter(customer=cust, add_date=main_date)
     dcnt = my_dinner.count()
-
-    dinner_list = food_list_prepare(my_dinner)[0]
-    dinner_list_id = food_list_prepare(my_dinner)[1]
-    dinner_quantity_list = food_list_prepare(my_dinner)[2]
-
-    dinner_view_list = eatinglist(dinner_list)
-    dinner_view_list = eating(dinner_view_list, dinner_quantity_list)
-
+    dinner_list, dinner_quantity_list, dinner_list_id = food_list_prepare(my_dinner)
+    dinner_view_list = ready_eating_list_func(eating_list_func(dinner_list), dinner_quantity_list)
     dinner_view_dict = food_view_dict(dinner_view_list, dinner_list_id)
-
-    calorie_count_di = food_count(dinner_view_list)[0]
-    protein_count_di = food_count(dinner_view_list)[1]
-    fats_count_di = food_count(dinner_view_list)[2]
-    carbohydrate_count_di = food_count(dinner_view_list)[3]
-    quantity_count_di = food_count(dinner_view_list)[4]
+    calorie_count_di, protein_count_di, fats_count_di, carbohydrate_count_di, quantity_count_di = food_count(dinner_view_list)
 
     snacks = Category.objects.filter(name='snacks')[0].userfooditem_set.all()
     my_snacks = snacks.filter(customer=cust, add_date=main_date)
     scnt = my_snacks.count()
-    snacks_list = food_list_prepare(my_snacks)[0]
-    snacks_list_id = food_list_prepare(my_snacks)[1]
-    snacks_quantity_list = food_list_prepare(my_snacks)[2]
-
-    snacks_view_list = eatinglist(snacks_list)
-    snacks_view_list = eating(snacks_view_list, snacks_quantity_list)
-
+    snacks_list, snacks_quantity_list, snacks_list_id = food_list_prepare(my_snacks)
+    snacks_view_list = ready_eating_list_func(eating_list_func(snacks_list), snacks_quantity_list)
     snacks_view_dict = food_view_dict(snacks_view_list, snacks_list_id)
-
-    calorie_count_sn = food_count(snacks_view_list)[0]
-    protein_count_sn = food_count(snacks_view_list)[1]
-    fats_count_sn = food_count(snacks_view_list)[2]
-    carbohydrate_count_sn = food_count(snacks_view_list)[3]
-    quantity_count_sn = food_count(snacks_view_list)[4]
+    calorie_count_sn, protein_count_sn, fats_count_sn, carbohydrate_count_sn, quantity_count_sn = food_count(snacks_view_list)
 
     calorie_count_all = calorie_count_br + calorie_count_lu + calorie_count_di + calorie_count_sn
     protein_count_all = protein_count_br + protein_count_lu + protein_count_di + protein_count_sn
@@ -229,56 +186,27 @@ def charts(request):
 
     breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
     my_breakfast = breakfast.filter(customer=cust, add_date=main_date)
-
-    breakfast_list = food_list_prepare(my_breakfast)[0]
-    breakfast_quantity_list = food_list_prepare(my_breakfast)[2]
-
-    breakfast_view_list = eatinglist(breakfast_list)
-    breakfast_view_list = eating(breakfast_view_list, breakfast_quantity_list)
-
-    calorie_count_br = food_count(breakfast_view_list)[0]
-    protein_count_br = food_count(breakfast_view_list)[1]
-    fats_count_br = food_count(breakfast_view_list)[2]
-    carbohydrate_count_br = food_count(breakfast_view_list)[3]
+    breakfast_list, breakfast_quantity_list = food_list_prepare(my_breakfast)[:2]
+    breakfast_view_list = ready_eating_list_func(eating_list_func(breakfast_list), breakfast_quantity_list)
+    calorie_count_br, protein_count_br, fats_count_br, carbohydrate_count_br = food_count(breakfast_view_list)[:4]
 
     lunch = Category.objects.filter(name='lunch')[0].userfooditem_set.all()
     my_lunch = lunch.filter(customer=cust, add_date=main_date)
-    lunch_list = food_list_prepare(my_lunch)[0]
-    lunch_quantity_list = food_list_prepare(my_lunch)[2]
-
-    lunch_view_list = eatinglist(lunch_list)
-    lunch_view_list = eating(lunch_view_list, lunch_quantity_list)
-
-    calorie_count_lu = food_count(lunch_view_list)[0]
-    protein_count_lu = food_count(lunch_view_list)[1]
-    fats_count_lu = food_count(lunch_view_list)[2]
-    carbohydrate_count_lu = food_count(lunch_view_list)[3]
+    lunch_list, lunch_quantity_list = food_list_prepare(my_lunch)[:2]
+    lunch_view_list = ready_eating_list_func(eating_list_func(lunch_list), lunch_quantity_list)
+    calorie_count_lu, protein_count_lu, fats_count_lu, carbohydrate_count_lu = food_count(lunch_view_list)[:4]
 
     dinner = Category.objects.filter(name='dinner')[0].userfooditem_set.all()
     my_dinner = dinner.filter(customer=cust, add_date=main_date)
-    dinner_list = food_list_prepare(my_dinner)[0]
-    dinner_quantity_list = food_list_prepare(my_dinner)[2]
-
-    dinner_view_list = eatinglist(dinner_list)
-    dinner_view_list = eating(dinner_view_list, dinner_quantity_list)
-
-    calorie_count_di = food_count(dinner_view_list)[0]
-    protein_count_di = food_count(dinner_view_list)[1]
-    fats_count_di = food_count(dinner_view_list)[2]
-    carbohydrate_count_di = food_count(dinner_view_list)[3]
+    dinner_list, dinner_quantity_list = food_list_prepare(my_dinner)[:2]
+    dinner_view_list = ready_eating_list_func(eating_list_func(dinner_list), dinner_quantity_list)
+    calorie_count_di, protein_count_di, fats_count_di, carbohydrate_count_di = food_count(dinner_view_list)[:4]
 
     snacks = Category.objects.filter(name='snacks')[0].userfooditem_set.all()
     my_snacks = snacks.filter(customer=cust, add_date=main_date)
-    snacks_list = food_list_prepare(my_snacks)[0]
-    snacks_quantity_list = food_list_prepare(my_snacks)[2]
-
-    snacks_view_list = eatinglist(snacks_list)
-    snacks_view_list = eating(snacks_view_list, snacks_quantity_list)
-
-    calorie_count_sn = food_count(snacks_view_list)[0]
-    protein_count_sn = food_count(snacks_view_list)[1]
-    fats_count_sn = food_count(snacks_view_list)[2]
-    carbohydrate_count_sn = food_count(snacks_view_list)[3]
+    snacks_list, snacks_quantity_list = food_list_prepare(my_snacks)[:2]
+    snacks_view_list = ready_eating_list_func(eating_list_func(snacks_list), snacks_quantity_list)
+    calorie_count_sn, protein_count_sn, fats_count_sn, carbohydrate_count_sn = food_count(snacks_view_list)[:4]
 
     food_nutrients_labels = ['Белки', 'Жиры', 'Углеводы']
     data_breakfast = [float(protein_count_br), float(fats_count_br), float(carbohydrate_count_br)]
