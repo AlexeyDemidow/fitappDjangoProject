@@ -4,18 +4,43 @@ from decimal import Decimal
 from datetime import date
 
 
-# Импорт еды из CSV-файла
-def import_products_from_csv(csv_file):
-    reader = csv.DictReader(csv_file.read().decode('utf-8').splitlines(), delimiter=';')
-    for row in reader:
-        product = FoodItem(
-            name=row['name'],
-            protein=float(row['protein'].replace('%', '')),
-            fats=float(row['fats'].replace('%', '')),
-            carbohydrate=float(row['carbohydrate'].replace('%', '')),
-            calorie=float(row['calorie'].replace('%', '')),
-        )
-        product.save()
+# Выбранная дата
+def main_date_func(dates):
+    ch_dt_list = [date.today()]
+    for dt in dates:
+        ch_dt_list.clear()
+        ch_dt_list.append(dt.c_date)
+    main_date = ch_dt_list[0]
+    return main_date
+
+
+# Счетчик стаканов воды
+def water_count_func(glasses):
+    water_count = 0
+    for water_glass in glasses:
+        water_count += water_glass.glass
+    return water_count
+
+
+# Обработка запроса и распределение данных по спискам
+def food_list_prepare(my_food):
+    food_list = []
+    food_list_id = []
+    food_quantity_list = []
+    for item in my_food:
+        food_list.append(item.fooditem.all())
+        food_quantity_list.append(item.quantity)
+        food_list_id.append(item.id)
+    return food_list, food_quantity_list, food_list_id
+
+
+# Преобразование запросов в данные
+def eating_list_func(eat_list):
+    eating_view_list = []
+    for items in eat_list:
+        for food in items:
+            eating_view_list.append(food)
+    return eating_view_list
 
 
 # Подсчет количества нутриентов в зависимости от массы
@@ -39,30 +64,7 @@ def ready_eating_list_func(eat_list, quantity_list):
     return eat_list
 
 
-def eating_list_func(eat_list):
-    eating_view_list = []
-    for items in eat_list:
-        for food in items:
-            eating_view_list.append(food)
-    return eating_view_list
-
-
-def main_date_func(dates):
-    ch_dt_list = [date.today()]
-    for dt in dates:
-        ch_dt_list.clear()
-        ch_dt_list.append(dt.c_date)
-    main_date = ch_dt_list[0]
-    return main_date
-
-
-def water_count_func(glasses):
-    water_count = 0
-    for water_glass in glasses:
-        water_count += water_glass.glass
-    return water_count
-
-
+# Создание словаря название еды: характеристики
 def food_view_dict(food_view_list, food_list_id):
     food_view_dictionary = {}
     for d_index in range(len(food_view_list)):
@@ -70,17 +72,7 @@ def food_view_dict(food_view_list, food_list_id):
     return food_view_dictionary
 
 
-def food_list_prepare(my_food):
-    food_list = []
-    food_list_id = []
-    food_quantity_list = []
-    for item in my_food:
-        food_list.append(item.fooditem.all())
-        food_quantity_list.append(item.quantity)
-        food_list_id.append(item.id)
-    return food_list, food_quantity_list, food_list_id
-
-
+# Подсчет количества нутриентов
 def food_count(food_view_list):
     calorie_count = 0
     protein_count = 0
@@ -96,3 +88,15 @@ def food_count(food_view_list):
     return calorie_count, protein_count, fats_count, carbohydrate_count, quantity_count
 
 
+# Импорт еды из CSV-файла
+def import_products_from_csv(csv_file):
+    reader = csv.DictReader(csv_file.read().decode('utf-8').splitlines(), delimiter=';')
+    for row in reader:
+        product = FoodItem(
+            name=row['name'],
+            protein=float(row['protein'].replace('%', '')),
+            fats=float(row['fats'].replace('%', '')),
+            carbohydrate=float(row['carbohydrate'].replace('%', '')),
+            calorie=float(row['calorie'].replace('%', '')),
+        )
+        product.save()
