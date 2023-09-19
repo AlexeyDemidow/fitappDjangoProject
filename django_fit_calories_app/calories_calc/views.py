@@ -278,3 +278,4 @@ def upload_csv(request):
 def show_imported_products(request):
     imported_products = request.session.get('imported_products', [])
     return render(request, 'imported_products.html', {'imported_products': imported_products})
+
