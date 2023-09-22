@@ -65,6 +65,21 @@
                     {% endif %}
                 </div>
             </nav>
+
+            <div class="preloader">
+                <div id="circle2"></div>
+            </div>
+
+            <script>
+                window.onload = function() {
+                    document.querySelector('.preloader').classList.add("preloader-remove");
+                };
+
+                $(window).on('load', function () {
+                    $('.preloader').addClass("preloader-remove");
+                });
+            </script>
+
         {% endblock %}
 
         {{ redirect_to_login_immediately }}
