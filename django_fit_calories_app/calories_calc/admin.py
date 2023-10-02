@@ -9,11 +9,11 @@ class FoodAdmin(admin.ModelAdmin):
         model = FoodItem
 
     list_display = ['name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity']
-    list_filter = ['name']
+    list_filter = ['name', 'carbohydrate', 'fats', 'protein', 'calorie']
 
 
 # Разделы в админ панели
 admin.site.register(UserFoodItem)
 admin.site.register(WaterTracker)
-admin.site.register(Category)
+# admin.site.register(Category)
 admin.site.register(FoodItem, FoodAdmin)

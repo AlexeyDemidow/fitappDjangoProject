@@ -20,7 +20,6 @@ class Category(models.Model):
 # Модель еды
 class FoodItem(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название')
-    category = models.ManyToManyField(Category, blank=True)
     carbohydrate = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Углеводы')
     fats = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Жиры')
     protein = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Белки')
@@ -34,9 +33,9 @@ class FoodItem(models.Model):
 # Модель пользовательской еды, состоит из названия еды, к какому пользователю относится, к какой категории относится,
 # даты добавления и количества грамм
 class UserFoodItem(models.Model):
-    customer = models.ManyToManyField(CustomUser)
-    fooditem = models.ManyToManyField(FoodItem)
-    category = models.ManyToManyField(Category)
+    customer = models.ManyToManyField(CustomUser, verbose_name='Пользователь')
+    fooditem = models.ManyToManyField(FoodItem, verbose_name='Еда')
+    category = models.ManyToManyField(Category, verbose_name='Категория')
     add_date = models.DateField(default=timezone.now, verbose_name='Дата')
     quantity = models.IntegerField(default=100, null=True, blank=True, verbose_name='Количество в граммах')
 

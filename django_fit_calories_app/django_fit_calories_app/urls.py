@@ -20,12 +20,19 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 
+from calories_calc.routers import food_item_router, read_user_food_item_router, write_user_food_item_router
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
-    path('calories_calc/', include('calories_calc.urls')),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),  # Главная
+    path('admin/', admin.site.urls),  # Админ
+    path('users/', include('users.urls')),  # Профиль
+    path('calories_calc/', include('calories_calc.urls')),  # Трекер
+
+    path('api/v1/', include(food_item_router.urls)),  # Работа с базой данных продуктов
+    path('api/v1/', include(read_user_food_item_router.urls)),  # Работа с базой данных пользовательских продуктов
+    path('api/v1/', include(write_user_food_item_router.urls)),  # Работа с базой данных пользовательских продуктов
+    # path('api/v1/user_foodlist/add_food/', UserCreateProductsAPIView.as_view()),  # Работа с базой данных пользовательских продуктов
+
 ]
 
 if settings.DEBUG:

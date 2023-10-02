@@ -1,9 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from .models import UserFoodItem, ChooseDate
+from .models import UserFoodItem, ChooseDate, FoodItem
+from .serializers import FoodItemSerializer, UserFoodItemSerializerRead, UserFoodItemSerializerWrite
 from .utils import *
+from rest_framework import generics, viewsets, mixins
 
 
 # Представление дневника калорий
@@ -279,3 +284,37 @@ def show_imported_products(request):
     imported_products = request.session.get('imported_products', [])
     return render(request, 'imported_products.html', {'imported_products': imported_products})
 
+
+# Вьюсет для работы с базой данных продуктов
+class ProductsAPIViewSet(viewsets.ModelViewSet):
+    queryset = FoodItem.objects.all()
+    serializer_class = FoodItemSerializer
+
+
+# Вьюсет для работы с пользовательскими продуктами
+class UserProductsAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = UserFoodItem.objects.all().values('id', 'customer__username', 'fooditem__name', 'category__name', 'add_date', 'quantity')
+    serializer_class = UserFoodItemSerializerRead
+
+
+class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
+    queryset = UserFoodItem.objects.all()
+    serializer_class = UserFoodItemSerializerWrite
+
+
+# # Отображение списка всех продуктов в API
+# class ProductsAPIView(generics.ListAPIView):
+#     queryset = FoodItem.objects.all()
+#     serializer_class = FoodItemSerializer
+#
+#
+# # Изменение данных продукта по id в API
+# class ProductsAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = FoodItem.objects.all()
+#     serializer_class = FoodItemSerializer
+#
+#
+# # Добавление нового продукта в API
+# class CreateProductsAPIView(generics.CreateAPIView):
+#     queryset = FoodItem.objects.all()
+#     serializer_class = FoodItemSerializer
