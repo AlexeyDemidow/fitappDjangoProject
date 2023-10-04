@@ -39,6 +39,9 @@ class UserFoodItem(models.Model):
     add_date = models.DateField(default=timezone.now, verbose_name='Дата')
     quantity = models.IntegerField(default=100, null=True, blank=True, verbose_name='Количество в граммах')
 
+    def __str__(self):
+        return str([i.get('name') for i in self.fooditem.values('name')][0])
+
 
 # Модель выбора даты
 class ChooseDate(models.Model):
@@ -49,5 +52,8 @@ class ChooseDate(models.Model):
 # Модель трекера воды
 class WaterTracker(models.Model):
     customer = models.ManyToManyField(CustomUser)
-    glass = models.IntegerField(default=1, null=True, blank=True, verbose_name='1 стакан = 250г воды')
+    glass = models.IntegerField(default=1, null=True, blank=True, verbose_name='Стаканы, 1 стакан = 250г воды')
     drink_date = models.DateField(default=timezone.now, verbose_name='Дата')
+
+    def __str__(self):
+        return str([i.get('username') for i in self.customer.values('username')][0])

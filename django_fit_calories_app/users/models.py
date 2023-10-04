@@ -163,3 +163,6 @@ class Weighing(models.Model):
     weighing_date = models.DateField(default=timezone.now, verbose_name='Дата взвешивания')
     weight_value = models.FloatField(default=0, verbose_name='Вес', help_text='Введите в килограммах')
     user = models.ManyToManyField(CustomUser)
+
+    def __str__(self):
+        return str([i.get('username') for i in self.user.values('username')][0])

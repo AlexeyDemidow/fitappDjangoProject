@@ -30,6 +30,18 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('username',)
 
 
+# Модель данных о взвешивании в админ панели
+class UserWeighing(admin.ModelAdmin):
+    class Meta:
+        model = Weighing
+
+    list_display = ['_user', 'weight_value', 'weighing_date']
+    list_filter = ['weight_value', 'user', 'weighing_date']
+
+    def _user(self, row):
+        return ','.join([x.username for x in row.user.all()])
+
+
 # Разделы в админ панели
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Weighing)
+admin.site.register(Weighing, UserWeighing)
