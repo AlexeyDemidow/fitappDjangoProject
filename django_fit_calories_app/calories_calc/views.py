@@ -1,14 +1,20 @@
+from django.contrib.auth import get_user
+from django.http import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import UserFoodItem, ChooseDate, FoodItem
-from .serializers import FoodItemSerializer, UserFoodItemSerializerRead, UserFoodItemSerializerWrite
+from .permissions import IsOwnerOrReadOnly
+from .serializers import FoodItemSerializer, UserFoodItemSerializerRead, UserFoodItemSerializerWrite, \
+    WaterTrackerSerializer
 from .utils import *
 from rest_framework import generics, viewsets, mixins
+
 
 
 # Представление дневника калорий
@@ -164,6 +170,7 @@ def user_calc(request):
 
     return render(request, 'user_calc.html', context)
 
+
 # Представление статистики
 @login_required
 def charts(request):
@@ -211,8 +218,11 @@ def charts(request):
     data_snacks = [float(protein_count_sn), float(fats_count_sn), float(carbohydrate_count_sn)]
 
     food_category_labels = ['Завтрак', 'Обед', 'Ужин', 'Перекусы']
-    food_category_data = [float(calorie_count_br), float(calorie_count_lu), float(calorie_count_di),
-                          float(calorie_count_sn)]
+    food_category_data = [float(calorie_count_br),
+                          float(calorie_count_lu),
+                          float(calorie_count_di),
+                          float(calorie_count_sn)
+                          ]
 
     # Итоговые значения
     calorie_count_all = calorie_count_br + calorie_count_lu + calorie_count_di + calorie_count_sn
@@ -289,17 +299,51 @@ def show_imported_products(request):
 class ProductsAPIViewSet(viewsets.ModelViewSet):
     queryset = FoodItem.objects.all()
     serializer_class = FoodItemSerializer
+    permission_classes = (IsAdminUser, )
 
 
-# Вьюсет для работы с пользовательскими продуктами
+# Вьюсет для чтения пользовательских продуктами
 class UserProductsAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = UserFoodItem.objects.all().values('id', 'customer__username', 'fooditem__name', 'category__name', 'add_date', 'quantity')
+    # queryset = UserFoodItem.objects.all().values('id',
+    #                                              'customer__username',
+    #                                              'fooditem__name',
+    #                                              'category__name',
+    #                                              'add_date',
+    #                                              'quantity'
+    #                                              )
     serializer_class = UserFoodItemSerializerRead
+    permission_classes = (IsOwnerOrReadOnly,)
+
+    def get_queryset(self):
+        user = self.request.user.id
+        return UserFoodItem.objects.filter(customer=user).values('id',
+                                                 'customer__username',
+                                                 'fooditem__name',
+                                                 'category__name',
+                                                 'add_date',
+                                                 'quantity'
+                                                 )
 
 
+# Вьюсет для редактирования пользовательских продуктами
 class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
-    queryset = UserFoodItem.objects.all()
+    # queryset = UserFoodItem.objects.all()
     serializer_class = UserFoodItemSerializerWrite
+    permission_classes = (IsOwnerOrReadOnly, )
+
+    def get_queryset(self):
+        user = self.request.user.id
+        return UserFoodItem.objects.filter(customer=user)
+
+
+# Вьюсет для трекера воды (когда будет добавлена регистрация - отредактировать)
+class WaterTrackerAPIViewSet(viewsets.ModelViewSet):
+    # queryset = WaterTracker.objects.all()
+    serializer_class = WaterTrackerSerializer
+
+    def get_queryset(self):
+        user = self.request.user.id
+        return WaterTracker.objects.filter(customer=user)
 
 
 # # Отображение списка всех продуктов в API

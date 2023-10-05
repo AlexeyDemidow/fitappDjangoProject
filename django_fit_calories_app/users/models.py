@@ -4,7 +4,7 @@ from datetime import datetime
 from PIL import Image
 from django.utils import timezone
 from django.core.validators import RegexValidator, MinValueValidator, EmailValidator
-from django.db import IntegrityError
+
 
 # Модель пользователя
 class CustomUser(AbstractUser):

@@ -1,9 +1,15 @@
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
+from rest_framework import viewsets, generics, mixins
+from rest_framework.permissions import IsAdminUser
+
+from users.permissions import IsOwnerOrReadOnly
 from .forms import CustomUserCreationForm, CustomUserChangeForm, WeighingForm
 from .models import CustomUser, Weighing
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+
+from .serializers import ProfileSerializer, WeighingSerializer
 
 
 # Представление страницы регистрации
@@ -75,3 +81,45 @@ def edit_profile(request, username):
         'birth_date': birth_date,
     }
     return render(request, 'edit_profile.html', context)
+
+
+class AllProfileAPIViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = (IsAdminUser, )
+
+
+class ProfileAPIViewSet(mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin,
+                        mixins.UpdateModelMixin,
+                        viewsets.GenericViewSet):
+    # queryset = CustomUser.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = (IsOwnerOrReadOnly, )
+
+    def get_queryset(self):
+        user = self.request.user.id
+        return CustomUser.objects.filter(id=user)
+
+
+class WeighingAPIViewSet(viewsets.ModelViewSet):
+    # queryset = CustomUser.objects.all()
+    serializer_class = WeighingSerializer
+    # permission_classes = (IsOwnerOrReadOnly,)
+
+    def get_queryset(self):
+        user = self.request.user.id
+        return Weighing.objects.filter(user=user)
+
+# class CreateProfileAPIView(generics.CreateAPIView):
+#     queryset = CustomUser.objects.all()
+#     serializer_class = ProfileSerializer
+
+
+# class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
+#     # queryset = CustomUser.objects.get(CustomUser, id=request.user.id)
+#     serializer_class = ProfileSerializer
+#
+#     def get_queryset(self):
+#         user = self.request.user.id
+#         return CustomUser.objects.get(CustomUser, id=user)

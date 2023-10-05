@@ -20,7 +20,11 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from calories_calc.routers import food_item_router, read_user_food_item_router, write_user_food_item_router
+from calories_calc.routers import food_item_router, read_user_food_item_router, write_user_food_item_router, \
+    water_tracker_router
+from users.routers import admin_profiles_edit_router, profile_router, weighing_router
+
+# from users.views import CreateProfileAPIView, ProfileAPIView
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),  # Главная
@@ -28,10 +32,16 @@ urlpatterns = [
     path('users/', include('users.urls')),  # Профиль
     path('calories_calc/', include('calories_calc.urls')),  # Трекер
 
+    path('api/v1/auth/', include('rest_framework.urls')),  # Авторизация на основе сессий cookies
     path('api/v1/', include(food_item_router.urls)),  # Работа с базой данных продуктов
     path('api/v1/', include(read_user_food_item_router.urls)),  # Работа с базой данных пользовательских продуктов
     path('api/v1/', include(write_user_food_item_router.urls)),  # Работа с базой данных пользовательских продуктов
-    # path('api/v1/user_foodlist/add_food/', UserCreateProductsAPIView.as_view()),  # Работа с базой данных пользовательских продуктов
+    path('api/v1/', include(water_tracker_router.urls)),  # Работа с трекером воды
+    path('api/v1/', include(admin_profiles_edit_router.urls)),  # Работа с профилем пользователя
+    path('api/v1/', include(profile_router.urls)),  # Работа с профилем пользователя
+    path('api/v1/', include(weighing_router.urls)),  # Работа с профилем пользователя
+    # path('api/v1/profile/<int:id>', ProfileAPIView.as_view()),  # Работа с профилем пользователя
+    # path('api/v1/profile/create/', CreateProfileAPIView.as_view()),  # Работа с профилем пользователя
 
 ]
 

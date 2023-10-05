@@ -1,6 +1,7 @@
 from rest_framework import routers
 
-from calories_calc.views import ProductsAPIViewSet, UserProductsAPIViewSet, UserProductsAPIViewSetWrite
+from calories_calc.views import ProductsAPIViewSet, UserProductsAPIViewSet, UserProductsAPIViewSetWrite, \
+    WaterTrackerAPIViewSet
 
 # Роутер для базы данных продуктов
 food_item_router = routers.SimpleRouter()
@@ -8,9 +9,21 @@ food_item_router.register(r'foodlist', ProductsAPIViewSet)
 
 # Роутер для базы данных пользовательских продуктов
 read_user_food_item_router = routers.SimpleRouter()
-read_user_food_item_router.register(r'user_foodlist', UserProductsAPIViewSet)
+read_user_food_item_router.register(r'user_foodlist',
+                                    UserProductsAPIViewSet,
+                                    basename='user_foodlist'
+                                    )
 
 write_user_food_item_router = routers.SimpleRouter()
-write_user_food_item_router.register(r'user_foodlist_edit', UserProductsAPIViewSetWrite)
+# Используем basename изза того что querryset задан функцией
+write_user_food_item_router.register(r'user_foodlist_edit',
+                                     UserProductsAPIViewSetWrite,
+                                     basename='user_foodlist_edit'
+                                     )
+
+water_tracker_router = routers.SimpleRouter()
+water_tracker_router.register(r'water_tracker',
+                              WaterTrackerAPIViewSet,
+                              basename='water_tracker')
 
 # print(user_food_item_router.urls)
