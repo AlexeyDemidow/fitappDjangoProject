@@ -9,6 +9,7 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import UserFoodItem, ChooseDate, FoodItem
+from .pagination import ProductsPagination, UserProductsPagination, WaterTrackerPagination
 from .permissions import IsOwnerOrReadOnly
 from .serializers import FoodItemSerializer, UserFoodItemSerializerRead, UserFoodItemSerializerWrite, \
     WaterTrackerSerializer
@@ -300,6 +301,7 @@ class ProductsAPIViewSet(viewsets.ModelViewSet):
     queryset = FoodItem.objects.all()
     serializer_class = FoodItemSerializer
     permission_classes = (IsAdminUser, )
+    pagination_class = ProductsPagination
 
 
 # Вьюсет для чтения пользовательских продуктами
@@ -313,6 +315,7 @@ class UserProductsAPIViewSet(viewsets.ReadOnlyModelViewSet):
     #                                              )
     serializer_class = UserFoodItemSerializerRead
     permission_classes = (IsOwnerOrReadOnly,)
+    pagination_class = UserProductsPagination
 
     def get_queryset(self):
         user = self.request.user.id
@@ -330,6 +333,7 @@ class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
     # queryset = UserFoodItem.objects.all()
     serializer_class = UserFoodItemSerializerWrite
     permission_classes = (IsOwnerOrReadOnly, )
+    pagination_class = UserProductsPagination
 
     def get_queryset(self):
         user = self.request.user.id
@@ -340,6 +344,7 @@ class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
 class WaterTrackerAPIViewSet(viewsets.ModelViewSet):
     # queryset = WaterTracker.objects.all()
     serializer_class = WaterTrackerSerializer
+    pagination_class = WaterTrackerPagination
 
     def get_queryset(self):
         user = self.request.user.id
