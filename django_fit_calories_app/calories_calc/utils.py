@@ -100,4 +100,3 @@ def import_products_from_csv(csv_file):
             calorie=float(row['calorie'].replace('%', '')),
         )
         product.save()
-

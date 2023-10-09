@@ -17,7 +17,6 @@ from .utils import *
 from rest_framework import generics, viewsets, mixins
 
 
-
 # Представление дневника калорий
 @login_required
 def user_calc(request):
@@ -304,33 +303,176 @@ class ProductsAPIViewSet(viewsets.ModelViewSet):
     pagination_class = ProductsPagination
 
 
+
 # Вьюсет для чтения пользовательских продуктами
 class UserProductsAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    # queryset = UserFoodItem.objects.all().values('id',
-    #                                              'customer__username',
-    #                                              'fooditem__name',
-    #                                              'category__name',
-    #                                              'add_date',
-    #                                              'quantity'
-    #                                              )
     serializer_class = UserFoodItemSerializerRead
     permission_classes = (IsOwnerOrReadOnly,)
     pagination_class = UserProductsPagination
 
     def get_queryset(self):
         user = self.request.user.id
-        return UserFoodItem.objects.filter(customer=user).values('id',
-                                                 'customer__username',
-                                                 'fooditem__name',
-                                                 'category__name',
-                                                 'add_date',
-                                                 'quantity'
-                                                 )
+        return UserFoodItem.objects.filter(customer=user).values(
+                                                'id',
+                                                'customer__username',
+                                                'fooditem__name',
+                                                'category__name',
+                                                'add_date',
+                                                'quantity'
+                                                )
+
+    @action(detail=False, methods=['get'], url_path=r'(?P<dates>[0-9]{4}-?[0-9]{2}-?[0-9]{2})')
+    def date_sort(self, request, dates):
+        user = self.request.user.id
+        today_list = UserFoodItem.objects.filter(customer=user, add_date=dates).values(
+                                                'id',
+                                                'customer__username',
+                                                'fooditem__name',
+                                                'category__name',
+                                                'add_date',
+                                                'quantity'
+                                                )
+
+        page = self.paginate_queryset(today_list)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(today_list, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path=r'(?P<dates>[0-9]{4}-?[0-9]{2}-?[0-9]{2})/breakfast')
+    def breakfast(self, request, dates):
+        user = self.request.user.id
+        cat = Category.objects.filter(name='breakfast')[0]
+        today_list = UserFoodItem.objects.filter(customer=user, category=cat, add_date=dates).values(
+                                                'id',
+                                                'customer__username',
+                                                'fooditem__name',
+                                                'category__name',
+                                                'add_date',
+                                                'quantity'
+                                                )
+        page = self.paginate_queryset(today_list)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(today_list, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path=r'(?P<dates>[0-9]{4}-?[0-9]{2}-?[0-9]{2})/lunch')
+    def lunch(self, request, dates):
+        user = self.request.user.id
+        cat = Category.objects.filter(name='lunch')[0]
+        today_list = UserFoodItem.objects.filter(customer=user, category=cat, add_date=dates).values(
+                                                'id',
+                                                'customer__username',
+                                                'fooditem__name',
+                                                'category__name',
+                                                'add_date',
+                                                'quantity'
+                                                )
+        page = self.paginate_queryset(today_list)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(today_list, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path=r'(?P<dates>[0-9]{4}-?[0-9]{2}-?[0-9]{2})/dinner')
+    def dinner(self, request, dates):
+        user = self.request.user.id
+        cat = Category.objects.filter(name='dinner')[0]
+        today_list = UserFoodItem.objects.filter(customer=user, category=cat, add_date=dates).values(
+                                                'id',
+                                                'customer__username',
+                                                'fooditem__name',
+                                                'category__name',
+                                                'add_date',
+                                                'quantity'
+                                                )
+        page = self.paginate_queryset(today_list)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(today_list, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path=r'(?P<dates>[0-9]{4}-?[0-9]{2}-?[0-9]{2})/snacks')
+    def snacks(self, request, dates):
+        user = self.request.user.id
+        cat = Category.objects.filter(name='snacks')[0]
+        today_list = UserFoodItem.objects.filter(customer=user, category=cat, add_date=dates).values(
+                                                                                                'id',
+                                                                                                'customer__username',
+                                                                                                'fooditem__name',
+                                                                                                'category__name',
+                                                                                                'add_date',
+                                                                                                'quantity'
+                                                                                                )
+        page = self.paginate_queryset(today_list)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(today_list, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path=r'(?P<dates>[0-9]{4}-?[0-9]{2}-?[0-9]{2})/statistics')
+    def statistics(self, request, dates):
+        user = self.request.user.id
+        today_list = UserFoodItem.objects.filter(customer=user, add_date=dates)
+
+        product_counter = len(today_list)
+        norm_calories = [i.get('calories') for i in CustomUser.objects.filter(id=user).values('calories')][0]
+        if norm_calories == 0:
+            norm_calories = CustomUser.calories_per_day(CustomUser.objects.get(id=user))
+
+        quantity = [i.get('quantity') for i in today_list.values('quantity')]
+        fooditem_calories = [i.get('fooditem__calorie') / 100 for i in UserFoodItem.objects.filter(customer=user, add_date=dates).values('fooditem__calorie')]
+        calories_counter = []
+        for k in range(len(quantity)):
+            cal = quantity[k] * fooditem_calories[k]
+            calories_counter.append(cal)
+        calories_counter = round(sum(calories_counter), 2)
+
+        remaining_calories_counter = norm_calories - calories_counter
+
+        fooditem_protein = [i.get('fooditem__protein') / 100 for i in UserFoodItem.objects.filter(customer=user, add_date=dates).values('fooditem__protein')]
+        protein_counter = []
+        for k in range(len(quantity)):
+            prot = quantity[k] * fooditem_protein[k]
+            protein_counter.append(prot)
+        protein_counter = round(sum(protein_counter), 2)
+
+        fooditem_fats = [i.get('fooditem__fats') / 100 for i in
+                            UserFoodItem.objects.filter(customer=user, add_date=dates).values('fooditem__fats')]
+        fats_counter = []
+        for k in range(len(quantity)):
+            fats = quantity[k] * fooditem_fats[k]
+            fats_counter.append(fats)
+        fats_counter = round(sum(fats_counter), 2)
+
+        fooditem_carb = [i.get('fooditem__carbohydrate') / 100 for i in
+                         UserFoodItem.objects.filter(customer=user, add_date=dates).values('fooditem__carbohydrate')]
+        carb_counter = []
+        for k in range(len(quantity)):
+            carb = quantity[k] * fooditem_carb[k]
+            carb_counter.append(carb)
+        carb_counter = round(sum(carb_counter), 2)
+
+        context = {
+            'all_products': product_counter,
+            'norm_calories': norm_calories,
+            'calories_counter': calories_counter,
+            'remaining_calories_counter': remaining_calories_counter,
+            'protein_counter': protein_counter,
+            'fats_counter': fats_counter,
+            'carb_counter': carb_counter,
+        }
+        return Response(context)
 
 
 # Вьюсет для редактирования пользовательских продуктами
 class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
-    # queryset = UserFoodItem.objects.all()
     serializer_class = UserFoodItemSerializerWrite
     permission_classes = (IsOwnerOrReadOnly, )
     pagination_class = UserProductsPagination
@@ -342,7 +484,6 @@ class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
 
 # Вьюсет для трекера воды (когда будет добавлена регистрация - отредактировать)
 class WaterTrackerAPIViewSet(viewsets.ModelViewSet):
-    # queryset = WaterTracker.objects.all()
     serializer_class = WaterTrackerSerializer
     pagination_class = WaterTrackerPagination
 
@@ -350,20 +491,11 @@ class WaterTrackerAPIViewSet(viewsets.ModelViewSet):
         user = self.request.user.id
         return WaterTracker.objects.filter(customer=user)
 
-
-# # Отображение списка всех продуктов в API
-# class ProductsAPIView(generics.ListAPIView):
-#     queryset = FoodItem.objects.all()
-#     serializer_class = FoodItemSerializer
-#
-#
-# # Изменение данных продукта по id в API
-# class ProductsAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = FoodItem.objects.all()
-#     serializer_class = FoodItemSerializer
-#
-#
-# # Добавление нового продукта в API
-# class CreateProductsAPIView(generics.CreateAPIView):
-#     queryset = FoodItem.objects.all()
-#     serializer_class = FoodItemSerializer
+    @action(detail=False, methods=['get'], url_path=r'(?P<dates>[0-9]{4}-?[0-9]{2}-?[0-9]{2})')
+    def all_glasses(self, request, dates):
+        user = self.request.user.id
+        water_tracker_list = WaterTracker.objects.filter(customer=user, drink_date=dates)
+        glass_counter = 0
+        for i in water_tracker_list.values('glass'):
+            glass_counter += i.get('glass')
+        return Response({'all_glasses': glass_counter})

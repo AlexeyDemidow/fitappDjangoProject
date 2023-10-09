@@ -93,33 +93,23 @@ class ProfileAPIViewSet(mixins.ListModelMixin,
                         mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
                         viewsets.GenericViewSet):
-    # queryset = CustomUser.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = (IsOwnerOrReadOnly, )
 
     def get_queryset(self):
         user = self.request.user.id
-        return CustomUser.objects.filter(id=user)
+        user_profile = CustomUser.objects.filter(id=user)
+        a = [i.get('calories') for i in user_profile.values()][0]
+        # if a == 0:
+        #     user_profile.calories = CustomUser.calories_per_day(CustomUser.objects.get(id=user))
+        # print(user_profile.values('calories'))
+        return user_profile
 
 
 class WeighingAPIViewSet(viewsets.ModelViewSet):
-    # queryset = CustomUser.objects.all()
     serializer_class = WeighingSerializer
-    # permission_classes = (IsOwnerOrReadOnly,)
 
     def get_queryset(self):
         user = self.request.user.id
         return Weighing.objects.filter(user=user)
 
-# class CreateProfileAPIView(generics.CreateAPIView):
-#     queryset = CustomUser.objects.all()
-#     serializer_class = ProfileSerializer
-
-
-# class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
-#     # queryset = CustomUser.objects.get(CustomUser, id=request.user.id)
-#     serializer_class = ProfileSerializer
-#
-#     def get_queryset(self):
-#         user = self.request.user.id
-#         return CustomUser.objects.get(CustomUser, id=user)
