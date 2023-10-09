@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from rest_framework import viewsets, generics, mixins
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 
 from users.permissions import IsOwnerOrReadOnly
 from .forms import CustomUserCreationForm, CustomUserChangeForm, WeighingForm
@@ -99,7 +99,7 @@ class ProfileAPIViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         user = self.request.user.id
         user_profile = CustomUser.objects.filter(id=user)
-        a = [i.get('calories') for i in user_profile.values()][0]
+        # a = [i.get('calories') for i in user_profile.values()][0]
         # if a == 0:
         #     user_profile.calories = CustomUser.calories_per_day(CustomUser.objects.get(id=user))
         # print(user_profile.values('calories'))
@@ -111,5 +111,5 @@ class WeighingAPIViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user.id
-        return Weighing.objects.filter(user=user)
+        return Weighing.objects.filter(user=user).order_by('weighing_date')
 
