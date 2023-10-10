@@ -163,7 +163,7 @@ AUTO_LOGOUT = {
     'REDIRECT_TO_LOGIN_IMMEDIATELY': True,
 }
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'user_login'
 LOGIN_REDIRECT_URL = 'charts'
 LOGOUT_REDIRECT_URL = 'home'
 
@@ -186,6 +186,8 @@ EMAIL_account_PASSWORD = env("EMAIL_account_PASSWORD")
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
@@ -247,6 +249,6 @@ DJOSER = {
     'ACTIVATION_URL': '#/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
-        'user': 'users.serializers.ProfileSerializer',
+
     },
 }

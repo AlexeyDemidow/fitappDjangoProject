@@ -43,9 +43,6 @@ urlpatterns = [
     path('api/v1/', include(admin_profiles_edit_router.urls)),  # Работа с профилем пользователя
     path('api/v1/', include(profile_router.urls)),  # Работа с профилем пользователя
     path('api/v1/', include(weighing_router.urls)),  # Работа с профилем пользователя
-    # path('api/v1/profile/<int:id>', ProfileAPIView.as_view()),  # Работа с профилем пользователя
-    # path('api/v1/profile/create/', CreateProfileAPIView.as_view()),  # Работа с профилем пользователя
-
 ]
 
 if settings.DEBUG:

@@ -50,13 +50,13 @@
                                 <a class="nav-link" href="{% url 'profile' user.username %}?next={{request.path}}"><img src="{{ user.avatar.url }}" alt="Аватар" width="20" height="20" class="round">  {{ user.username }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+                                <a class="nav-link" href="{% url 'user_logout'%}">Выйти</a>
                             </li>
                         </ul>
                     {% else %}
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'login'%}">Войти</a>
+                                <a class="nav-link" href="{% url 'user_login'%}">Войти</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'signup'%}">Регистрация</a>
