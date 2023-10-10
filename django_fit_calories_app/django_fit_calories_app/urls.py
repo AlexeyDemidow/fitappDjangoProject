@@ -32,7 +32,10 @@ urlpatterns = [
     path('users/', include('users.urls')),  # Профиль
     path('calories_calc/', include('calories_calc.urls')),  # Трекер
 
-    path('api/v1/auth/', include('rest_framework.urls')),  # Авторизация на основе сессий cookies
+    path('api/v1/api-auth/', include('rest_framework.urls')),  # Авторизация на основе сессий cookies
+    path('api/v1/auth/', include('djoser.urls')),  # Авторизация djoser
+    path('api/v1/auth/', include('djoser.urls.authtoken')),  # Авторизация djoser
+    path('api/v1/auth/', include('djoser.urls.jwt')),  # Авторизация djoser
     path('api/v1/', include(food_item_router.urls)),  # Работа с базой данных продуктов
     path('api/v1/', include(read_user_food_item_router.urls)),  # Работа с базой данных пользовательских продуктов
     path('api/v1/', include(write_user_food_item_router.urls)),  # Работа с базой данных пользовательских продуктов

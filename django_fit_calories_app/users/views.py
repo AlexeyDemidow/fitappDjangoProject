@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from rest_framework import viewsets, generics, mixins
-from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 
 from users.permissions import IsOwnerOrReadOnly
 from .forms import CustomUserCreationForm, CustomUserChangeForm, WeighingForm
@@ -94,7 +94,7 @@ class ProfileAPIViewSet(mixins.ListModelMixin,
                         mixins.UpdateModelMixin,
                         viewsets.GenericViewSet):
     serializer_class = ProfileSerializer
-    permission_classes = (IsOwnerOrReadOnly, )
+    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
 
     def get_queryset(self):
         user = self.request.user.id
@@ -108,6 +108,7 @@ class ProfileAPIViewSet(mixins.ListModelMixin,
 
 class WeighingAPIViewSet(viewsets.ModelViewSet):
     serializer_class = WeighingSerializer
+    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
 
     def get_queryset(self):
         user = self.request.user.id

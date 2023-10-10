@@ -2,7 +2,7 @@ from django.contrib.auth import get_user
 from django.http import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from .forms import *
@@ -307,7 +307,7 @@ class ProductsAPIViewSet(viewsets.ModelViewSet):
 # Вьюсет для чтения пользовательских продуктами
 class UserProductsAPIViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserFoodItemSerializerRead
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated, )
     pagination_class = UserProductsPagination
 
     def get_queryset(self):
@@ -474,7 +474,7 @@ class UserProductsAPIViewSet(viewsets.ReadOnlyModelViewSet):
 # Вьюсет для редактирования пользовательских продуктами
 class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
     serializer_class = UserFoodItemSerializerWrite
-    permission_classes = (IsOwnerOrReadOnly, )
+    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated, )
     pagination_class = UserProductsPagination
 
     def get_queryset(self):
@@ -486,6 +486,7 @@ class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
 class WaterTrackerAPIViewSet(viewsets.ModelViewSet):
     serializer_class = WaterTrackerSerializer
     pagination_class = WaterTrackerPagination
+    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
 
     def get_queryset(self):
         user = self.request.user.id

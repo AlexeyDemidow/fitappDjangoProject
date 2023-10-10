@@ -157,6 +157,8 @@ class CustomUser(AbstractUser):
             text_result = 'Ожирение третьей степени'
         return round(result, 2), text_result
 
+    REQUIRED_FIELDS = ['email', 'gender', 'birth_date', 'growth', 'weight', 'activity', 'avatar', 'calories']
+
 
 # Модель отвечающая за взвешивание пользователя
 class Weighing(models.Model):
