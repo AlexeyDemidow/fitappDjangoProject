@@ -1,6 +1,6 @@
 from rest_framework import routers
 
-from .views import AllProfileAPIViewSet, ProfileAPIViewSet, WeighingAPIViewSet
+from .API_views import AllProfileAPIViewSet, ProfileAPIViewSet, WeighingAPIViewSet
 
 admin_profiles_edit_router = routers.SimpleRouter()
 admin_profiles_edit_router.register(r'admin_profiles_edit', AllProfileAPIViewSet)

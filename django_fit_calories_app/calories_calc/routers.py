@@ -1,6 +1,6 @@
 from rest_framework import routers
 
-from calories_calc.views import ProductsAPIViewSet, UserProductsAPIViewSet, UserProductsAPIViewSetWrite, \
+from calories_calc.API_views import ProductsAPIViewSet, UserProductsAPIViewSet, UserProductsAPIViewSetWrite, \
     WaterTrackerAPIViewSet
 
 # Роутер для базы данных продуктов
@@ -25,5 +25,3 @@ water_tracker_router = routers.SimpleRouter()
 water_tracker_router.register(r'water_tracker',
                               WaterTrackerAPIViewSet,
                               basename='water_tracker')
-
-# print(user_food_item_router.urls)

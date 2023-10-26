@@ -13,12 +13,16 @@ class FoodItemSerializer(serializers.ModelSerializer):
 # Сериалайзер базы данных продуктов для чтения
 class UserFoodItemSerializerRead(serializers.ModelSerializer):
     customer = serializers.CharField(source='customer__username')
-    fooditem = serializers.CharField(source='fooditem__name')
+    fooditem_name = serializers.CharField(source='fooditem__name')
+    fooditem_protein = serializers.CharField(source='fooditem__protein')
+    fooditem_fats = serializers.CharField(source='fooditem__fats')
+    fooditem_carbohydrate = serializers.CharField(source='fooditem__carbohydrate')
+    fooditem_calorie = serializers.CharField(source='fooditem__calorie')
     category = serializers.CharField(source='category__name')
 
     class Meta:
         model = UserFoodItem
-        fields = ['id', 'customer', 'fooditem', 'category', 'add_date', 'quantity']
+        fields = ['id', 'customer', 'fooditem_name', 'fooditem_protein', 'fooditem_fats', 'fooditem_carbohydrate', 'fooditem_calorie', 'category', 'add_date', 'quantity']
 
 
 # Сериалайзер базы данных продуктов для редактирования
