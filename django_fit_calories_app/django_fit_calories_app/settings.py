@@ -14,7 +14,6 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import environ
-import users
 
 environ.Env.read_env()
 
