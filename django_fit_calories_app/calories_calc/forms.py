@@ -86,7 +86,7 @@ class ChooseDateForm(ModelForm):
 
 
 # Форма трекера воды
-class WaterTrackerForm(ModelForm):
+class WaterTrackerFormPlus(ModelForm):
 
     class Meta:
         model = WaterTracker
@@ -97,6 +97,21 @@ class WaterTrackerForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
         self.fields['drink_date'].initial = datetime.now().date()
+        self.fields['glass'].initial = 1
+
+
+class WaterTrackerFormMinus(ModelForm):
+
+    class Meta:
+        model = WaterTracker
+        fields = ['glass', 'drink_date', 'customer']
+
+    # Заполнение полей по умолчанию
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
+        self.fields['drink_date'].initial = datetime.now().date()
+        self.fields['glass'].initial = -1
 
 
 # Форма экспорта продуктов

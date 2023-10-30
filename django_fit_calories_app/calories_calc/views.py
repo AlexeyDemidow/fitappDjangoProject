@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from django.contrib.auth.decorators import login_required
@@ -65,11 +66,17 @@ def user_calc(request):
     quantity_count_all = quantity_count_br + quantity_count_lu + quantity_count_di + quantity_count_sn
 
     if request.method == 'POST':
-        # Форма трекера воды
-        form_drink = WaterTrackerForm(request.POST, initial={'customer': user})
-        if form_drink.is_valid():
-            form_drink.save()
-            return redirect('user_calc')
+        # Форма трекера воды (+)
+        form_drink_plus = WaterTrackerFormPlus(request.POST, initial={'customer': user})
+        if form_drink_plus.is_valid():
+            form_drink_plus.save()
+            return JsonResponse({'status': 'success', 'water': water_count})
+
+        # Форма трекера воды (-)
+        form_drink_minus = WaterTrackerFormMinus(request.POST, initial={'customer': user})
+        if form_drink_minus.is_valid():
+            form_drink_minus.save()
+            return JsonResponse({'status': 'success', 'water': water_count})
 
         # Форма создания пользовательской еды
         create_food_item_form = FoodItemForm(request.POST)
@@ -106,14 +113,15 @@ def user_calc(request):
         if form_ch.is_valid():
             form_ch.save()
             return redirect('/calories_calc/user_calc/')
-
-    form_drink = WaterTrackerForm(initial={'customer': user, 'drink_date': main_date})
-    create_food_item_form = FoodItemForm(request.POST)
-    form_br = AddUserFoodItemBreakfast(initial={'customer': user, 'add_date': main_date})
-    form_lu = AddUserFoodItemLunch(initial={'customer': user, 'add_date': main_date})
-    form_di = AddUserFoodItemDinner(initial={'customer': user, 'add_date': main_date})
-    form_sn = AddUserFoodItemSnacks(initial={'customer': user, 'add_date': main_date})
-    form_ch = ChooseDateForm(initial={'customer': user})
+    else:
+        form_drink_plus = WaterTrackerFormPlus(initial={'customer': user, 'drink_date': main_date})
+        form_drink_minus = WaterTrackerFormMinus(initial={'customer': user, 'drink_date': main_date})
+        create_food_item_form = FoodItemForm(request.POST)
+        form_br = AddUserFoodItemBreakfast(initial={'customer': user, 'add_date': main_date})
+        form_lu = AddUserFoodItemLunch(initial={'customer': user, 'add_date': main_date})
+        form_di = AddUserFoodItemDinner(initial={'customer': user, 'add_date': main_date})
+        form_sn = AddUserFoodItemSnacks(initial={'customer': user, 'add_date': main_date})
+        form_ch = ChooseDateForm(initial={'customer': user})
 
     context = {
         'main_date': main_date, 'create_food_item_form': create_food_item_form,
@@ -124,7 +132,7 @@ def user_calc(request):
         'snacks': snacks_view_list, 'snacks_view_dict': snacks_view_dict, 'scnt': scnt,
 
         'form_br': form_br, 'form_lu': form_lu, 'form_di': form_di, 'form_sn': form_sn, 'form_ch': form_ch,
-        'form_drink': form_drink, 'water_count': water_count,
+        'form_drink_plus': form_drink_plus, 'form_drink_minus': form_drink_minus, 'water_count': water_count,
 
         'calorie_count_sn': calorie_count_sn,
         'protein_count_sn': protein_count_sn,
@@ -158,6 +166,20 @@ def user_calc(request):
     }
 
     return render(request, 'user_calc.html', context)
+
+
+# def update_watertracker(request):
+#     # Определение актуального пользователя
+#     user = request.user
+#     cust = user.id
+#
+#     # Меню выбора даты
+#     ch_date = ChooseDate.objects.filter(customer=cust)
+#     main_date = main_date_func(ch_date)
+#
+#     water = WaterTracker.objects.filter(customer=user, drink_date=main_date)
+#     final_water = water_count_func(water)
+#     return JsonResponse({'status': 'success', 'final_water': final_water})
 
 
 # Представление статистики

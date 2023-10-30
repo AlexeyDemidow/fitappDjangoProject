@@ -15,40 +15,33 @@
         </form>
     </div>
     <br>
-    <div class="container" style="text-align: center"><!-------Трекер воды------->
-        <button class="button" name="add_water" data-toggle="modal" data-target="#myModal_water">Трекер воды</button>
+    <div class="container" style="text-align: center"><!-------Добавить свою еду------->
         <button class="button" name="add_food" data-toggle="modal" data-target="#myModal_addfood">Добавить свою еду</button>
     </div>
     <br>
-    <div class="modal fade" id="myModal_water"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Добавить воды</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="text-align: center">
-                    Сегодня выпито воды: <span id="water_count">{{water_count}}</span> стаканов.
+    <div class="container" style="text-align: center"><!-------Трекер воды------->
+                    (1 стакан = 250 мл)
                     <br>
-                    <form action="" method="POST">
+                    <form action="" method="POST" id="water-tracker-plus">
                         {% csrf_token %}
-                        <div style="display: none">{{form_drink.customer}}</div>
-                        <div style="display: none">{{form_drink.drink_date}}</div><br>
-                        <div class="number" style="text-align: center">
-                            <button id="number-minus" class="number-minus" type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.onchange();">-</button>
-                            <input type="number" min="-1" onchange="updateGlass(this.value)" value="{{form_drink.glass}}
-                            <button id="number-plus" class="number-plus" type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.onchange();">+</button>
-                        </div>
+                        <div style="display: none">{{form_drink_plus.customer}}</div>
+                        <div style="display: none">{{form_drink_plus.drink_date}}</div><br>
+                        <div style="display: none" "text-align: center">{{form_drink_plus.glass}}</div>
                         <br>
-                        <br>
-                        <input type="submit" class="button" value="Добавить воды">
+                        <input type="submit" class="button" value="Плюс 1">
                     </form>
-                </div>
-            </div>
-        </div>
+                    <h1><span id="water-tracker-actual">{{water_count}}</span></h1>
+                    <form action="" method="POST" id="water-tracker-minus">
+                        {% csrf_token %}
+                        <div style="display: none">{{form_drink_minus.customer}}</div>
+                        <div style="display: none">{{form_drink_minus.drink_date}}</div><br>
+                        <div style="display: none" "text-align: center">{{form_drink_minus.glass}}</div>
+                        <br>
+                        <input type="submit" class="button" value="Минус 1">
+                    </form>
+
     </div>
+
     <!-------Добавление своей еды--------->
     <div class="modal fade" id="myModal_addfood"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-dialog-centered" role="document">
