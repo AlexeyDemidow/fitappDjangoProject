@@ -19,6 +19,8 @@ def water_count_func(glasses):
     water_count = 0
     for water_glass in glasses:
         water_count += water_glass.glass
+        if water_count < 0:
+            water_count = 0
     return water_count
 
 

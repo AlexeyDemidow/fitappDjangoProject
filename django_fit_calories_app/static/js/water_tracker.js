@@ -49,7 +49,10 @@ $(function() {
 //Убавить стакан
 $(function() {
     $('#water-tracker-minus').click(function(event) {
-        const new_water = $('#water-tracker-actual').html() - 1
+        let new_water = parseInt($('#water-tracker-actual').html()) - 1
+        if (new_water < 0) {
+            new_water = 0
+        }
         console.log(new_water)
         event.preventDefault();
         $.ajax({

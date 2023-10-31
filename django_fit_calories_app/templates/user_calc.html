@@ -5,49 +5,51 @@
 {% block content %}
     {% csrf_token %}
     <br>
-    <div class="container"><!-------Выбор даты------->
-        <h3>{{ main_date }}</h3>
-        <form action="" method="POST">
-            {% csrf_token %}
-            <input type="date" id="{{ form_ch.c_date }}
-            <div style="display: none">{{ form_ch.customer }}</div>
-            <input type="submit" class="button" value="Выбрать">
-        </form>
-    </div>
-    <br>
-    <div class="container" style="text-align: center"><!-------Добавить свою еду------->
-        <button class="button" name="add_food" data-toggle="modal" data-target="#myModal_addfood">Добавить свою еду</button>
+    <div class="container" style="text-align: center"><!-------Выбор даты------->
+        <div class="date_form" style="padding: 10px">
+            <h3 >{{ main_date }}</h3>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="date" id="{{ form_ch.c_date }}
+                <div style="display: none">{{ form_ch.customer }}</div>
+                <input type="submit" class="button" value="Выбрать">
+            </form>
+        </div>
+        <div class="add_food">
+            <button class="button" name="add_food" data-toggle="modal" data-target="#myModal_addfood">Добавить свою еду</button>
+        </div>
     </div>
     <br>
     <div class="container" style="text-align: center"><!-------Трекер воды------->
-                    (1 стакан = 250 мл)
-                    <br>
-                    <form action="" method="POST" id="water-tracker-plus">
-                        {% csrf_token %}
-                        <div style="display: none">{{form_drink_plus.customer}}</div>
-                        <div style="display: none">{{form_drink_plus.drink_date}}</div><br>
-                        <div style="display: none" "text-align: center">{{form_drink_plus.glass}}</div>
-                        <br>
-                        <input type="submit" class="button" value="Плюс 1">
-                    </form>
-                    <h1><span id="water-tracker-actual">{{water_count}}</span></h1>
-                    <form action="" method="POST" id="water-tracker-minus">
-                        {% csrf_token %}
-                        <div style="display: none">{{form_drink_minus.customer}}</div>
-                        <div style="display: none">{{form_drink_minus.drink_date}}</div><br>
-                        <div style="display: none" "text-align: center">{{form_drink_minus.glass}}</div>
-                        <br>
-                        <input type="submit" class="button" value="Минус 1">
-                    </form>
-
-    </div>
-
+        <h5>Трекер воды</h5>
+        (1 стакан = 250 мл)<br>
+        <br>
+        <div class="water_tracker">
+            <form action="" method="POST" id="water-tracker-minus">
+                {% csrf_token %}
+                <div style="display: none">{{form_drink_minus.customer}}</div>
+                <div style="display: none">{{form_drink_minus.drink_date}}</div>
+                <div style="display: none">{{form_drink_minus.glass}}</div>
+                <button type="submit" class="water_button_m"><i class="fa fa-minus" aria-hidden="true"></i></button>
+            </form>
+        </div>
+        <h1 class="water_tracker"><span id="water-tracker-actual">{{water_count}}</span></h1>
+        <div class="water_tracker">
+           <form action="" method="POST" id="water-tracker-plus">
+                {% csrf_token %}
+                <div style="display: none">{{form_drink_plus.customer}}</div>
+                <div style="display: none">{{form_drink_plus.drink_date}}</div>
+                <div style="display: none">{{form_drink_plus.glass}}</div>
+                <button type="submit" class="water_button_pm"><i class="fa fa-plus" aria-hidden="true"></i></button>
+            </form>
+        </div>
+    </div><br>
     <!-------Добавление своей еды--------->
     <div class="modal fade" id="myModal_addfood"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Добавить свою еду</сво></h5>
+                    <h5 class="modal-title" id="myModalLabel">Добавить свою еду</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -97,7 +99,7 @@
         </div>
     </div>
     <!-------Таблица завтрака------->
-    <div class="container">
+    <div class="container" style="padding: 10px">
         <h5 id="heading">Завтрак</h5>
         <h7>Всего продуктов:{{bcnt}}</h7>
         <div class="table-responsive" style="transform: scale(1)">
@@ -134,7 +136,11 @@
                     <td class="foodtable_td">{{ fats_count_br }}</td>
                     <td class="foodtable_td">{{ carbohydrate_count_br }}</td>
                     <td class="foodtable_td">{{ quantity_count_br }}</td>
-                    <td class="foodtable_td"><button type="button" class="button_pm" name="add_to_breakfast" data-toggle="modal" data-target="#myModal_breakfast"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                    <td class="foodtable_td">
+                        <button type="button" class="button_pm" name="add_to_breakfast" data-toggle="modal" data-target="#myModal_breakfast">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -167,7 +173,7 @@
         </div>
     </div>
     <!-----------------Таблица обеда--------------------->
-    <div class="container">
+    <div class="container" style="padding: 10px">
         <div class="flex-box-row">
             <h5 id="heading">Обед</h5>
             <h7>Всего продуктов:{{lcnt}}</h7>
@@ -239,7 +245,7 @@
         </div>
     </div>
     <!-----------------Таблица ужина--------------------->
-    <div class="container">
+    <div class="container" style="padding: 10px">
         <div class="flex-box-row">
             <h5 id="heading">Ужин</h5>
             <h7>Всего продуктов:{{dcnt}}</h7>
@@ -312,7 +318,7 @@
         </div>
     </div>
     <!-----------------Таблица перекусов--------------------->
-    <div class="container">
+    <div class="container" style="padding: 10px">
         <div class="flex-box-row">
             <h5 id="heading">Перекусы</h5>
             <h7>Всего продуктов:{{scnt}}</h7>
@@ -360,7 +366,7 @@
     </div>
     <br>
     <!-----------------Итоговая таблица--------------------->
-    <div class="container">
+    <div class="container" style="padding: 10px">
         <div class="table-responsive" style="transform: scale(1)">
             <table class="table">
                 <tr class="foodtable_fin">
