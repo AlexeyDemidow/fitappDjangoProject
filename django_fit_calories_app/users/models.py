@@ -6,8 +6,8 @@ from django.utils import timezone
 from django.core.validators import RegexValidator, MinValueValidator, EmailValidator
 
 
-# Модель пользователя
 class CustomUser(AbstractUser):
+    """Модель пользователя"""
 
     username_validator = RegexValidator(
         r'^[a-zA-Z0-9_]+$',
@@ -92,7 +92,6 @@ class CustomUser(AbstractUser):
         validators=[calories_validator],
     )
 
-    # Функция сохранения профиля
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if not self.avatar:
@@ -103,8 +102,9 @@ class CustomUser(AbstractUser):
             img.thumbnail(output_size)
             img.save(self.avatar.path)
 
-    # Вычисление нормы калорий в день
     def calories_per_day(self):
+        """Вычисление нормы калорий в день"""
+
         today = datetime.now().date()
         age = today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month,
                                                                                self.birth_date.day))
@@ -137,8 +137,9 @@ class CustomUser(AbstractUser):
                 result_w *= 1.9
             return round(result_w)
 
-    # Вычисление коэффициента массы тела
     def body_mass_ratio(self):
+        """Вычисление коэффициента массы тела"""
+
         result = int(self.weight) / (int(self.growth) / 100) ** 2
         text_result = None
         if result <= 16:
@@ -160,8 +161,9 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['email', 'gender', 'birth_date', 'growth', 'weight', 'activity', 'avatar', 'calories']
 
 
-# Модель отвечающая за взвешивание пользователя
 class Weighing(models.Model):
+    """Модель отвечающая за взвешивание пользователя"""
+
     weighing_date = models.DateField(default=timezone.now, verbose_name='Дата взвешивания')
     weight_value = models.FloatField(default=0, verbose_name='Вес', help_text='Введите в килограммах')
     user = models.ManyToManyField(CustomUser)

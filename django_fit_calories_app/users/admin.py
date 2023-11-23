@@ -1,12 +1,12 @@
-# Register your models here.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserCreationForm, CustomUserChangeFormAdmin
 from .models import CustomUser, Weighing
 
 
-# Модель пользователя в админ панели
 class CustomUserAdmin(UserAdmin):
+    """Модель пользователя в админ-панели"""
+
     add_form = CustomUserCreationForm
     form = CustomUserChangeFormAdmin
     model = CustomUser
@@ -30,8 +30,9 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('username',)
 
 
-# Модель данных о взвешивании в админ панели
 class UserWeighing(admin.ModelAdmin):
+    """Модель данных о взвешивании в админ-панели"""
+
     class Meta:
         model = Weighing
 

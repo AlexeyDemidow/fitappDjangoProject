@@ -24,8 +24,6 @@ from calories_calc.routers import food_item_router, read_user_food_item_router, 
     water_tracker_router
 from users.routers import admin_profiles_edit_router, profile_router, weighing_router
 
-# from users.views import CreateProfileAPIView, ProfileAPIView
-
 urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),  # Главная
     path('admin/', admin.site.urls),  # Админ

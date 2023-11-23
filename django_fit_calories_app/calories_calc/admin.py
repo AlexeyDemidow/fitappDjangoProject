@@ -1,10 +1,10 @@
-# Register your models here.
 from django.contrib import admin
 from .models import *
-from django.db import models
 
-# Модель еды в админ панели
+
 class FoodAdmin(admin.ModelAdmin):
+    """Модель еды в админ-панели"""
+
     class Meta:
         model = FoodItem
 
@@ -12,8 +12,9 @@ class FoodAdmin(admin.ModelAdmin):
     list_filter = ['name', 'carbohydrate', 'fats', 'protein', 'calorie']
 
 
-# Модель пользовательской пищи в админ панели
 class UserFoodAdmin(admin.ModelAdmin):
+    """Модель пользовательской пищи в админ-панели"""
+
     class Meta:
         model = UserFoodItem
 
@@ -30,8 +31,9 @@ class UserFoodAdmin(admin.ModelAdmin):
         return ','.join([x.name for x in row.category.all()])
 
 
-# Модель трекера воды в админ панели
 class WaterTrackerAdmin(admin.ModelAdmin):
+    """Модель трекера воды в админ панели"""
+
     class Meta:
         model = WaterTracker
 
@@ -42,8 +44,6 @@ class WaterTrackerAdmin(admin.ModelAdmin):
         return ','.join([x.username for x in row.customer.all()])
 
 
-# Разделы в админ панели
 admin.site.register(UserFoodItem, UserFoodAdmin)
 admin.site.register(WaterTracker, WaterTrackerAdmin)
-# admin.site.register(Category)
 admin.site.register(FoodItem, FoodAdmin)

@@ -4,8 +4,9 @@ from decimal import Decimal
 from datetime import date
 
 
-# Выбранная дата
 def main_date_func(dates):
+    """Получение выбранной даты"""
+
     ch_dt_list = [date.today()]
     for dt in dates:
         ch_dt_list.clear()
@@ -14,8 +15,9 @@ def main_date_func(dates):
     return main_date
 
 
-# Счетчик стаканов воды
 def water_count_func(glasses):
+    """Счетчик стаканов воды"""
+
     water_count = 0
     for water_glass in glasses:
         water_count += water_glass.glass
@@ -24,8 +26,9 @@ def water_count_func(glasses):
     return water_count
 
 
-# Обработка запроса и распределение данных по спискам
 def food_list_prepare(my_food):
+    """Обработка запроса и распределение данных по спискам"""
+
     food_list = []
     food_list_id = []
     food_quantity_list = []
@@ -36,8 +39,9 @@ def food_list_prepare(my_food):
     return food_list, food_quantity_list, food_list_id
 
 
-# Преобразование запросов в данные
 def eating_list_func(eat_list):
+    """Преобразование запросов в данные"""
+
     eating_view_list = []
     for items in eat_list:
         for food in items:
@@ -45,8 +49,9 @@ def eating_list_func(eat_list):
     return eating_view_list
 
 
-# Подсчет количества нутриентов в зависимости от массы
 def ready_eating_list_func(eat_list, quantity_list):
+    """Подсчет количества нутриентов в зависимости от массы"""
+
     if len(eat_list) > 0:
         for i in range(len(quantity_list)):
             eat_list[i].calorie *= Decimal(quantity_list[i]) / 100
@@ -66,16 +71,18 @@ def ready_eating_list_func(eat_list, quantity_list):
     return eat_list
 
 
-# Создание словаря название еды: характеристики
 def food_view_dict(food_view_list, food_list_id):
+    """Создание словаря {название еды: характеристики}"""
+
     food_view_dictionary = {}
     for d_index in range(len(food_view_list)):
         food_view_dictionary[food_list_id[d_index]] = food_view_list[d_index]
     return food_view_dictionary
 
 
-# Подсчет количества нутриентов
 def food_count(food_view_list):
+    """Подсчет количества нутриентов"""
+
     calorie_count = 0
     protein_count = 0
     fats_count = 0
@@ -90,8 +97,9 @@ def food_count(food_view_list):
     return calorie_count, protein_count, fats_count, carbohydrate_count, quantity_count
 
 
-# Импорт еды из CSV-файла
 def import_products_from_csv(csv_file):
+    """Импорт из CSV-файла"""
+
     reader = csv.DictReader(csv_file.read().decode('utf-8').splitlines(), delimiter=';')
     for row in reader:
         product = FoodItem(

@@ -168,20 +168,6 @@ def user_calc(request):
     return render(request, 'user_calc.html', context)
 
 
-# def update_watertracker(request):
-#     # Определение актуального пользователя
-#     user = request.user
-#     cust = user.id
-#
-#     # Меню выбора даты
-#     ch_date = ChooseDate.objects.filter(customer=cust)
-#     main_date = main_date_func(ch_date)
-#
-#     water = WaterTracker.objects.filter(customer=user, drink_date=main_date)
-#     final_water = water_count_func(water)
-#     return JsonResponse({'status': 'success', 'final_water': final_water})
-
-
 # Представление статистики
 @login_required
 def charts(request):

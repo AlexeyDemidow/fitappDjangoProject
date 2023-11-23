@@ -33,7 +33,6 @@ $.ajaxSetup({
 $(function() {
     $('#water-tracker-plus').click(function(event) {
         const new_water = parseInt($('#water-tracker-actual').html()) + 1
-        console.log(new_water)
         event.preventDefault();
         $.ajax({
             url: '',
@@ -53,7 +52,6 @@ $(function() {
         if (new_water < 0) {
             new_water = 0
         }
-        console.log(new_water)
         event.preventDefault();
         $.ajax({
             url: '',
@@ -66,16 +64,3 @@ $(function() {
     });
 });
 
-
-// $(function() {
-//     setInterval(function() {
-//         $.ajax({
-//             url: '',
-//             type: 'POST',
-//             data: $(this).serialize(),
-//             success: function(response) {
-//                 $('#water-tracker-actual').html(response.water);
-//             }
-//         });
-//     }, 2000);
-// });

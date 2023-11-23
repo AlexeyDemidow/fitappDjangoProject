@@ -5,36 +5,37 @@ from datetime import datetime
 from django import forms
 
 
-# Форма еды
 class FoodItemForm(ModelForm):
+    """Форма еды"""
+
     class Meta:
         model = FoodItem
         fields = ['name', 'calorie', 'protein', 'fats', 'carbohydrate', 'quantity']
 
 
-# Форма добавления еды к завтраку
 class AddUserFoodItemBreakfast(ModelForm):
+    """Форма добавления еды к завтраку"""
 
     class Meta:
         model = UserFoodItem
         fields = ['customer', 'fooditem', 'category', 'add_date', 'quantity']
 
-    # Заполнение полей по умолчанию
     def __init__(self, *args, **kwargs):
+        """Заполнение полей по умолчанию"""
+
         super().__init__(*args, **kwargs)
         self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
         self.fields['category'].initial = Category.objects.get(name='breakfast')
         self.fields['add_date'].initial = datetime.now().date()
 
 
-# Форма добавления еды обеду
 class AddUserFoodItemLunch(ModelForm):
+    """Форма добавления еды обеду"""
 
     class Meta:
         model = UserFoodItem
         fields = ['customer', 'fooditem', 'category', 'add_date', 'quantity']
 
-    # Заполнение полей по умолчанию
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
@@ -42,14 +43,13 @@ class AddUserFoodItemLunch(ModelForm):
         self.fields['add_date'].initial = datetime.now().date()
 
 
-# Форма добавления еды ужину
 class AddUserFoodItemDinner(ModelForm):
+    """Форма добавления еды ужину"""
 
     class Meta:
         model = UserFoodItem
         fields = ['customer', 'fooditem', 'category', 'add_date', 'quantity']
 
-    # Заполнение полей по умолчанию
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
@@ -57,14 +57,13 @@ class AddUserFoodItemDinner(ModelForm):
         self.fields['add_date'].initial = datetime.now().date()
 
 
-# Форма добавления еды перекусам
 class AddUserFoodItemSnacks(ModelForm):
+    """Форма добавления еды перекусам"""
 
     class Meta:
         model = UserFoodItem
         fields = ['customer', 'fooditem', 'category', 'add_date', 'quantity']
 
-    # Заполнение полей по умолчанию
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
@@ -72,27 +71,25 @@ class AddUserFoodItemSnacks(ModelForm):
         self.fields['add_date'].initial = datetime.now().date()
 
 
-# Форма выбора даты
 class ChooseDateForm(ModelForm):
+    """Форма выбора даты"""
 
     class Meta:
         model = ChooseDate
         fields = ['c_date', 'customer']
 
-    # Заполнение полей по умолчанию
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
 
 
-# Форма трекера воды
 class WaterTrackerFormPlus(ModelForm):
+    """Форма трекера воды, увеличение количества выпитой воды"""
 
     class Meta:
         model = WaterTracker
         fields = ['glass', 'drink_date', 'customer']
 
-    # Заполнение полей по умолчанию
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['customer'].queryset = CustomUser.objects.filter(username=self.initial['customer'])
@@ -101,7 +98,7 @@ class WaterTrackerFormPlus(ModelForm):
 
 
 class WaterTrackerFormMinus(ModelForm):
-
+    """Форма уменьшения количества выпитой воды"""
     class Meta:
         model = WaterTracker
         fields = ['glass', 'drink_date', 'customer']
@@ -114,6 +111,7 @@ class WaterTrackerFormMinus(ModelForm):
         self.fields['glass'].initial = -1
 
 
-# Форма экспорта продуктов
 class CSVupload(forms.Form):
+    """Экспорт продуктов"""
+
     csv_file = forms.FileField()

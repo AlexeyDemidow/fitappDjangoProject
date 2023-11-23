@@ -13,14 +13,14 @@ read_user_food_item_router.register(r'user_foodlist',
                                     UserProductsAPIViewSet,
                                     basename='user_foodlist'
                                     )
-
 write_user_food_item_router = routers.SimpleRouter()
-# Используем basename изза того что querryset задан функцией
+# Используем basename из-за того что querryset задан функцией
 write_user_food_item_router.register(r'user_foodlist_edit',
                                      UserProductsAPIViewSetWrite,
                                      basename='user_foodlist_edit'
                                      )
 
+# Роутер трекера воды
 water_tracker_router = routers.SimpleRouter()
 water_tracker_router.register(r'water_tracker',
                               WaterTrackerAPIViewSet,

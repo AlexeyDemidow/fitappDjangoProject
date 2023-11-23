@@ -1,32 +1,31 @@
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from rest_framework import viewsets, generics, mixins
-from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 
-from users.permissions import IsOwnerOrReadOnly
 from .forms import CustomUserCreationForm, CustomUserChangeForm, WeighingForm
 from .models import CustomUser, Weighing
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from .serializers import ProfileSerializer, WeighingSerializer
 
-
-# Представление страницы регистрации
 class SignUpView(CreateView):
+    """Представление страницы регистрации"""
+
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('signup_success')
     template_name = 'signup.html'
 
 
-# Представление страницы после успешной регистрации
 def signup_success(request):
+    """Представление страницы после успешной регистрации"""
+
     return render(request, 'signup_success.html')
 
 
-# Представление страницы профиля
 @login_required
 def profile(request, username):
+    """Представление страницы профиля"""
+
     user = get_object_or_404(CustomUser, username=username)
     userweight = Weighing.objects.filter(user=user.id)
 
@@ -61,9 +60,10 @@ def profile(request, username):
     return render(request, 'profile.html', context)
 
 
-# Представление страницы редактирования профиля
 @login_required
 def edit_profile(request, username):
+    """Представление страницы редактирования профиля"""
+
     user = get_object_or_404(CustomUser, username=username)
 
     if request.method == 'POST':
@@ -81,36 +81,3 @@ def edit_profile(request, username):
         'birth_date': birth_date,
     }
     return render(request, 'edit_profile.html', context)
-
-
-class AllProfileAPIViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = ProfileSerializer
-    permission_classes = (IsAdminUser, )
-
-
-class ProfileAPIViewSet(mixins.ListModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        viewsets.GenericViewSet):
-    serializer_class = ProfileSerializer
-    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
-
-    def get_queryset(self):
-        user = self.request.user.id
-        user_profile = CustomUser.objects.filter(id=user)
-        # a = [i.get('calories') for i in user_profile.values()][0]
-        # if a == 0:
-        #     user_profile.calories = CustomUser.calories_per_day(CustomUser.objects.get(id=user))
-        # print(user_profile.values('calories'))
-        return user_profile
-
-
-class WeighingAPIViewSet(viewsets.ModelViewSet):
-    serializer_class = WeighingSerializer
-    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
-
-    def get_queryset(self):
-        user = self.request.user.id
-        return Weighing.objects.filter(user=user).order_by('weighing_date')
-

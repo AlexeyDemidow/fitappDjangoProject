@@ -4,16 +4,17 @@ from django.forms import ModelForm
 from datetime import datetime
 
 
-# Форма создания пользователя
 class CustomUserCreationForm(UserCreationForm):
+    """Форма создания пользователя"""
 
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'gender', 'birth_date', 'growth', 'weight', 'activity', 'avatar', 'calories']
 
 
-# Форма изменения данных пользователя
 class CustomUserChangeForm(UserChangeForm):
+    """Форма изменения данных пользователя"""
+
     password = None
 
     class Meta:
@@ -21,16 +22,16 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ['username', 'email', 'gender', 'birth_date', 'growth', 'activity', 'avatar', 'calories']
 
 
-# Форма изменения данных пользователя в админпанели
 class CustomUserChangeFormAdmin(UserChangeForm):
+    """Форма изменения данных пользователя в админ-панели"""
 
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'gender', 'birth_date', 'growth', 'weight', 'activity', 'avatar', 'calories']
 
 
-# Форма взвешивания
 class WeighingForm(ModelForm):
+    """Форма взвешивания"""
 
     class Meta:
         model = Weighing

@@ -11,16 +11,18 @@ from .utils import *
 from rest_framework import viewsets, status
 
 
-# Вьюсет для работы с базой данных продуктов
 class ProductsAPIViewSet(viewsets.ModelViewSet):
+    """Вьюсет для работы с базой данных продуктов"""
+
     queryset = FoodItem.objects.all()
     serializer_class = FoodItemSerializer
     permission_classes = (IsAdminUser, )
     pagination_class = ProductsPagination
 
 
-# Вьюсет для чтения пользовательских продуктами
 class UserProductsAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    """Вьюсет для чтения пользовательских продуктами"""
+
     serializer_class = UserFoodItemSerializerRead
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated, )
     pagination_class = UserProductsPagination
@@ -149,8 +151,9 @@ class UserProductsAPIViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(context)
 
 
-# Вьюсет для редактирования пользовательских продуктами
 class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
+    """Вьюсет для редактирования пользовательских продуктами"""
+
     serializer_class = UserFoodItemSerializerWrite
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated, )
     pagination_class = UserProductsPagination
@@ -160,8 +163,9 @@ class UserProductsAPIViewSetWrite(viewsets.ModelViewSet):
         return UserFoodItem.objects.filter(customer=user)
 
 
-# Вьюсет для трекера воды (когда будет добавлена регистрация - отредактировать)
 class WaterTrackerAPIViewSet(viewsets.ModelViewSet):
+    """Вьюсет для трекера воды"""
+
     serializer_class = WaterTrackerSerializer
     pagination_class = WaterTrackerPagination
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
