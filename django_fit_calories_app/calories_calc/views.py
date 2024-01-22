@@ -23,7 +23,7 @@ def user_calc(request):
     water_count = water_count_func(water)
 
     # Таблица завтрака
-    breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()
+    breakfast = Category.objects.filter(name='breakfast')[0].userfooditem_set.all()  # Доступ к UserFoodItem через _set
     my_breakfast = breakfast.filter(customer=cust, add_date=main_date)
     bcnt = my_breakfast.count()
     breakfast_list, breakfast_quantity_list, breakfast_list_id = food_list_prepare(my_breakfast)
@@ -166,7 +166,6 @@ def user_calc(request):
     }
 
     return render(request, 'user_calc.html', context)
-
 
 # Представление статистики
 @login_required
