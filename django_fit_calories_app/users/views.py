@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm, WeighingForm
 from .models import CustomUser, Weighing
+from .tasks import send_mailing
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -11,9 +12,15 @@ from django.contrib.auth.decorators import login_required
 class SignUpView(CreateView):
     """Представление страницы регистрации"""
 
+    model = CustomUser
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('signup_success')
     template_name = 'signup.html'
+
+    def form_valid(self, form):
+        form.save()
+        send_mailing.delay(form.instance.username, form.instance.email)  # нельзя импортировать объекты!!!
+        return super().form_valid(form)
 
 
 def signup_success(request):

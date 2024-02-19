@@ -15,7 +15,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = env('SECRET_KEY')
 
-DEBUG = env('DEBUG')
+# DEBUG = env('DEBUG')
+DEBUG = False
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
@@ -74,23 +75,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_fit_calories_app.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': env("DATABASE_ENGINE"),
-        'NAME': env("DATABASE_NAME"),
-        'USER': env("DATABASE_USER"),
-        'PASSWORD': env("DATABASE_PASSWORD"),
-        'HOST': env("DATABASE_HOST"),
-        'PORT': env("DATABASE_PORT"),
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': env("DATABASE_ENGINE"),
+#         'NAME': env("DATABASE_NAME"),
+#         'USER': env("DATABASE_USER"),
+#         'PASSWORD': env("DATABASE_PASSWORD"),
+#         'HOST': env("DATABASE_HOST"),
+#         'PORT': env("DATABASE_PORT"),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -135,24 +136,22 @@ LOGIN_URL = 'user_login'
 LOGIN_REDIRECT_URL = 'charts'
 LOGOUT_REDIRECT_URL = 'home'
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# if DEBUG:
+#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# else:
+#     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_PORT = env("EMAIL_PORT")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-# EMAIL_USE_TLS = env("EMAIL_USE_TLS")
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-# EMAIL_USE_SSL = env("EMAIL_USE_SSL")
+
+EMAIL_ADMIN = EMAIL_HOST_USER
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-EMAIL_account_PASSWORD = env("EMAIL_account_PASSWORD")
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -222,3 +221,15 @@ DJOSER = {
 
     },
 }
+
+# redis, celery settings
+# REDIS_HOST = '0.0.0.0'
+# REDIS_HOST = 'localhost'
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = '6379'
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
